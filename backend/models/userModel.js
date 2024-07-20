@@ -16,6 +16,15 @@ const createUser = (userData, callback) => {
   });
 };
 
+const getAllUsers = (callback) => {
+  const sql = "SELECT * FROM users";
+  db.query(sql, (err, results) => {
+    if (err) return callback(err);
+    return callback(null, results);
+  });
+};
+
 module.exports = {
   createUser,
+  getAllUsers,
 };

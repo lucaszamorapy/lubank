@@ -7,6 +7,14 @@ const signup = (req, res) => {
   });
 };
 
+const getUsers = (req, res) => {
+  User.getAllUsers((err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.status(200).json(data);
+  });
+};
+
 module.exports = {
   signup,
+  getUsers,
 };
