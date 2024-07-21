@@ -10,21 +10,32 @@ const createUser = (userData, callback) => {
     if (results.length > 0) {
       return callback({ message: "Email already in use" });
     }
-    // Se o e-mail não estiver em uso, continua com a criação do usuário
-    const hashedPassword = bcrypt.hashSync(userData.password, 10);
-    const sql =
-      "INSERT INTO users (`username`, `email`, `role_name`, `password`, `created_at`) VALUES (?)";
-    const values = [
-      userData.username,
-      userData.email,
-      userData.role_name,
-      hashedPassword,
-      new Date(),
-    ];
 
-    db.query(sql, [values], (err, result) => {
+    // Verifica se o nome de usuário já está em uso
+    const checkUsernameSql = "SELECT * FROM users WHERE username = ?";
+    db.query(checkUsernameSql, [userData.username], (err, results) => {
       if (err) return callback(err);
-      return callback(null, result);
+      if (results.length > 0) {
+        return callback({ message: "Username already in use" });
+      }
+
+      // Se o e-mail e o nome de usuário não estiverem em uso, continua com a criação do usuário
+      const hashedPassword = bcrypt.hashSync(userData.password, 10);
+      const sql =
+        "INSERT INTO users (`username`, `email`, `role_name`, `password`, `created_at`) VALUES (?)";
+      const values = [
+        [
+          userData.username,
+          userData.email,
+          userData.role_name,
+          hashedPassword,
+          new Date(),
+        ],
+      ];
+      db.query(sql, [values], (err, result) => {
+        if (err) return callback(err);
+        return callback(null, result);
+      });
     });
   });
 };

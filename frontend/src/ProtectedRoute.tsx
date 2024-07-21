@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "./contexts/AuthContext";
 
@@ -6,14 +6,14 @@ interface ProtectedRouteProps {
   children: JSX.Element;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+const ProtectedRouter = ({ children }: ProtectedRouteProps) => {
   const { isAuthenticated } = useAuth();
 
-  if (!isAuthenticated) {
-    return <Navigate to="/login" />;
-  }
+  useEffect(() => {
+    console.log(isAuthenticated);
+  });
 
-  return children;
+  return <>{isAuthenticated ? children : <Navigate to="/login" />}</>;
 };
 
-export default ProtectedRoute;
+export default ProtectedRouter;

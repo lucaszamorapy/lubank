@@ -47,12 +47,12 @@ const PageRegister = () => {
       await createUser(userData);
       toast.success("Usuário cadastrado com sucesso!");
       setTimeout(() => {
-        navigate("/");
+        navigate("/home");
       }, 3000);
     } catch (error: unknown) {
       setLoading(false);
       if (error instanceof Error) {
-        toast.error("O e-mail já tem uma conta!");
+        toast.error("O e-mail ou o usuário já possui uma conta!");
       }
     } finally {
       setLoading(false);
@@ -62,7 +62,17 @@ const PageRegister = () => {
   return (
     <section className="px-5 lg:px-0">
       <div className="container mt-20">
-        <ToastContainer />
+        <ToastContainer
+          autoClose={5000}
+          position="top-right"
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
         <div className="flex flex-col gap-10  bg-white rounded-md border-2 border-gray-200 items-center lg:flex-row lg:gap-32">
           <img
             src={PeopleSmile}
@@ -74,14 +84,14 @@ const PageRegister = () => {
             <Input
               placeholder="Usuário"
               style={
-                "border-b-2 border-purpleContabilize px-5 w-full w-[454px]"
+                "border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"
               }
               {...user}
             />
             <Input
               placeholder="E-mail"
               style={
-                "border-b-2 border-purpleContabilize px-5 w-full w-[454px]"
+                "border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"
               }
               {...email}
             />
@@ -94,7 +104,7 @@ const PageRegister = () => {
             <Input
               placeholder="Senha"
               style={
-                "border-b-2 border-purpleContabilize px-5 w-full w-[454px]"
+                "border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"
               }
               onChange={(e) => setPassword(e.target.value)}
               value={password}

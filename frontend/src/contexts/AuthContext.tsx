@@ -10,8 +10,11 @@ import { useNavigate } from "react-router-dom";
 
 interface AuthContextProps {
   isAuthenticated: boolean;
-  user: string | number;
-  login: (username: string, password: string) => Promise<void>;
+  user: string | number | undefined;
+  login: (
+    username: string | number,
+    password: string | number
+  ) => Promise<void>;
   logout: () => void;
 }
 
@@ -21,7 +24,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState<string | number | undefined>();
   const navigate = useNavigate();
 
   // Check authentication status on mount
@@ -29,19 +32,24 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     const token = localStorage.getItem("authToken");
     if (token) {
       setIsAuthenticated(true);
+      navigate("/home");
       // Optionally fetch user info here
     }
-  }, []);
+  }, [navigate]);
 
-  const login = async (username: string, password: string) => {
+  const login = async (
+    username: string | number,
+    password: string | number
+  ) => {
     try {
       const data = await loginUser({
         username,
         password,
       });
       localStorage.setItem("authToken", data.token);
+      setUser(username);
       setIsAuthenticated(true);
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       console.error("Login failed:", error);
       throw error;
