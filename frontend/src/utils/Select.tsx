@@ -8,14 +8,15 @@ type IItem = {
 type SelectProps = React.ComponentProps<"select"> & {
   item: IItem[];
   value: string;
-  onChange: React.ChangeEventHandler<HTMLSelectElement>; // Corrigido
+  onChange: React.ChangeEventHandler<HTMLSelectElement>;
+  style: string;
 };
 
-const Select = ({ item, value, onChange }: SelectProps) => {
+const Select = ({ item, value, onChange, style }: SelectProps) => {
   return (
     <div>
       <select
-        className="text-purpleContabilize text-center text-md py-3 rounded-md  border-b-2 border-purpleContabilize outline-none w-full "
+        className={`text-purpleContabilize text-center text-md py-3 rounded-md  border-b-2 border-purpleContabilize outline-none w-full ${style}`}
         value={value}
         onChange={onChange}
       >
@@ -24,7 +25,7 @@ const Select = ({ item, value, onChange }: SelectProps) => {
         </option>
 
         {item.map((role) => (
-          <option key={role.id} value={role.id} className="text-black">
+          <option key={role.id} value={role.role_name} className="text-black">
             {role.role_name}
           </option>
         ))}

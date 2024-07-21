@@ -6,7 +6,7 @@ type UserCreateProps = {
   username: string | number;
   email: string;
   password: string | number;
-  role_id: number;
+  role_name: string;
 };
 
 type UserLoginProps = {

@@ -1,17 +1,19 @@
 import { useState } from "react";
-import useForm from "../hooks/useForm";
-import Input from "../utils/Input";
 import PeopleSmile from "/images/peoples_smile.png";
 import LogoPurple from "/images/logo2.svg";
-import Button from "../utils/Button";
-import Loading from "../helper/Loading";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../../contexts/AuthContext";
+import useForm from "../../hooks/useForm";
+import Input from "../../utils/Input";
+import Button from "../../utils/Button";
+import Loading from "../../helper/Loading";
+import { Link } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PageLogin = () => {
   const [password, setPassword] = useState("");
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<unknown>("");
   const user = useForm("name");
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -19,9 +21,11 @@ const PageLogin = () => {
     try {
       setLoading(true);
       await login(user.value, password);
-    } catch (error) {
+    } catch (error: unknown) {
       setLoading(false);
-      setError(error);
+      if (error instanceof Error) {
+        toast.error("Usuário não encontrado");
+      }
     } finally {
       setLoading(false);
     }
@@ -29,6 +33,7 @@ const PageLogin = () => {
 
   return (
     <section className="px-5 lg:px-0">
+      <ToastContainer />
       <div className="container mt-20">
         <div className="flex flex-col gap-10  bg-white rounded-md border-2 border-gray-200 items-center lg:flex-row lg:gap-32">
           <img
@@ -40,16 +45,12 @@ const PageLogin = () => {
             <img src={LogoPurple} alt="" />
             <Input
               placeholder="Usuário"
-              style={
-                "border-b-2 border-purpleContabilize px-5 w-full lg:w-[400px]"
-              }
+              style={"border-b-2 border-purpleContabilize px-5 w-full"}
               {...user}
             />
             <Input
               placeholder="Senha"
-              style={
-                "border-b-2 border-purpleContabilize px-5 w-full lg:w-[400px]"
-              }
+              style={"border-b-2 border-purpleContabilize px-5 w-full "}
               onChange={(e) => setPassword(e.target.value)}
               value={password}
               type="password"
@@ -61,6 +62,15 @@ const PageLogin = () => {
                 "text-white rounded-full w-full hover:bg-[#9E78B5] duration-300"
               }
             />
+            <p>
+              Ainda não tem uma conta no Contabilze?{" "}
+              <Link
+                className="font-bold text-purpleContabilize"
+                to={"/register"}
+              >
+                Cadastre-se agora!
+              </Link>
+            </p>
           </form>
         </div>
       </div>

@@ -3,19 +3,29 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
 const createUser = (userData, callback) => {
-  const hashedPassword = bcrypt.hashSync(userData.password, 10);
-  const sql =
-    "INSERT INTO users (`username`, `email`, `role_id`, `password`, `created_at`) VALUES (?)";
-  const values = [
-    userData.username,
-    userData.email,
-    userData.role_id,
-    hashedPassword,
-    new Date(),
-  ];
-  db.query(sql, [values], (err, result) => {
+  // Verifica se o e-mail já está em uso
+  const checkEmailSql = "SELECT * FROM users WHERE email = ?";
+  db.query(checkEmailSql, [userData.email], (err, results) => {
     if (err) return callback(err);
-    return callback(null, result);
+    if (results.length > 0) {
+      return callback({ message: "Email already in use" });
+    }
+    // Se o e-mail não estiver em uso, continua com a criação do usuário
+    const hashedPassword = bcrypt.hashSync(userData.password, 10);
+    const sql =
+      "INSERT INTO users (`username`, `email`, `role_name`, `password`, `created_at`) VALUES (?)";
+    const values = [
+      userData.username,
+      userData.email,
+      userData.role_name,
+      hashedPassword,
+      new Date(),
+    ];
+
+    db.query(sql, [values], (err, result) => {
+      if (err) return callback(err);
+      return callback(null, result);
+    });
   });
 };
 
