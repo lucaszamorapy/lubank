@@ -13,6 +13,10 @@ export default {
         xl: "1220px",
         "2xl": "1220px",
       },
+      colors: {
+        purpleContabilize: "#6A00AB",
+        blackContabilize: "#242424",
+      },
     },
   },
   plugins: [],
