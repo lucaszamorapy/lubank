@@ -7,7 +7,7 @@ interface TypeObject {
 
 const types: Record<string, TypeObject> = {
   name: {
-    regex: /^[A-Za-zÀ-ú\s]{3,}$/,
+    regex: /^[A-Za-zÀ-ú0-9\s]{3,}$/,
     message: "O usuário deve conter no mínimo 3 caracteres.",
   },
   email: {

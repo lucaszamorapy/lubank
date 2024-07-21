@@ -2,11 +2,16 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8081/api";
 
-type UserDataProps = {
-  username: string;
+type UserCreateProps = {
+  username: string | number;
   email: string;
   password: string | number;
   role_id: number;
+};
+
+type UserLoginProps = {
+  username: string | number;
+  password: string | number;
 };
 
 export const getUsers = async () => {
@@ -29,9 +34,19 @@ export const getRoles = async () => {
   }
 };
 
-export const createUser = async (userData: UserDataProps) => {
+export const createUser = async (userData: UserCreateProps) => {
   try {
-    const response = await axios.post(`${API_URL}/api/user`, userData);
+    const response = await axios.post(`${API_URL}/user`, userData);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating user:", error);
+    throw error; // Re-lançar o erro para que ele possa ser tratado pelos chamadores
+  }
+};
+
+export const loginUser = async (userData: UserLoginProps) => {
+  try {
+    const response = await axios.post(`${API_URL}/login`, userData);
     return response.data;
   } catch (error) {
     console.error("Error creating user:", error);
