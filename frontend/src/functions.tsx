@@ -19,6 +19,16 @@ export const getUsers = async () => {
   }
 };
 
+export const getRoles = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/roles`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching roles:", error);
+    throw error; // Re-lançar o erro para que ele possa ser tratado pelos chamadores
+  }
+};
+
 export const createUser = async (userData: UserDataProps) => {
   try {
     const response = await axios.post(`${API_URL}/api/user`, userData);

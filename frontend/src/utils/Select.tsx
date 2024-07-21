@@ -8,14 +8,14 @@ type IItem = {
 type SelectProps = React.ComponentProps<"select"> & {
   item: IItem[];
   value: string;
-  onChange: () => void;
+  onChange: React.ChangeEventHandler<HTMLSelectElement>; // Corrigido
 };
 
 const Select = ({ item, value, onChange }: SelectProps) => {
   return (
     <div>
       <select
-        className="text-[#979DAA] text-center text-md py-3 rounded-md  bg-opacity-10 outline-none w-full lg:w-[250px]"
+        className="text-purpleContabilize text-center text-md py-3 rounded-md  border-b-2 border-purpleContabilize outline-none w-full "
         value={value}
         onChange={onChange}
       >

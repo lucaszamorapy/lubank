@@ -1,7 +1,7 @@
 import React from "react";
 
 type ButtonProps = React.ComponentProps<"button"> & {
-  buttonText: string;
+  buttonText: React.ReactNode;
   onClick?: () => void; // Torna onClick opcional
   style: string;
 };

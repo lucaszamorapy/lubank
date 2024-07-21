@@ -21,8 +21,20 @@ const getRoles = (req, res) => {
   });
 };
 
+const login = (req, res) => {
+  const { username, password } = req.body;
+  User.authenticateUser(username, password, (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+
+    if (result.message) return res.status(401).json({ error: result.message });
+
+    res.status(200).json({ token: result.token });
+  });
+};
+
 module.exports = {
   signup,
   getUsers,
   getRoles,
+  login,
 };

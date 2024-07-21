@@ -5,10 +5,12 @@ import PeopleSmile from "/images/peoples_smile.png";
 import LogoPurple from "/images/logo2.svg";
 import Button from "../utils/Button";
 import Loading from "../helper/Loading";
-import Select from "../utils/Select";
 
 const PageLogin = () => {
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const user = useForm("name");
   const email = useForm("email");
   return (
@@ -36,7 +38,6 @@ const PageLogin = () => {
               }
               {...email}
             />
-            {/* <Select /> */}
             <Input
               placeholder="Senha"
               style={
@@ -47,13 +48,12 @@ const PageLogin = () => {
               type="password"
             />
             <Button
-              buttonText="Entrar"
+              buttonText={loading ? <Loading /> : "Entrar"}
               type="submit"
               style={
                 "text-white rounded-full w-full hover:bg-[#9E78B5] duration-300"
               }
             />
-            <Loading />
           </form>
         </div>
       </div>
