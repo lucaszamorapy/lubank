@@ -14,7 +14,15 @@ const getUsers = (req, res) => {
   });
 };
 
+const getRoles = (req, res) => {
+  User.getAllRoles((err, data) => {
+    if (err) return res.status(500).json(err);
+    return res.status(200).json(data);
+  });
+};
+
 module.exports = {
   signup,
   getUsers,
+  getRoles,
 };

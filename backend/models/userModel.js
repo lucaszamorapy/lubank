@@ -24,7 +24,16 @@ const getAllUsers = (callback) => {
   });
 };
 
+const getAllRoles = (callback) => {
+  const sql = "SELECT * FROM roles";
+  db.query(sql, (err, results) => {
+    if (err) return callback(err);
+    return callback(null, results);
+  });
+};
+
 module.exports = {
   createUser,
   getAllUsers,
+  getAllRoles,
 };
