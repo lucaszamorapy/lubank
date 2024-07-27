@@ -2,11 +2,14 @@
 const { User, Role } = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const upload = require("../config/multer");
 
 const signup = async (req, res) => {
   try {
     const { username, email, role_name, password } = req.body;
-    //verifica se o email ou o username já estão em uso
+    const avatar = req.file ? req.file.path : null; // Pega o caminho do arquivo, se houver
+
+    // Verifica se o email ou o username já estão em uso
     const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
       return res.status(400).json({ error: "Email already in use" });
@@ -24,6 +27,7 @@ const signup = async (req, res) => {
       email,
       role_name,
       password: hashedPassword,
+      avatar, // Adiciona o caminho da imagem
     });
 
     return res.status(201).json(newUser);

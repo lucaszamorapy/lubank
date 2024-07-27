@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 type InputProps = React.ComponentProps<"input"> & {
   error?: string;
   style?: string;
+  value?: string | number; // Permitir apenas string ou number para inputs normais
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void; // Tornar onChange obrigatório
 };
 
 const Input = ({
@@ -27,7 +29,7 @@ const Input = ({
       <input
         className={`rounded-md py-3 outline-none ${style}`}
         type={type}
-        value={value}
+        value={type === "file" ? undefined : value} // Não define o valor para input type=file
         placeholder={placeholder}
         name={name}
         onChange={onChange}

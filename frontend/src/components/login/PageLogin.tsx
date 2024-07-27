@@ -1,6 +1,6 @@
 import { useState } from "react";
 import PeopleSmile from "/images/peoples_smile.png";
-import LogoPurple from "/images/logo2.svg";
+import LogoPurple from "/images/logo.svg";
 import { useAuth } from "../../contexts/AuthContext";
 import useForm from "../../hooks/useForm";
 import Input from "../../utils/Input";
@@ -52,7 +52,9 @@ const PageLogin = () => {
             alt="Pessoas sorrindo"
           />
           <form className="flex flex-col gap-10" onSubmit={handleSubmit}>
-            <img src={LogoPurple} alt="" />
+            <div className="bg-purpleContabilize flex justify-center rounded-md items-center p-4">
+              <img src={LogoPurple} alt="" />
+            </div>
             <Input
               placeholder="Usuário"
               style={"border-b-2 border-purpleContabilize px-5 w-full"}
@@ -69,7 +71,7 @@ const PageLogin = () => {
               buttonText={loading ? <Loading /> : "Entrar"}
               type="submit"
               style={
-                "text-white rounded-full w-full hover:bg-[#9E78B5] duration-300"
+                "text-white rounded-full w-full hover:bg-[#310E46] duration-300"
               }
             />
             <p>

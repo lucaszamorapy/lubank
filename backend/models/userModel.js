@@ -1,4 +1,3 @@
-// models/userModel.js
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db"); // Supondo que você tem um arquivo de configuração para o Sequelize
 

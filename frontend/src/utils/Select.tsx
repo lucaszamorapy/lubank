@@ -16,7 +16,7 @@ const Select = ({ item, value, onChange, style }: SelectProps) => {
   return (
     <div>
       <select
-        className={`text-purpleContabilize text-center text-md py-3 rounded-md  border-b-2 border-purpleContabilize outline-none w-full ${style}`}
+        className={`text-purpleContabilize text-center text-md py-3 rounded-md  border-b-2 border-purpleContabilize outline-none  ${style}`}
         value={value}
         onChange={onChange}
       >
