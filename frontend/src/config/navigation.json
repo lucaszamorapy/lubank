@@ -1,0 +1,10 @@
+[
+  {
+    "path": "/estatisticas",
+    "name": "Estatísticas"
+  },
+  {
+    "path": "/conta",
+    "name": "Conta"
+  }
+]

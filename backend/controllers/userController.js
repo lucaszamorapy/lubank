@@ -81,9 +81,37 @@ const login = async (req, res) => {
   }
 };
 
+// Novo endpoint para obter informações do usuário
+const getUserInfo = async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json({ error: "No token provided" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, "YOUR_SECRET_KEY");
+    const user = await User.findByPk(decoded.id);
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    return res.status(200).json({
+      username: user.username,
+      email: user.email,
+      role_name: user.role_name,
+      avatar: user.avatar,
+    });
+  } catch (err) {
+    return res.status(401).json({ error: "Invalid or expired token" });
+  }
+};
+
 module.exports = {
   signup,
   getUsers,
   getRoles,
   login,
+  getUserInfo, // Exporta a nova função
 };

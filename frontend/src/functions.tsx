@@ -53,3 +53,15 @@ export const loginUser = async (userData: UserLoginProps) => {
     throw error; // Re-lançar o erro para que ele possa ser tratado pelos chamadores
   }
 };
+
+export const getUserInfo = async (token: string) => {
+  try {
+    const response = await axios.get(`${API_URL}/user-info`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data; // Exemplo: { username: "JohnDoe" }
+  } catch (error) {
+    console.error("Failed to fetch user info:", error);
+    throw error;
+  }
+};

@@ -1,3 +1,5 @@
+// AuthProvider.tsx
+
 import React, {
   createContext,
   useContext,
@@ -5,7 +7,7 @@ import React, {
   useEffect,
   ReactNode,
 } from "react";
-import { loginUser } from "../functions";
+import { loginUser, getUserInfo } from "../functions"; // Adicione getUserInfo
 import { useNavigate } from "react-router-dom";
 
 interface AuthContextProps {
@@ -31,9 +33,20 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
-      setIsAuthenticated(true);
-      navigate("/home");
       // Optionally fetch user info here
+      getUserInfo(token)
+        .then((userInfo) => {
+          setUser(userInfo.username);
+          setIsAuthenticated(true);
+          navigate("/home");
+        })
+        .catch(() => {
+          setIsAuthenticated(false);
+          setUser(undefined);
+        });
+    } else {
+      setIsAuthenticated(false);
+      setUser(undefined);
     }
   }, [navigate]);
 
@@ -47,7 +60,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         password,
       });
       localStorage.setItem("authToken", data.token);
-      setUser(username);
+
+      // Fetch user info
+      const userInfo = await getUserInfo(data.token);
+      setUser(userInfo.username);
+
       setIsAuthenticated(true);
       navigate("/home");
     } catch (error) {
@@ -59,7 +76,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const logout = () => {
     localStorage.removeItem("authToken");
     setIsAuthenticated(false);
-    setUser("");
+    setUser(undefined); // Clear user state
   };
 
   return (

@@ -1,0 +1,91 @@
+.linha {
+  position: relative;
+}
+
+.linha ::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #fff;
+  transition: width 0.3s ease;
+}
+
+.linha :hover::before {
+  width: 100%;
+}
+
+.mobile-menu-5 {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.mobile-menu-5 .line-1,
+.mobile-menu-5 .line-2,
+.mobile-menu-5 .line-3 {
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  border-radius: 5px;
+  opacity: 1;
+  left: 0;
+  transition: 0.25s ease-in-out;
+}
+
+.mobile-menu-5 .line-1 {
+  top: 3px;
+}
+
+.mobile-menu-5 .line-2 {
+  top: 14px;
+}
+
+.mobile-menu-5 .line-3 {
+  top: 25px;
+}
+
+.mobile-menu-5.toggle .line-1 {
+  top: 14px;
+  transform: rotate(135deg);
+}
+
+.mobile-menu-5.toggle .line-2 {
+  opacity: 0;
+  left: -30px;
+}
+
+.mobile-menu-5.toggle .line-3 {
+  top: 14px;
+  transform: rotate(-135deg);
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.slideInRight {
+  animation: slideInRight 0.5s forwards;
+}
+
+.slideOutRight {
+  animation: slideOutRight 0.5s forwards;
+}
