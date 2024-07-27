@@ -62,58 +62,51 @@ const FormRegister = () => {
   };
 
   return (
-    <section className="px-5 lg:px-0">
-      <form
-        className="flex flex-col items-center gap-10"
-        onSubmit={handleSubmit}
-      >
-        <div className="bg-purpleContabilize flex justify-center rounded-md items-center w-full p-4">
-          <img src={LogoPurple} alt="" />
-        </div>
-        <Input
-          placeholder="Usuário"
-          style={"border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"}
-          {...user}
-        />
-        <Input
-          placeholder="E-mail"
-          style={"border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"}
-          {...email}
-        />
-        <Input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
-          style="border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"
-        />
-        <Select
-          value={select}
-          item={roles}
-          style={"w-[454px]"}
-          onChange={(e) => setSelect(e.target.value)}
-        />
-        <Input
-          placeholder="Senha"
-          style={"border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"}
-          onChange={(e) => setPassword(e.target.value)}
-          value={password}
-          type="password"
-        />
-        <Button
-          buttonText={loading ? <Loading /> : "Cadastrar"}
-          type="submit"
-          style={
-            "text-white rounded-full w-full hover:bg-[#310E46] duration-300"
-          }
-        />
-        <p>
-          Já possui uma conta no Contabilze?{" "}
-          <Link className="font-bold text-purpleContabilize" to={"/login"}>
-            Entre agora!
-          </Link>
-        </p>
-      </form>
-    </section>
+    <form className="flex flex-col items-center gap-10" onSubmit={handleSubmit}>
+      <div className="bg-purpleContabilize flex justify-center rounded-md items-center w-full p-4">
+        <img src={LogoPurple} alt="" />
+      </div>
+      <Input
+        placeholder="Usuário"
+        style={"border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"}
+        {...user}
+      />
+      <Input
+        placeholder="E-mail"
+        style={"border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"}
+        {...email}
+      />
+      <Input
+        type="file"
+        accept="image/*"
+        onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
+        style="border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"
+      />
+      <Select
+        value={select}
+        item={roles}
+        style={"w-[454px]"}
+        onChange={(e) => setSelect(e.target.value)}
+      />
+      <Input
+        placeholder="Senha"
+        style={"border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"}
+        onChange={(e) => setPassword(e.target.value)}
+        value={password}
+        type="password"
+      />
+      <Button
+        buttonText={loading ? <Loading /> : "Cadastrar"}
+        type="submit"
+        style={"text-white rounded-full w-full hover:bg-[#310E46] duration-300"}
+      />
+      <p>
+        Já possui uma conta no Contabilze?{" "}
+        <Link className="font-bold text-purpleContabilize" to={"/login"}>
+          Entre agora!
+        </Link>
+      </p>
+    </form>
   );
 };
 
