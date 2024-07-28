@@ -52,6 +52,63 @@ const Role = sequelize.define(
   }
 );
 
+const Month = sequelize.define(
+  "Month",
+  {
+    month_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      primaryKey: true,
+      unique: true,
+    },
+    month_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+  },
+  {
+    tableName: "month",
+    timestamps: false,
+  }
+);
+
+const Expense = sequelize.define(
+  "Expense",
+  {
+    expense_id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    month_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    amount: {
+      type: DataTypes.DECIMAL(10, 2),
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.STRING,
+    },
+    created_at: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
+  },
+  {
+    tableName: "expenses",
+    timestamps: false,
+  }
+);
+
+Expense.belongsTo(User, { foreignKey: "user_id" });
+Expense.belongsTo(Month, { foreignKey: "month_id" });
 User.belongsTo(Role, { foreignKey: "role_name", targetKey: "role_name" });
 
-module.exports = { User, Role };
+module.exports = { User, Role, Month, Expense };

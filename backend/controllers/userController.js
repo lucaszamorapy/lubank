@@ -1,5 +1,5 @@
 // controllers/userController.js
-const { User, Role } = require("../models/userModel");
+const { User, Role } = require("../models/allModels");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const upload = require("../config/multer");
