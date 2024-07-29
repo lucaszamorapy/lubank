@@ -50,7 +50,7 @@ const FormLogin = () => {
       <Button
         buttonText={loading ? <Loading /> : "Entrar"}
         type="submit"
-        style={"text-white rounded-full w-full hover:bg-[#310E46] duration-300"}
+        style={"text-white rounded-full w-full "}
       />
       <p>
         Ainda não tem uma conta na LuBank?{" "}

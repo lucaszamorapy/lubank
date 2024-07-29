@@ -9,6 +9,15 @@ type UserCreateProps = {
   role_name: string;
 };
 
+type ExpensesCreateProps = {
+  expenses: {
+    user_id: number | null;
+    month_name: string;
+    amount: number | string;
+    description: string;
+  }[];
+};
+
 type UserLoginProps = {
   username: string | number;
   password: string | number;
@@ -62,6 +71,36 @@ export const getUserInfo = async (token: string) => {
     return response.data; // Exemplo: { username: "JohnDoe" }
   } catch (error) {
     console.error("Failed to fetch user info:", error);
+    throw error;
+  }
+};
+
+export const createExpense = async (expensesData: ExpensesCreateProps) => {
+  try {
+    const response = await axios.post(`${API_URL}/expenses`, expensesData);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch expense info:", error);
+    throw error;
+  }
+};
+
+export const getExpenseByUserId = async (userId: number | null) => {
+  try {
+    const response = await axios.get(`${API_URL}/expenses/${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching expenses by user id:", error);
+    throw error;
+  }
+};
+
+export const getMonths = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/months`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching months:", error);
     throw error;
   }
 };

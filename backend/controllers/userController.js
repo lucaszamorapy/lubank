@@ -98,6 +98,7 @@ const getUserInfo = async (req, res) => {
     }
 
     return res.status(200).json({
+      id: user.id,
       username: user.username,
       email: user.email,
       role_name: user.role_name,
@@ -113,5 +114,5 @@ module.exports = {
   getUsers,
   getRoles,
   login,
-  getUserInfo, // Exporta a nova função
+  getUserInfo,
 };

@@ -9,3 +9,33 @@ body {
   font-family: "Raleway", sans-serif;
   background-color: #ebebeb;
 }
+
+@keyframes modalContentEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes modalContentExit {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+.modal-content-enter {
+  animation: modalContentEnter 0.3s ease-out forwards;
+}
+
+.modal-content-exit {
+  animation: modalContentExit 0.2s ease-in forwards;
+}

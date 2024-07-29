@@ -1,4 +1,4 @@
-const { Expense, Month, User } = require("../models/allModels");
+const { Expense, User } = require("../models/allModels");
 
 const addExpense = async (req, res) => {
   try {

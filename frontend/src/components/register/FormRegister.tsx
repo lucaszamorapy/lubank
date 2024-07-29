@@ -25,7 +25,6 @@ const FormRegister = () => {
       try {
         const rolesData = await getRoles();
         setRoles(rolesData);
-        console.log(rolesData);
       } catch (err) {
         toast.error("Cargos não encontrados");
       }
@@ -98,7 +97,7 @@ const FormRegister = () => {
       <Button
         buttonText={loading ? <Loading /> : "Cadastrar"}
         type="submit"
-        style={"text-white rounded-full w-full hover:bg-[#310E46] duration-300"}
+        style={"text-white rounded-full w-full"}
       />
       <p>
         Já possui uma conta no Contabilze?{" "}

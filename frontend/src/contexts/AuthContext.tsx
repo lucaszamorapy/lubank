@@ -1,18 +1,11 @@
-// AuthProvider.tsx
-
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from "react";
-import { loginUser, getUserInfo } from "../functions"; // Adicione getUserInfo
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { loginUser, getUserInfo } from "../functions";
 import { useNavigate } from "react-router-dom";
 
 interface AuthContextProps {
   isAuthenticated: boolean;
   user: string | number | undefined;
+  userId: number | null;
   login: (
     username: string | number,
     password: string | number
@@ -20,23 +13,26 @@ interface AuthContextProps {
   logout: () => void;
 }
 
+interface IChildren {
+  children: JSX.Element;
+}
+
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const AuthProvider = ({ children }: IChildren) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<string | number | undefined>();
+  const [userId, setUserId] = useState<number | null>(null);
   const navigate = useNavigate();
 
-  // Check authentication status on mount
+  //verificação se o token ja existe
   useEffect(() => {
     const token = localStorage.getItem("authToken");
     if (token) {
-      // Optionally fetch user info here
       getUserInfo(token)
         .then((userInfo) => {
           setUser(userInfo.username);
+          setUserId(userInfo.id);
           setIsAuthenticated(true);
           navigate("/home");
         })
@@ -60,11 +56,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
         password,
       });
       localStorage.setItem("authToken", data.token);
-
-      // Fetch user info
-      const userInfo = await getUserInfo(data.token);
-      setUser(userInfo.username);
-
       setIsAuthenticated(true);
       navigate("/home");
     } catch (error) {
@@ -76,11 +67,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const logout = () => {
     localStorage.removeItem("authToken");
     setIsAuthenticated(false);
-    setUser(undefined); // Clear user state
+    setUser(undefined);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider
+      value={{ isAuthenticated, user, login, logout, userId }}
+    >
       {children}
     </AuthContext.Provider>
   );

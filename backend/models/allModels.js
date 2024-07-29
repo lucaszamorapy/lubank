@@ -85,8 +85,8 @@ const Expense = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    month_id: {
-      type: DataTypes.INTEGER,
+    month_name: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     amount: {
@@ -108,7 +108,7 @@ const Expense = sequelize.define(
 );
 
 Expense.belongsTo(User, { foreignKey: "user_id" });
-Expense.belongsTo(Month, { foreignKey: "month_id" });
+Expense.belongsTo(Month, { foreignKey: "month_name" });
 User.belongsTo(Role, { foreignKey: "role_name", targetKey: "role_name" });
 
 module.exports = { User, Role, Month, Expense };
