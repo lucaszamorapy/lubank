@@ -1,10 +1,11 @@
-const Expense = require("../models/expensesModel.js");
-const User = require("../models/userModel.js");
+const expensesService = require("../services/expensesService");
 
 const addExpense = async (req, res) => {
   try {
     const expenses = req.body.expenses;
-    const createdExpenses = await Expense.bulkCreate(expenses);
+    const createdExpenses = await expensesService.addExpenses.addExpenses(
+      expenses
+    );
     return res.status(201).json(createdExpenses);
   } catch (err) {
     return res.status(500).json({ error: err.message });
@@ -14,12 +15,7 @@ const addExpense = async (req, res) => {
 const getExpensesByUserId = async (req, res) => {
   try {
     const { user_id } = req.params;
-    const expenses = await Expense.findAll({
-      where: {
-        user_id,
-      },
-      include: [{ model: User }],
-    });
+    const expenses = await expensesService.getExpensesByUserId(user_id);
     return res.status(200).json(expenses);
   } catch (err) {
     return res.status(500).json({ error: err.message });
