@@ -1,4 +1,4 @@
-const { Month } = require("../models/allModels");
+const { Month } = require("../models/monthModel.js");
 
 const getMonths = async (req, res) => {
   try {
