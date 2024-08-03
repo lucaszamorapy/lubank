@@ -1,5 +1,4 @@
 const User = require("../models/userModel.js");
-const Role = require("../models/roleModel.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -30,10 +29,6 @@ const getUsers = async () => {
   return await User.findAll();
 };
 
-const getRoles = async () => {
-  return await Role.findAll();
-};
-
 const login = async (username, password) => {
   const user = await User.findOne({ where: { username } });
   if (!user) {
@@ -55,7 +50,7 @@ const login = async (username, password) => {
 };
 
 const getUserInfo = async (token) => {
-  const decoded = jwt.verify(token, "YOUR_SECRET_KEY");
+  const decoded = jwt.verify(token, "YOUR_SECRET_KEY"); //pega o token para encontrar o user
   const user = await User.findByPk(decoded.id);
 
   if (!user) {
@@ -74,7 +69,6 @@ const getUserInfo = async (token) => {
 module.exports = {
   signup,
   getUsers,
-  getRoles,
   login,
   getUserInfo,
 };

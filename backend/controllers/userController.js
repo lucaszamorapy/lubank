@@ -28,15 +28,6 @@ const getUsers = async (req, res) => {
   }
 };
 
-const getRoles = async (req, res) => {
-  try {
-    const roles = await userService.getRoles();
-    return res.status(200).json(roles);
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
-  }
-};
-
 const login = async (req, res) => {
   const { username, password } = req.body;
 
@@ -66,7 +57,6 @@ const getUserInfo = async (req, res) => {
 module.exports = {
   signup,
   getUsers,
-  getRoles,
   login,
   getUserInfo,
 };
