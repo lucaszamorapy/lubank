@@ -28,7 +28,7 @@ const PageHome = () => {
         setExpenses(expenseUserData);
       }
     };
-    console.log(expenses);
+
     fetchExpenses(userId);
   }, [userId, expenses, setExpenses]);
 

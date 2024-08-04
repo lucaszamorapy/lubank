@@ -15,7 +15,7 @@ const groupExpensesByMonth = (expenses: IExpense[]) => {
     }
     acc[month_name].push({ amount, description });
     return acc;
-  }, {} as Record<string, { amount: number; description: string }[]>); //estou dizendo que ele vai retornar uma chave (nome do mes) e seus valores
+  }, {} as Record<string, { amount: string; description: string }[]>); //estou dizendo que ele vai retornar uma chave (nome do mes) e seus valores
 };
 
 const formatCurrency = (value: number) => {
@@ -26,9 +26,9 @@ const formatCurrency = (value: number) => {
 };
 
 const calculateTotal = (
-  expenses: { amount: number; description: string }[]
+  expenses: { amount: string; description: string }[]
 ) => {
-  return expenses.reduce((acc, expense) => acc + expense.amount, 0);
+  return expenses.reduce((acc, expense) => acc + parseFloat(expense.amount), 0);
 };
 
 const GridExpenses = ({ expenses }: GridExpensesProps) => {
@@ -68,7 +68,7 @@ const GridExpenses = ({ expenses }: GridExpensesProps) => {
               >
                 <p className="text-lg">{expense.description}</p>
                 <p className="font-semibold">
-                  {formatCurrency(expense.amount)}
+                  {formatCurrency(parseFloat(expense.amount))}
                 </p>
               </div>
             ))}
