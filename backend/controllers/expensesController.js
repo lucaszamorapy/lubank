@@ -3,9 +3,7 @@ const expensesService = require("../services/expensesService");
 const addExpense = async (req, res) => {
   try {
     const expenses = req.body.expenses;
-    const createdExpenses = await expensesService.addExpenses.addExpenses(
-      expenses
-    );
+    const createdExpenses = await expensesService.addExpenses(expenses);
     return res.status(201).json(createdExpenses);
   } catch (err) {
     return res.status(500).json({ error: err.message });

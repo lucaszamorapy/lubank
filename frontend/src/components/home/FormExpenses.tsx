@@ -8,6 +8,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import { useExpense } from "../../contexts/ExpensesContext";
 import Loading from "../../helper/Loading";
 import { useModalOpen } from "../../contexts/ModalOpenContext";
+import { TiDeleteOutline } from "react-icons/ti";
 
 const FormExpenses = () => {
   const [expenses, setExpenses] = useState([{ amount: 0, description: "" }]);
@@ -104,33 +105,45 @@ const FormExpenses = () => {
       <Select
         value={select}
         item={month}
-        style={"w-full lg:w-[454px]"}
+        style={"w-full"}
         onChange={(e) => setSelect(e.target.value)}
       />
       {expenses.map((expense, index) => (
-        <div className="flex flex-col gap-5" key={index}>
-          <Input
-            type="text"
-            name="description"
-            style={
-              "border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"
-            }
-            placeholder="Descrição do gasto"
-            value={expense.description}
-            onChange={(event) => handleChange(index, event)}
-            required
-          />
-          <Input
-            type="text"
-            name="amount"
-            style={
-              "border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"
-            }
-            placeholder="Valor"
-            value={formatCurrency(expense.amount)}
-            onChange={(event) => handleChange(index, event)}
-            required
-          />
+        <div
+          className="flex flex-col border-2 border-gray-200 rounded-md p-3"
+          key={index}
+        >
+          <div className="flex justify-end">
+            <Button
+              // onClick={logout}
+              buttonText={<TiDeleteOutline size={20} />}
+              style={"text-white p-0 "}
+            />
+          </div>
+          <div className="flex flex-col gap-5">
+            <Input
+              type="text"
+              name="description"
+              style={
+                "border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"
+              }
+              placeholder="Descrição do gasto"
+              value={expense.description}
+              onChange={(event) => handleChange(index, event)}
+              required
+            />
+            <Input
+              type="text"
+              name="amount"
+              style={
+                "border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"
+              }
+              placeholder="Valor"
+              value={formatCurrency(expense.amount)}
+              onChange={(event) => handleChange(index, event)}
+              required
+            />
+          </div>
         </div>
       ))}
       <div className="flex flex-col items-center gap-5 lg:gap-10 lg:flex-row">

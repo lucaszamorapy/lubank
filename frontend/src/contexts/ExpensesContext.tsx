@@ -1,10 +1,10 @@
 import React, { createContext, useState, useContext } from "react";
 
-interface IExpense {
+export interface IExpense {
   expense_id: number;
   user_id: number;
   month_name: string;
-  amount: string;
+  amount: number;
   description: string;
 }
 
