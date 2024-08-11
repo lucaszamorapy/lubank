@@ -9,6 +9,7 @@ import { useExpense } from "../../contexts/ExpensesContext";
 import Loading from "../../helper/Loading";
 import { useModalOpen } from "../../contexts/ModalOpenContext";
 import { TiDeleteOutline } from "react-icons/ti";
+import "react-toastify/dist/ReactToastify.css";
 
 const FormExpenses = () => {
   const [expenses, setExpenses] = useState([{ amount: 0, description: "" }]);
@@ -70,6 +71,10 @@ const FormExpenses = () => {
     return Math.round(parsedValue * 100) / 100;
   };
 
+  const removeExpense = (index: number) => {
+    setExpenses(expenses.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     if (!select.trim()) {
@@ -115,7 +120,7 @@ const FormExpenses = () => {
         >
           <div className="flex justify-end">
             <Button
-              // onClick={logout}
+              onClick={() => removeExpense(index)}
               buttonText={<TiDeleteOutline size={20} />}
               style={"text-white p-0 "}
             />
@@ -149,7 +154,6 @@ const FormExpenses = () => {
       <div className="flex flex-col items-center gap-5 lg:gap-10 lg:flex-row">
         <Button
           onClick={addExpense}
-          type="button"
           buttonText={"Adicionar mais gastos"}
           style={"text-white rounded-full w-full"}
         />
