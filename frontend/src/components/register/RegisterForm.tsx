@@ -10,7 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const FormRegister = () => {
+const RegisterForm = () => {
   const [password, setPassword] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [roles, setRoles] = useState([]);
@@ -97,6 +97,7 @@ const FormRegister = () => {
       <Button
         buttonText={loading ? <Loading /> : "Cadastrar"}
         type="submit"
+        disabled={loading}
         style={"text-white rounded-full w-full"}
       />
       <p>
@@ -109,4 +110,4 @@ const FormRegister = () => {
   );
 };
 
-export default FormRegister;
+export default RegisterForm;

@@ -15,6 +15,9 @@ router.get("/user-info", userController.getUserInfo);
 router.get("/months", monthController.getMonths);
 router.post("/expenses", expensesController.addExpense);
 router.get("/expenses/:user_id", expensesController.getExpensesByUserId);
-router.delete("/expenses/:expense_id", expensesController.deleteExpenses);
+router.delete(
+  "/expenses/:month_name/:user_id",
+  expensesController.deleteExpenses
+);
 
 module.exports = router;

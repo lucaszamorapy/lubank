@@ -20,10 +20,13 @@ const getExpensesByUserId = async (user_id) => {
   }
 };
 
-const deleteExpense = async (expense_id) => {
+const deleteExpense = async (month_name, user_id) => {
   try {
     return await Expense.destroy({
-      where: { expense_id: expense_id },
+      where: {
+        month_name: month_name,
+        user_id: user_id,
+      },
     });
   } catch (err) {
     throw new Error(err.message);

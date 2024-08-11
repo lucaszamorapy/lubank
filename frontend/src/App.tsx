@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import { AuthProvider } from "./contexts/AuthContext";
 import Home from "./pages/Home";
@@ -14,9 +14,9 @@ const App = () => {
         <ExpenseProvider>
           <ModalOpenProvider>
             <Routes>
+              <Route path="/" element={<Navigate to="/login" />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
-
               <Route
                 path="/home"
                 element={

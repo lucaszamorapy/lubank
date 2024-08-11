@@ -1,12 +1,12 @@
 import Header from "../components/header/Header";
-import PageHome from "../components/home/PageHome";
+import HomePage from "../components/home/HomePage";
 
 const Home = () => {
   return (
     <>
       <Header />
       <section className="px-5 lg:px-0">
-        <PageHome />
+        <HomePage />
       </section>
     </>
   );

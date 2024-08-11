@@ -1,9 +1,9 @@
-import PageLogin from "../components/login/PageLogin";
+import LoginPage from "../components/login/LoginPage";
 
 const Login = () => {
   return (
     <div>
-      <PageLogin />
+      <LoginPage />
     </div>
   );
 };

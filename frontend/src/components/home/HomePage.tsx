@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import Button from "../../utils/Button";
@@ -7,13 +7,13 @@ import { getExpenseByUserId } from "../../functions";
 import { FiPlusCircle } from "react-icons/fi";
 import ExpenseModal from "../modals/ExpenseModal";
 import { useExpense } from "../../contexts/ExpensesContext";
-import { useModalOpen } from "../../contexts/ModalOpenContext";
-import GridExpenses from "./GridExpenses";
+import "react-toastify/dist/ReactToastify.css";
+import ExpensesGrid from "./ExpensesGrid";
 
-const PageHome = () => {
+const HomePage = () => {
+  const [modalOpen, setModalOpen] = useState(false);
   const { user, logout, userId } = useAuth();
   const { expenses, setExpenses } = useExpense();
-  const { isOpen, setIsOpen } = useModalOpen();
 
   useEffect(() => {
     if (user) {
@@ -44,7 +44,7 @@ const PageHome = () => {
   };
 
   const modalIsOpen = () => {
-    setIsOpen(!isOpen);
+    setModalOpen(!modalOpen);
   };
 
   return (
@@ -82,16 +82,16 @@ const PageHome = () => {
           </div>
         </div>
         {expenses.length > 0 ? (
-          <GridExpenses expenses={expenses} />
+          <ExpensesGrid expenses={expenses} />
         ) : (
           <p className="text-center text-gray-400 mt-20">
             Não contém nenhum gasto efetuado
           </p>
         )}
-        {isOpen && <ExpenseModal onClick={modalIsOpen} />}
+        {modalOpen && <ExpenseModal onClick={modalIsOpen} isOpen={modalOpen} />}
       </div>
     </>
   );
 };
 
-export default PageHome;
+export default HomePage;

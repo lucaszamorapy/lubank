@@ -104,3 +104,15 @@ export const getMonths = async () => {
     throw error;
   }
 };
+
+export const deleteExpense = async (monthName: string, userId: number) => {
+  try {
+    const response = await axios.delete(
+      `${API_URL}/expenses/${monthName}/${userId}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error delete expense:", error);
+    throw error;
+  }
+};

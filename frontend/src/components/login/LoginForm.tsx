@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const FormLogin = () => {
+const LoginForm = () => {
   const [password, setPassword] = useState("");
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -50,6 +50,7 @@ const FormLogin = () => {
       <Button
         buttonText={loading ? <Loading /> : "Entrar"}
         type="submit"
+        disabled={loading}
         style={"text-white rounded-full w-full "}
       />
       <p>
@@ -62,4 +63,4 @@ const FormLogin = () => {
   );
 };
 
-export default FormLogin;
+export default LoginForm;

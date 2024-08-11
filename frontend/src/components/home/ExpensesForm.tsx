@@ -11,7 +11,7 @@ import { useModalOpen } from "../../contexts/ModalOpenContext";
 import { TiDeleteOutline } from "react-icons/ti";
 import "react-toastify/dist/ReactToastify.css";
 
-const FormExpenses = () => {
+const ExpensesForm = () => {
   const [expenses, setExpenses] = useState([{ amount: 0, description: "" }]);
   const [loading, setLoading] = useState(false);
   const [select, setSelect] = useState<string>("");
@@ -113,44 +113,49 @@ const FormExpenses = () => {
         style={"w-full"}
         onChange={(e) => setSelect(e.target.value)}
       />
-      {expenses.map((expense, index) => (
-        <div
-          className="flex flex-col border-2 border-gray-200 rounded-md p-3"
-          key={index}
-        >
-          <div className="flex justify-end">
-            <Button
-              onClick={() => removeExpense(index)}
-              buttonText={<TiDeleteOutline size={20} />}
-              style={"text-white p-0 "}
-            />
+      {expenses.length > 0 ? (
+        expenses.map((expense, index) => (
+          <div
+            className="flex flex-col border-2 border-gray-200 rounded-md p-3"
+            key={index}
+          >
+            <div className="flex justify-end">
+              <Button
+                onClick={() => removeExpense(index)}
+                buttonText={<TiDeleteOutline size={20} />}
+                style={"text-white p-0 "}
+              />
+            </div>
+            <div className="flex flex-col gap-5">
+              <Input
+                type="text"
+                name="description"
+                style={
+                  "border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"
+                }
+                placeholder="Descrição do gasto"
+                value={expense.description}
+                onChange={(event) => handleChange(index, event)}
+                required
+              />
+              <Input
+                type="text"
+                name="amount"
+                style={
+                  "border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"
+                }
+                placeholder="Valor"
+                value={formatCurrency(expense.amount)}
+                onChange={(event) => handleChange(index, event)}
+                required
+              />
+            </div>
           </div>
-          <div className="flex flex-col gap-5">
-            <Input
-              type="text"
-              name="description"
-              style={
-                "border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"
-              }
-              placeholder="Descrição do gasto"
-              value={expense.description}
-              onChange={(event) => handleChange(index, event)}
-              required
-            />
-            <Input
-              type="text"
-              name="amount"
-              style={
-                "border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"
-              }
-              placeholder="Valor"
-              value={formatCurrency(expense.amount)}
-              onChange={(event) => handleChange(index, event)}
-              required
-            />
-          </div>
-        </div>
-      ))}
+        ))
+      ) : (
+        <p className="text-center text-gray-400">Não possui nenhuma despesa</p> // You can customize this message as needed
+      )}
+
       <div className="flex flex-col items-center gap-5 lg:gap-10 lg:flex-row">
         <Button
           onClick={addExpense}
@@ -167,4 +172,4 @@ const FormExpenses = () => {
   );
 };
 
-export default FormExpenses;
+export default ExpensesForm;

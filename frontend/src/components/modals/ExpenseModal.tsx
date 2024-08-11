@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import FormExpenses from "../home/FormExpenses";
-import { useModalOpen } from "../../contexts/ModalOpenContext";
+import ExpensesForm from "../home/ExpensesForm";
 
 type ExpensesProps = {
   onClick?: () => void;
+  isOpen: boolean;
 };
 
-const ExpenseModal = ({ onClick }: ExpensesProps) => {
-  const { isOpen } = useModalOpen();
+const ExpenseModal = ({ onClick, isOpen }: ExpensesProps) => {
   const [isVisible, setIsVisible] = useState(isOpen);
   const [animationClass, setAnimationClass] = useState("");
 
@@ -39,7 +38,7 @@ const ExpenseModal = ({ onClick }: ExpensesProps) => {
           <h1 className="text-xl font-semibold text-purpleContabilize">
             Informe abaixo os gastos do mês
           </h1>
-          <FormExpenses />
+          <ExpensesForm />
         </div>
       )}
     </section>

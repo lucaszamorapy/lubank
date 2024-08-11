@@ -1,6 +1,3 @@
-import { useEffect } from "react";
-import { toast } from "react-toastify";
-
 type InputProps = React.ComponentProps<"input"> & {
   error?: string;
   style?: string;
@@ -18,12 +15,6 @@ const Input = ({
   onBlur,
   error,
 }: InputProps) => {
-  useEffect(() => {
-    if (error) {
-      toast.error(error);
-    }
-  }, [error]);
-
   return (
     <div>
       <input

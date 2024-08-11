@@ -1,10 +1,9 @@
-import React from "react";
-import PageRegister from "../components/register/PageRegister";
+import RegisterPage from "../components/register/RegisterPage";
 
 const Register = () => {
   return (
     <div>
-      <PageRegister />
+      <RegisterPage />
     </div>
   );
 };

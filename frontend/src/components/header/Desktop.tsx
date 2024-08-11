@@ -11,7 +11,7 @@ const Desktop = ({ isOpen, navigation, toggleMenu }: HeaderProps) => {
           <img src={LogoPurple} className="xl:mb-20" />
           <ul className="xl:flex items-center xl:flex-col gap-5 hidden">
             {navigation.map((item, index) => (
-              <li className="text-white linha list-none">
+              <li key={index} className="text-white linha list-none">
                 <Link to={item.path} className="text-xl " key={index}>
                   {item.name}
                 </Link>
