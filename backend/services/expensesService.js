@@ -12,8 +12,18 @@ const addExpenses = async (expenses) => {
 const getExpensesByUserId = async (user_id) => {
   try {
     return await Expense.findAll({
-      where: { user_id },
+      where: { user_id: user_id },
       include: [{ model: User }],
+    });
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
+const deleteExpense = async (expense_id) => {
+  try {
+    return await Expense.destroy({
+      where: { expense_id: expense_id },
     });
   } catch (err) {
     throw new Error(err.message);
@@ -23,4 +33,5 @@ const getExpensesByUserId = async (user_id) => {
 module.exports = {
   addExpenses,
   getExpensesByUserId,
+  deleteExpense,
 };

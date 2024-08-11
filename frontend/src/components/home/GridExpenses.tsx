@@ -47,7 +47,7 @@ const GridExpenses = ({ expenses }: GridExpensesProps) => {
             <div className="flex justify-between items-center border-b-2 pb-5">
               <h3 className=" text-xl font-semibold text-purpleContabilize">
                 {month}
-              </h3>{" "}
+              </h3>
               <div className="flex gap-5">
                 <Button
                   // onClick={modalIsOpen}

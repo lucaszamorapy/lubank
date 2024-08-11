@@ -30,7 +30,7 @@ const PageHome = () => {
     };
 
     fetchExpenses(userId);
-  }, [userId, expenses, setExpenses]);
+  }, [setExpenses, userId]);
 
   const getGreeting = (): string => {
     const currentHour = new Date().getHours();

@@ -20,7 +20,18 @@ const getExpensesByUserId = async (req, res) => {
   }
 };
 
+const deleteExpenses = async (req, res) => {
+  try {
+    const { expense_id } = req.params;
+    await expensesService.deleteExpense(expense_id);
+    return res.status(200).json({ sucess: "Despesa deletada" });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   addExpense,
   getExpensesByUserId,
+  deleteExpenses,
 };
