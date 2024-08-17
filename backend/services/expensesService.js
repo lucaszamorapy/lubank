@@ -33,8 +33,36 @@ const deleteExpense = async (month_name, user_id) => {
   }
 };
 
+const updateExpense = async (
+  expense_id,
+  user_id,
+  month_name,
+  amount,
+  description
+) => {
+  try {
+    const expense = await Expense.findOne({
+      where: { expense_id: expense_id },
+    });
+
+    if (!expense) {
+      throw new Error("Expense not found");
+    }
+
+    return await expense.update({
+      user_id: user_id,
+      month_name: month_name,
+      amount: amount,
+      description: description,
+    });
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
 module.exports = {
   addExpenses,
   getExpensesByUserId,
   deleteExpense,
+  updateExpense,
 };

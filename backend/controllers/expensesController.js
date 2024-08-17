@@ -30,8 +30,26 @@ const deleteExpenses = async (req, res) => {
   }
 };
 
+const updateExpenses = async (req, res) => {
+  try {
+    const { expense_id } = req.params;
+    const { user_id, month_name, amount, description, created_at } = req.body;
+    await expensesService.updateExpense(
+      expense_id,
+      user_id,
+      month_name,
+      amount,
+      description
+    );
+    return res.status(200).json({ sucess: "Gasto alterado!" });
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   addExpense,
   getExpensesByUserId,
   deleteExpenses,
+  updateExpenses,
 };
