@@ -24,7 +24,18 @@ const groupExpensesByMonth = (expenses: IExpense[]) => {
       user_id,
     });
     return acc;
-  }, {} as Record<string, { month_name: string; expense_id: number; amount: number; description: string; user_id: number }[]>);
+  }, {} as Record<string, { month_name: string; expense_id: number; amount: string; description: string; user_id: number }[]>);
+};
+
+const removeDuplicateMonths = (expenses: IExpense[]) => {
+  const seen = new Set<string>();
+  return expenses.filter((expense) => {
+    if (seen.has(expense.month_name)) {
+      return false;
+    }
+    seen.add(expense.month_name);
+    return true;
+  });
 };
 
 const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
@@ -43,12 +54,11 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
       : "R$ 0,00";
   };
 
-  console.log(groupedExpenses);
-  console.log(expenses);
-
   const toggleModalDelete = (expenses: IExpense[]) => {
+    const uniqueExpenses = removeDuplicateMonths(expenses);
     setModalDeleteOpen(!modalDeleteOpen);
-    setExpenseDelete(expenses);
+    setExpenseDelete(uniqueExpenses);
+    console.log(uniqueExpenses);
   };
 
   const toggleModalUpdate = (expenses: IExpense[]) => {
@@ -57,7 +67,7 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
   };
 
   const calculateTotal = (
-    expenses: { amount: number; description: string }[]
+    expenses: { amount: string; description: string }[]
   ) => {
     return expenses.reduce((acc, expense) => {
       const amount =
@@ -70,55 +80,47 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
 
   return (
     <div>
-      {Object.entries(groupedExpenses).map(
-        (
-          [month, expenses] // object.entries transforma em um array de pares [chave, valor]
-        ) => (
-          <div
-            key={month}
-            className="flex flex-col w-full bg-white border-2 border-gray-200 rounded-md px-10 py-5"
-          >
-            <div className="flex justify-between items-center border-b-2 pb-5">
-              <h3 className=" text-xl font-semibold text-purpleContabilize">
-                {month}
-              </h3>
-              <div className="flex gap-5">
-                <Button
-                  buttonText={<FaRegEdit size={20} />}
-                  style={"text-white"}
-                  onClick={() =>
-                    toggleModalUpdate(expenses.map((item) => item))
-                  }
-                />
-                <Button
-                  onClick={() =>
-                    toggleModalDelete(expenses.map((item) => item))
-                  }
-                  buttonText={<AiOutlineDelete size={20} />}
-                  style={"text-white"}
-                />
-              </div>
-            </div>
-            {expenses.map((expense, index) => (
-              <div key={index} className="flex flex-col pt-5 items-center">
-                <div className="flex justify-between w-full items-center">
-                  <p className="text-lg">{expense.description}</p>
-                  <p className="font-semibold">
-                    {formatCurrency(expense.amount)}
-                  </p>
-                </div>
-              </div>
-            ))}
-
-            <div className="flex justify-between mt-10">
-              <p className="font-semibold text-lg">Total</p>
-              <p className="font-semibold text-lg">
-                {formatCurrency(calculateTotal(expenses))}
-              </p>
+      {Object.entries(groupedExpenses).map(([month, expenses]) => (
+        <div
+          key={month}
+          className="flex flex-col w-full bg-white border-2 border-gray-200 rounded-md px-10 py-5"
+        >
+          <div className="flex justify-between items-center border-b-2 pb-5">
+            <h3 className=" text-xl font-semibold text-purpleContabilize">
+              {month}
+            </h3>
+            <div className="flex gap-5">
+              <Button
+                buttonText={<FaRegEdit size={20} />}
+                style={"text-white"}
+                onClick={() => toggleModalUpdate(expenses.map((item) => item))}
+              />
+              <Button
+                onClick={() => toggleModalDelete(expenses.map((item) => item))}
+                buttonText={<AiOutlineDelete size={20} />}
+                style={"text-white"}
+              />
             </div>
           </div>
-        )
-      )}
+          {expenses.map((expense, index) => (
+            <div key={index} className="flex flex-col pt-5 items-center">
+              <div className="flex justify-between w-full items-center">
+                <p className="text-lg">{expense.description}</p>
+                <p className="font-semibold">
+                  {formatCurrency(parseFloat(expense.amount))}
+                </p>
+              </div>
+            </div>
+          ))}
+
+          <div className="flex justify-between mt-10">
+            <p className="font-semibold text-lg">Total</p>
+            <p className="font-semibold text-lg">
+              {formatCurrency(calculateTotal(expenses))}
+            </p>
+          </div>
+        </div>
+      ))}
       {modalUpdate && (
         <ExpenseModal
           onClick={() => toggleModalUpdate([])}

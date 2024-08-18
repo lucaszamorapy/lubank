@@ -67,7 +67,7 @@ const ExpenseDelete = ({ onClick, isOpen, month }: ExpensesProps) => {
           onClick={(e) => e.stopPropagation()}
         >
           <h1 className="text-xl font-semibold text-purpleContabilize">
-            {`Tem certeza que deseja deletar a despesa do mês de ${monthDelete}?`}
+            {`Tem certeza que deseja deletar esta despesa?`}
           </h1>
           <div className="flex flex-col mt-10 justify-between lg:flex-row">
             <Button

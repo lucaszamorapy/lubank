@@ -33,19 +33,20 @@ const deleteExpense = async (month_name, user_id) => {
   }
 };
 
-const updateExpense = async (expense_id, expenseUpdate) => {
+const updateExpense = async (expense_id, expenseUpdates) => {
   try {
-    const expense = await Expense.findOne({
-      where: { expense_id: expense_id },
-    });
+    for (const expenseUpdate of expenseUpdates) {
+      const expense = await Expense.findOne({
+        where: { expense_id: expense_id },
+      });
 
-    if (!expense) {
-      throw new Error("Expense not found");
+      if (!expense) {
+        throw new Error("Expense not found");
+      }
+
+      await expense.update(expenseUpdate);
     }
-
-    return await expense.update({
-      expenseUpdate,
-    });
+    return { success: true };
   } catch (err) {
     throw new Error(err.message);
   }
