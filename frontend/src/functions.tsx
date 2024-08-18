@@ -9,14 +9,14 @@ type UserCreateProps = {
   role_name: string;
 };
 
-type ExpensesCreateProps = {
+export interface ExpensesCreateProps {
   expenses: {
     user_id: number | null;
     month_name: string;
     amount: number | string;
     description: string;
   }[];
-};
+}
 
 type UserLoginProps = {
   username: string | number;
@@ -105,7 +105,7 @@ export const getMonths = async () => {
   }
 };
 
-export const deleteExpense = async (monthName: string, userId: number) => {
+export const deleteExpense = async (monthName: string[], userId: number) => {
   try {
     const response = await axios.delete(
       `${API_URL}/expenses/${monthName}/${userId}`
@@ -113,6 +113,22 @@ export const deleteExpense = async (monthName: string, userId: number) => {
     return response.data;
   } catch (error) {
     console.error("Error delete expense:", error);
+    throw error;
+  }
+};
+
+export const updateExpense = async (
+  expenseId: number[],
+  expenseEdit: ExpensesCreateProps
+) => {
+  try {
+    const response = await axios.put(
+      `${API_URL}/expenses/${expenseId}`,
+      expenseEdit
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error update expense:", error);
     throw error;
   }
 };

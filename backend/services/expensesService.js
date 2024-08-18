@@ -33,13 +33,7 @@ const deleteExpense = async (month_name, user_id) => {
   }
 };
 
-const updateExpense = async (
-  expense_id,
-  user_id,
-  month_name,
-  amount,
-  description
-) => {
+const updateExpense = async (expense_id, expenseUpdate) => {
   try {
     const expense = await Expense.findOne({
       where: { expense_id: expense_id },
@@ -50,10 +44,7 @@ const updateExpense = async (
     }
 
     return await expense.update({
-      user_id: user_id,
-      month_name: month_name,
-      amount: amount,
-      description: description,
+      expenseUpdate,
     });
   } catch (err) {
     throw new Error(err.message);

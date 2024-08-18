@@ -4,44 +4,68 @@ import { IExpense } from "../../contexts/ExpensesContext";
 import Button from "../../utils/Button";
 import { useState } from "react";
 import ExpenseDelete from "../modals/ExpenseDelete";
+import ExpenseModal from "../modals/ExpenseModal";
 
-type ExpensesGridProps = {
+interface ExpensesGridProps {
   expenses: IExpense[];
-};
+}
 
 const groupExpensesByMonth = (expenses: IExpense[]) => {
   return expenses.reduce((acc, expense) => {
-    const { month_name, amount, description } = expense;
+    const { expense_id, month_name, amount, description, user_id } = expense;
     if (!acc[month_name]) {
       acc[month_name] = [];
     }
-    acc[month_name].push({ amount, description });
+    acc[month_name].push({
+      month_name,
+      expense_id,
+      amount,
+      description,
+      user_id,
+    });
     return acc;
-  }, {} as Record<string, { amount: string; description: string }[]>);
+  }, {} as Record<string, { month_name: string; expense_id: number; amount: number; description: string; user_id: number }[]>);
 };
 
 const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
   const [modalDeleteOpen, setModalDeleteOpen] = useState(false);
+  const [modalUpdate, setModalUpdate] = useState(false);
+  const [expenseUpdate, setExpenseUpdate] = useState<IExpense[]>([]);
+  const [expenseDelete, setExpenseDelete] = useState<IExpense[]>([]);
   const groupedExpenses = groupExpensesByMonth(expenses);
 
   const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(value);
+    return !isNaN(value)
+      ? new Intl.NumberFormat("pt-BR", {
+          style: "currency",
+          currency: "BRL",
+        }).format(value)
+      : "R$ 0,00";
   };
 
-  const toggleModalDelete = () => {
+  console.log(groupedExpenses);
+  console.log(expenses);
+
+  const toggleModalDelete = (expenses: IExpense[]) => {
     setModalDeleteOpen(!modalDeleteOpen);
+    setExpenseDelete(expenses);
+  };
+
+  const toggleModalUpdate = (expenses: IExpense[]) => {
+    setModalUpdate(!modalUpdate);
+    setExpenseUpdate(expenses);
   };
 
   const calculateTotal = (
-    expenses: { amount: string; description: string }[]
+    expenses: { amount: number; description: string }[]
   ) => {
-    return expenses.reduce(
-      (acc, expense) => acc + parseFloat(expense.amount),
-      0
-    );
+    return expenses.reduce((acc, expense) => {
+      const amount =
+        typeof expense.amount === "number"
+          ? expense.amount
+          : parseFloat(expense.amount);
+      return acc + (isNaN(amount) ? 0 : amount);
+    }, 0);
   };
 
   return (
@@ -62,19 +86,17 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
                 <Button
                   buttonText={<FaRegEdit size={20} />}
                   style={"text-white"}
+                  onClick={() =>
+                    toggleModalUpdate(expenses.map((item) => item))
+                  }
                 />
                 <Button
-                  onClick={() => toggleModalDelete()}
+                  onClick={() =>
+                    toggleModalDelete(expenses.map((item) => item))
+                  }
                   buttonText={<AiOutlineDelete size={20} />}
                   style={"text-white"}
                 />
-                {modalDeleteOpen && (
-                  <ExpenseDelete
-                    onClick={toggleModalDelete}
-                    isOpen={modalDeleteOpen}
-                    month={month}
-                  />
-                )}
               </div>
             </div>
             {expenses.map((expense, index) => (
@@ -82,7 +104,7 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
                 <div className="flex justify-between w-full items-center">
                   <p className="text-lg">{expense.description}</p>
                   <p className="font-semibold">
-                    {formatCurrency(parseFloat(expense.amount))}
+                    {formatCurrency(expense.amount)}
                   </p>
                 </div>
               </div>
@@ -96,6 +118,20 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
             </div>
           </div>
         )
+      )}
+      {modalUpdate && (
+        <ExpenseModal
+          onClick={() => toggleModalUpdate([])}
+          isOpen={modalUpdate}
+          update={expenseUpdate}
+        />
+      )}
+      {modalDeleteOpen && (
+        <ExpenseDelete
+          onClick={() => toggleModalDelete([])}
+          isOpen={modalDeleteOpen}
+          month={expenseDelete}
+        />
       )}
     </div>
   );

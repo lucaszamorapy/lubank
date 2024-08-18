@@ -2,25 +2,44 @@ import { useEffect, useState } from "react";
 import Input from "../../utils/Input";
 import Select from "../../utils/Select";
 import { toast } from "react-toastify";
-import { createExpense, getExpenseByUserId, getMonths } from "../../functions";
+import {
+  createExpense,
+  getExpenseByUserId,
+  getMonths,
+  updateExpense,
+} from "../../functions";
 import Button from "../../utils/Button";
 import { useAuth } from "../../contexts/AuthContext";
 import { useExpense } from "../../contexts/ExpensesContext";
 import Loading from "../../helper/Loading";
-import { useModalOpen } from "../../contexts/ModalOpenContext";
 import { TiDeleteOutline } from "react-icons/ti";
 import "react-toastify/dist/ReactToastify.css";
+import { IExpense } from "../../contexts/ExpensesContext";
 
-const ExpensesForm = () => {
+type ExpensesFormProps = {
+  update?: IExpense[];
+  toggleModal: () => void;
+};
+
+const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
   const [expenses, setExpenses] = useState([{ amount: 0, description: "" }]);
   const [loading, setLoading] = useState(false);
   const [select, setSelect] = useState<string>("");
   const [month, setMonth] = useState([]);
   const { userId } = useAuth();
   const { setExpenses: setGlobalExpenses } = useExpense(); //coloco setGlobalExpenses para diferenciar com o setExpenses existente
-  const { isOpen, setIsOpen } = useModalOpen();
 
   useEffect(() => {
+    if (update) {
+      setExpenses(
+        update.map((item) => ({
+          amount: item.amount,
+          description: item.description,
+        }))
+      );
+      setSelect(update[0]?.month_name || "");
+    }
+
     const fetchMonths = async () => {
       try {
         const monthData = await getMonths();
@@ -30,14 +49,10 @@ const ExpensesForm = () => {
       }
     };
     fetchMonths();
-  }, []);
+  }, [update]);
 
   const addExpense = () => {
     setExpenses([...expenses, { amount: 0, description: "" }]);
-  };
-
-  const modalIsOpen = () => {
-    setIsOpen(!isOpen);
   };
 
   const handleChange = (
@@ -83,25 +98,49 @@ const ExpensesForm = () => {
     if (expenses.some((expense) => !expense.amount || !expense.description)) {
       return toast.error("Preencha todos os campos!");
     }
-    try {
-      setLoading(true);
-      await createExpense({
-        expenses: expenses.map((expense) => ({
-          user_id: userId,
-          month_name: select,
-          amount: convertToNumber(expense.amount.toString()),
-          description: expense.description,
-        })),
-      });
-      toast.success("Despesas enviadas com sucesso");
-      //atualiza o estado global das despesas
-      const expenseUserData = await getExpenseByUserId(userId);
-      setGlobalExpenses(expenseUserData);
-    } catch (error) {
-      toast.error("Falha ao enviar despesas");
-    } finally {
-      setLoading(false);
-      modalIsOpen();
+    if (update) {
+      try {
+        setLoading(true);
+        const expenseId = update.map((item) => item.expense_id);
+        console.log(`ID: ${expenseId}`);
+        await updateExpense(expenseId, {
+          expenses: expenses.map((expense) => ({
+            user_id: userId,
+            month_name: select,
+            amount: convertToNumber(expense.amount.toString()),
+            description: expense.description,
+          })),
+        });
+        toast.success("Despesas alteradas com sucesso");
+        const expenseUserData = await getExpenseByUserId(userId);
+        setGlobalExpenses(expenseUserData);
+      } catch (error) {
+        toast.error("Falha ao alterar as despesas");
+      } finally {
+        setLoading(false);
+        toggleModal();
+      }
+    } else {
+      try {
+        setLoading(true);
+        await createExpense({
+          expenses: expenses.map((expense) => ({
+            user_id: userId,
+            month_name: select,
+            amount: convertToNumber(expense.amount.toString()),
+            description: expense.description,
+          })),
+        });
+        toast.success("Despesas enviadas com sucesso");
+        //atualiza o estado global das despesas
+        const expenseUserData = await getExpenseByUserId(userId);
+        setGlobalExpenses(expenseUserData);
+      } catch (error) {
+        toast.error("Falha ao enviar despesas");
+      } finally {
+        setLoading(false);
+        toggleModal();
+      }
     }
   };
 
@@ -153,7 +192,7 @@ const ExpensesForm = () => {
           </div>
         ))
       ) : (
-        <p className="text-center text-gray-400">Não possui nenhuma despesa</p> // You can customize this message as needed
+        <p className="text-center text-gray-400">Não possui nenhuma despesa</p>
       )}
 
       <div className="flex flex-col items-center gap-5 lg:gap-10 lg:flex-row">
