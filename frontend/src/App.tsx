@@ -6,6 +6,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import Register from "./pages/Register";
 import { ExpenseProvider } from "./contexts/ExpensesContext";
 import { ModalOpenProvider } from "./contexts/ModalOpenContext";
+import Statistic from "./pages/Statistic";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
               <Route path="/" element={<Navigate to="/login" />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/estatisticas" element={<Statistic />} />
               <Route
                 path="/home"
                 element={

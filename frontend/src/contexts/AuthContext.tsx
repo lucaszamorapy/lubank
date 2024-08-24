@@ -34,7 +34,6 @@ export const AuthProvider = ({ children }: IChildren) => {
           setUser(userInfo.username);
           setUserId(userInfo.id);
           setIsAuthenticated(true);
-          navigate("/home");
         })
         .catch(() => {
           setIsAuthenticated(false);
