@@ -22,8 +22,8 @@ const getExpensesByUserId = async (req, res) => {
 
 const deleteExpenses = async (req, res) => {
   try {
-    const { month_name, user_id } = req.params;
-    await expensesService.deleteExpense(month_name, user_id);
+    const { user_id, month_name, year } = req.params;
+    await expensesService.deleteExpense(user_id, month_name, year);
     return res.status(200).json({ sucess: "Despesa deletada" });
   } catch (err) {
     return res.status(500).json({ error: err.message });

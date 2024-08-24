@@ -15,8 +15,9 @@ type ExpensesProps = {
 const ExpenseDelete = ({ onClick, isOpen, month }: ExpensesProps) => {
   const [isVisible, setIsVisible] = useState(isOpen);
   const [animationClass, setAnimationClass] = useState("");
-  const [monthDelete, setMonthDelete] = useState([""]);
   const { userId } = useAuth();
+  const [monthDelete, setMonthDelete] = useState([""]);
+  const [yearDelete, setYearDelete] = useState<number[]>([]);
   const { expenses, setExpenses } = useExpense();
 
   useEffect(() => {
@@ -26,6 +27,8 @@ const ExpenseDelete = ({ onClick, isOpen, month }: ExpensesProps) => {
     }
     const monthDeleteName = month.map((item) => item.month_name);
     setMonthDelete(monthDeleteName);
+    const yearDeleteName = month.map((item) => item.year);
+    setYearDelete(yearDeleteName);
   }, [isOpen, month]);
 
   const handleAnimationEnd = () => {
@@ -35,16 +38,20 @@ const ExpenseDelete = ({ onClick, isOpen, month }: ExpensesProps) => {
     }
   };
 
-  const handleDelete = async (monthName: string[], userId: number | null) => {
+  const handleDelete = async (
+    userId: number | null,
+    monthName: string[],
+    year: number[]
+  ) => {
     if (userId === null) {
       toast.error("Erro: Usuário não encontrado.");
       return;
     }
     try {
-      await deleteExpense(monthName, userId);
+      await deleteExpense(userId, monthName, year);
       toast.success("Despesa deletada com sucesso");
       const updatedExpenses = expenses.filter(
-        (expense) => !monthName.includes(expense.month_name)
+        (expense) => !year.includes(expense.year)
       );
       setExpenses(updatedExpenses);
       if (onClick) {
@@ -78,7 +85,7 @@ const ExpenseDelete = ({ onClick, isOpen, month }: ExpensesProps) => {
             <Button
               buttonText={"Sim, tenho certeza"}
               style={"text-white"}
-              onClick={() => handleDelete(monthDelete, userId)}
+              onClick={() => handleDelete(userId, monthDelete, yearDelete)}
             />
           </div>
         </div>
