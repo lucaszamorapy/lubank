@@ -15,6 +15,7 @@ export interface ExpensesCreateProps {
     month_name: string;
     amount: number | string;
     description: string;
+    year: number;
   }[];
 }
 

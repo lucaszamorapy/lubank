@@ -10,14 +10,17 @@ interface ExpensesGridProps {
   expenses: IExpense[];
 }
 
-const groupExpensesByMonth = (expenses: IExpense[]) => {
+const groupExpensesByMonthAndYear = (expenses: IExpense[]) => {
   return expenses.reduce((acc, expense) => {
     const { expense_id, month_name, amount, description, user_id, year } =
       expense;
-    if (!acc[month_name]) {
-      acc[month_name] = [];
+    const key = `${month_name}-${year}`; // Inclua o ano no key
+
+    if (!acc[key]) {
+      acc[key] = [];
     }
-    acc[month_name].push({
+
+    acc[key].push({
       month_name,
       expense_id,
       amount,
@@ -25,6 +28,7 @@ const groupExpensesByMonth = (expenses: IExpense[]) => {
       user_id,
       year,
     });
+
     return acc;
   }, {} as Record<string, { month_name: string; expense_id: number; amount: string; description: string; user_id: number; year: number }[]>);
 };
@@ -40,23 +44,12 @@ const removeDuplicateMonths = (expenses: IExpense[]) => {
   });
 };
 
-const removeDuplicateYears = (expenses: IExpense[]) => {
-  const seen = new Set<number>(); // Usar um Set para rastrear os anos já vistos
-  return expenses.filter((expense) => {
-    if (seen.has(expense.year)) {
-      return false; // Ignora se o ano já foi visto
-    }
-    seen.add(expense.year); // Adiciona o ano ao conjunto de vistos
-    return true; // Inclui o item no array final
-  });
-};
-
 const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
   const [modalDeleteOpen, setModalDeleteOpen] = useState(false);
   const [modalUpdate, setModalUpdate] = useState(false);
   const [expenseUpdate, setExpenseUpdate] = useState<IExpense[]>([]);
   const [expenseDelete, setExpenseDelete] = useState<IExpense[]>([]);
-  const groupedExpenses = groupExpensesByMonth(expenses);
+  const groupedExpenses = groupExpensesByMonthAndYear(expenses); // Use a nova função de agrupamento
 
   const formatCurrency = (value: number) => {
     return !isNaN(value)
@@ -93,30 +86,24 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
 
   return (
     <div>
-      {Object.entries(groupedExpenses).map(([month, expenses]) => {
-        const uniqueYearExpenses = removeDuplicateYears(expenses); // Remover anos duplicados
-
+      {Object.entries(groupedExpenses).map(([key, expenses]) => {
+        const [month, year] = key.split("-"); // Separe mês e ano
         return (
           <div
-            key={month}
+            key={key}
             className="flex flex-col w-full bg-white border-2 border-gray-200 rounded-md px-10 py-5"
           >
             <div className="flex justify-between items-center border-b-2 pb-5">
               <div className="flex justify-center gap-2 items-center">
-                <h3 className=" text-xl font-semibold text-purpleContabilize">
+                <h3 className="text-xl font-semibold text-purpleContabilize">
                   {month}
                 </h3>
                 <span className="text-xl font-semibold text-purpleContabilize">
                   |
                 </span>
-                {uniqueYearExpenses.map((item) => (
-                  <h3
-                    key={item.expense_id}
-                    className="text-xl font-semibold text-purpleContabilize"
-                  >
-                    {item.year}
-                  </h3>
-                ))}
+                <h3 className="text-xl font-semibold text-purpleContabilize">
+                  {year}
+                </h3>
               </div>
               <div className="flex gap-5">
                 <Button
