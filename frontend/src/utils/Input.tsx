@@ -13,6 +13,7 @@ const Input = ({
   style,
   onChange,
   onBlur,
+  disabled,
   error,
 }: InputProps) => {
   return (
@@ -23,6 +24,7 @@ const Input = ({
         value={type === "file" ? undefined : value} // Não define o valor para input type=file
         placeholder={placeholder}
         name={name}
+        disabled={disabled}
         onChange={onChange}
         onBlur={onBlur}
       />

@@ -12,7 +12,8 @@ interface ExpensesGridProps {
 
 const groupExpensesByMonth = (expenses: IExpense[]) => {
   return expenses.reduce((acc, expense) => {
-    const { expense_id, month_name, amount, description, user_id } = expense;
+    const { expense_id, month_name, amount, description, user_id, year } =
+      expense;
     if (!acc[month_name]) {
       acc[month_name] = [];
     }
@@ -22,9 +23,10 @@ const groupExpensesByMonth = (expenses: IExpense[]) => {
       amount,
       description,
       user_id,
+      year,
     });
     return acc;
-  }, {} as Record<string, { month_name: string; expense_id: number; amount: string; description: string; user_id: number }[]>);
+  }, {} as Record<string, { month_name: string; expense_id: number; amount: string; description: string; user_id: number; year: number }[]>);
 };
 
 const removeDuplicateMonths = (expenses: IExpense[]) => {
@@ -35,6 +37,17 @@ const removeDuplicateMonths = (expenses: IExpense[]) => {
     }
     seen.add(expense.month_name);
     return true;
+  });
+};
+
+const removeDuplicateYears = (expenses: IExpense[]) => {
+  const seen = new Set<number>(); // Usar um Set para rastrear os anos já vistos
+  return expenses.filter((expense) => {
+    if (seen.has(expense.year)) {
+      return false; // Ignora se o ano já foi visto
+    }
+    seen.add(expense.year); // Adiciona o ano ao conjunto de vistos
+    return true; // Inclui o item no array final
   });
 };
 
@@ -80,47 +93,64 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
 
   return (
     <div>
-      {Object.entries(groupedExpenses).map(([month, expenses]) => (
-        <div
-          key={month}
-          className="flex flex-col w-full bg-white border-2 border-gray-200 rounded-md px-10 py-5"
-        >
-          <div className="flex justify-between items-center border-b-2 pb-5">
-            <h3 className=" text-xl font-semibold text-purpleContabilize">
-              {month}
-            </h3>
-            <div className="flex gap-5">
-              <Button
-                buttonText={<FaRegEdit size={20} />}
-                style={"text-white"}
-                onClick={() => toggleModalUpdate(expenses.map((item) => item))}
-              />
-              <Button
-                onClick={() => toggleModalDelete(expenses.map((item) => item))}
-                buttonText={<AiOutlineDelete size={20} />}
-                style={"text-white"}
-              />
-            </div>
-          </div>
-          {expenses.map((expense, index) => (
-            <div key={index} className="flex flex-col pt-5 items-center">
-              <div className="flex justify-between w-full items-center">
-                <p className="text-lg">{expense.description}</p>
-                <p className="font-semibold">
-                  {formatCurrency(parseFloat(expense.amount))}
-                </p>
+      {Object.entries(groupedExpenses).map(([month, expenses]) => {
+        const uniqueYearExpenses = removeDuplicateYears(expenses); // Remover anos duplicados
+
+        return (
+          <div
+            key={month}
+            className="flex flex-col w-full bg-white border-2 border-gray-200 rounded-md px-10 py-5"
+          >
+            <div className="flex justify-between items-center border-b-2 pb-5">
+              <div className="flex justify-center gap-2 items-center">
+                <h3 className=" text-xl font-semibold text-purpleContabilize">
+                  {month}
+                </h3>
+                <span className="text-xl font-semibold text-purpleContabilize">
+                  |
+                </span>
+                {uniqueYearExpenses.map((item) => (
+                  <h3
+                    key={item.expense_id}
+                    className="text-xl font-semibold text-purpleContabilize"
+                  >
+                    {item.year}
+                  </h3>
+                ))}
+              </div>
+              <div className="flex gap-5">
+                <Button
+                  buttonText={<FaRegEdit size={20} />}
+                  style={"text-white"}
+                  onClick={() => toggleModalUpdate(expenses)}
+                />
+                <Button
+                  onClick={() => toggleModalDelete(expenses)}
+                  buttonText={<AiOutlineDelete size={20} />}
+                  style={"text-white"}
+                />
               </div>
             </div>
-          ))}
+            {expenses.map((expense, index) => (
+              <div key={index} className="flex flex-col pt-5 items-center">
+                <div className="flex justify-between w-full items-center">
+                  <p className="text-lg">{expense.description}</p>
+                  <p className="font-semibold">
+                    {formatCurrency(parseFloat(expense.amount))}
+                  </p>
+                </div>
+              </div>
+            ))}
 
-          <div className="flex justify-between mt-10">
-            <p className="font-semibold text-lg">Total</p>
-            <p className="font-semibold text-lg">
-              {formatCurrency(calculateTotal(expenses))}
-            </p>
+            <div className="flex justify-between mt-10">
+              <p className="font-semibold text-lg">Total</p>
+              <p className="font-semibold text-lg">
+                {formatCurrency(calculateTotal(expenses))}
+              </p>
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
       {modalUpdate && (
         <ExpenseModal
           onClick={() => toggleModalUpdate([])}

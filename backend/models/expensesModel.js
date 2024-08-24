@@ -1,5 +1,5 @@
 const { DataTypes } = require("sequelize");
-const sequelize = require("../config/db"); // Supondo que você tem um arquivo de configuração para o Sequelize
+const sequelize = require("../config/db");
 
 const Expense = sequelize.define(
   "Expense",
@@ -27,6 +27,10 @@ const Expense = sequelize.define(
     created_at: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
+    },
+    year: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
     },
   },
   {

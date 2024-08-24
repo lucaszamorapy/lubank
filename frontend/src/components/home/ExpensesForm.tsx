@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../../utils/Input";
 import Select from "../../utils/Select";
 import { toast } from "react-toastify";
@@ -31,6 +31,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
   >([]);
   const [loading, setLoading] = useState(false);
   const [select, setSelect] = useState<string>("");
+  const [year, setYear] = useState<string>("");
   const [month, setMonth] = useState([]);
   const { userId } = useAuth();
   const { setExpenses: setGlobalExpenses } = useExpense();
@@ -52,6 +53,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
         }))
       );
       setSelect(update[0]?.month_name || "");
+      setYear(update[0]?.year.toString()); // transformei em string pois ele é passado como string no input e depois volta como number no banco
     }
 
     const fetchMonths = async () => {
@@ -123,10 +125,11 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
 
     // Prepara as despesas para atualização, garantindo que o ID esteja presente
     const updatedExpenses = modifiedExpenses.map((expense) => ({
-      expense_id: expense.expense_id, // Inclui o ID no objeto de atualização
+      expense_id: expense.expense_id,
       user_id: userId,
       month_name: select,
       amount: convertToNumber(expense.amount.toString()),
+      year: convertToNumber(year),
       description: expense.description,
     }));
 
@@ -137,6 +140,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
         user_id: userId,
         month_name: select,
         amount: convertToNumber(expense.amount.toString()),
+        year: convertToNumber(year),
         description: expense.description,
       }));
 
@@ -161,13 +165,34 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
     }
   };
 
+  const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
+    let input = event.target.value;
+    input = input.replace(/\D/g, "");
+
+    if (input.length > 4) {
+      input = input.substring(0, 4);
+    }
+    setYear(input);
+  };
+
   return (
     <form className="flex flex-col gap-10 mt-10" onSubmit={handleSubmit}>
       <Select
         value={select}
         item={month}
         style={"w-full"}
+        disabled={!!update}
         onChange={(e) => setSelect(e.target.value)}
+      />
+      <Input
+        type="text"
+        name="year"
+        style={"border-b-2 border-purpleContabilize px-5 w-full"}
+        placeholder="Ano"
+        disabled={!!update}
+        value={year}
+        onChange={(event) => handleChangeDate(event)}
+        required
       />
       <div className="flex flex-col gap-5 overflow-y-scroll max-h-[40vh]">
         {expenses.length > 0 ? (
@@ -179,6 +204,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
               <div className="flex justify-end">
                 <Button
                   onClick={() => removeExpense(index)}
+                  disabled={!!update}
                   buttonText={<TiDeleteOutline size={20} />}
                   style={"text-white p-0 "}
                 />
@@ -206,13 +232,6 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
                   onChange={(event) => handleChange(index, event)}
                   required
                 />
-                {update && (
-                  <Button
-                    type="submit"
-                    buttonText={loading ? <Loading /> : "Salvar alterações"}
-                    style={"text-white rounded-full w-full"}
-                  />
-                )}
               </div>
             </div>
           ))
@@ -237,6 +256,13 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
               style={"text-white rounded-full w-full"}
             />
           </>
+        )}
+        {update && (
+          <Button
+            type="submit"
+            buttonText={loading ? <Loading /> : "Salvar alterações"}
+            style={"text-white rounded-full w-full"}
+          />
         )}
       </div>
     </form>

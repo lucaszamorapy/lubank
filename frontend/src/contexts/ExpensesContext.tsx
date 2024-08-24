@@ -6,6 +6,7 @@ export interface IExpense {
   month_name: string;
   amount: string;
   description: string;
+  year: number;
 }
 
 interface IExpenseContext {

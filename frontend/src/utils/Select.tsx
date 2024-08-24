@@ -17,7 +17,7 @@ type SelectProps = React.ComponentProps<"select"> & {
   style: string;
 };
 
-const Select = ({ item, value, onChange, style }: SelectProps) => {
+const Select = ({ item, value, onChange, style, disabled }: SelectProps) => {
   const isRole = (item: IRole[] | IMonth[]): item is IRole[] => {
     return (item as IRole[])[0]?.role_name !== undefined;
   };
@@ -28,6 +28,7 @@ const Select = ({ item, value, onChange, style }: SelectProps) => {
         className={`text-purpleContabilize text-center text-md py-3 rounded-md border-b-2 border-purpleContabilize outline-none ${style}`}
         value={value}
         onChange={onChange}
+        disabled={disabled}
       >
         <option className="text-black" disabled value="">
           Selecione uma opção
