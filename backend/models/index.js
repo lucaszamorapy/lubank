@@ -6,7 +6,7 @@ const Expense = require("./expensesModel");
 // Definindo associações
 User.belongsTo(Role, { foreignKey: "role_name", targetKey: "role_name" });
 Expense.belongsTo(User, { foreignKey: "user_id" });
-Expense.belongsTo(Month, { foreignKey: "month_name", targetKey: "month_name" });
+Expense.belongsTo(Month, { foreignKey: "month_id", targetKey: "month_id" });
 
 module.exports = {
   User,

@@ -3,7 +3,7 @@ import React, { createContext, useState, useContext } from "react";
 export interface IExpense {
   expense_id: number;
   user_id: number;
-  month_name: string;
+  month_id: number;
   amount: string;
   description: string;
   year: number;

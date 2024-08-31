@@ -13,10 +13,6 @@ const Expense = sequelize.define(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    month_name: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
     amount: {
       type: DataTypes.DECIMAL(10, 2),
       allowNull: false,
@@ -31,6 +27,10 @@ const Expense = sequelize.define(
     year: {
       type: DataTypes.INTEGER,
       allowNull: true,
+    },
+    month_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
     },
   },
   {

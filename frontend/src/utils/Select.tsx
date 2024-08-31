@@ -1,18 +1,16 @@
-import React from "react";
-
 type IRole = {
-  id: number;
+  role_id: number;
   role_name: string;
 };
 
 type IMonth = {
-  id: number;
+  month_id: number;
   month_name: string;
 };
 
 type SelectProps = React.ComponentProps<"select"> & {
   item: IRole[] | IMonth[];
-  value: string;
+  value: number;
   onChange: React.ChangeEventHandler<HTMLSelectElement>;
   style: string;
 };
@@ -27,18 +25,18 @@ const Select = ({ item, value, onChange, style, disabled }: SelectProps) => {
       <select
         className={`text-purpleContabilize text-center text-md py-3 rounded-md border-b-2 border-purpleContabilize outline-none ${style}`}
         value={value}
-        onChange={onChange}
+        onChange={onChange} // Mantém a função onChange recebida
         disabled={disabled}
       >
-        <option className="text-black" disabled value="">
+        <option className="text-black" disabled value="0">
           Selecione uma opção
         </option>
 
         {isRole(item)
           ? item.map((role) => (
               <option
-                key={role.id}
-                value={role.role_name}
+                key={role.role_id}
+                value={role.role_id} // Aqui envia o ID do role
                 className="text-black"
               >
                 {role.role_name}
@@ -46,8 +44,8 @@ const Select = ({ item, value, onChange, style, disabled }: SelectProps) => {
             ))
           : item.map((month) => (
               <option
-                key={month.id}
-                value={month.month_name}
+                key={month.month_id}
+                value={month.month_id}
                 className="text-black"
               >
                 {month.month_name}

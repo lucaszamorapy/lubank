@@ -12,7 +12,7 @@ type UserCreateProps = {
 export interface ExpensesCreateProps {
   expenses: {
     user_id: number | null;
-    month_name: string;
+    month_id: number;
     amount: number | string;
     description: string;
     year: number;
@@ -108,12 +108,12 @@ export const getMonths = async () => {
 
 export const deleteExpense = async (
   userId: number,
-  monthName: string[],
-  year: number[]
+  monthId: number,
+  year: number
 ) => {
   try {
     const response = await axios.delete(
-      `${API_URL}/expenses/${userId}/${monthName}/${year}`
+      `${API_URL}/expenses/${userId}/${monthId}/${year}`
     );
     return response.data;
   } catch (error) {

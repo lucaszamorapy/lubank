@@ -30,7 +30,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
     { amount: number; description: string; expense_id?: number }[]
   >([]);
   const [loading, setLoading] = useState(false);
-  const [select, setSelect] = useState<string>("");
+  const [select, setSelect] = useState<number>(0);
   const [year, setYear] = useState<string>("");
   const [month, setMonth] = useState([]);
   const { userId } = useAuth();
@@ -52,7 +52,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
           expense_id: item.expense_id,
         }))
       );
-      setSelect(update[0]?.month_name || "");
+      setSelect(update[0]?.month_id);
       setYear(update[0]?.year.toString()); // transformei em string pois ele é passado como string no input e depois volta como number no banco
     }
 
@@ -100,17 +100,13 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!select.trim()) {
-      return toast.error("Selecione um mês!");
-    }
-
     if (expenses.some((expense) => !expense.amount || !expense.description)) {
       return toast.error("Preencha todos os campos!");
     }
 
     // Filtra despesas que têm ID definido e foram modificadas
     const modifiedExpenses = expenses.filter((expense, index) => {
-      const original = originalExpenses[index];
+      const original = originalExpenses[index]; // fazendo uma especie de "map"
       return (
         expense.expense_id !== undefined &&
         (expense.amount !== original.amount ||
@@ -127,7 +123,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
     const updatedExpenses = modifiedExpenses.map((expense) => ({
       expense_id: expense.expense_id,
       user_id: userId,
-      month_name: select,
+      month_id: select ?? 0,
       amount: convertToNumber(expense.amount.toString()),
       year: convertToNumber(year),
       description: expense.description,
@@ -138,7 +134,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
       .filter((expense) => expense.expense_id === undefined)
       .map((expense) => ({
         user_id: userId,
-        month_name: select,
+        month_id: select ?? 0,
         amount: convertToNumber(expense.amount.toString()),
         year: convertToNumber(year),
         description: expense.description,
@@ -182,7 +178,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
         item={month}
         style={"w-full"}
         disabled={!!update}
-        onChange={(e) => setSelect(e.target.value)}
+        onChange={(e) => setSelect(Number(e.target.value))}
       />
       <Input
         type="text"

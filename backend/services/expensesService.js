@@ -1,5 +1,6 @@
 const Expense = require("../models/expensesModel.js");
 const User = require("../models/userModel.js");
+const { Op } = require("sequelize");
 
 const addExpenses = async (expenses) => {
   try {
@@ -20,15 +21,15 @@ const getExpensesByUserId = async (user_id) => {
   }
 };
 
-const deleteExpense = async (user_id, month_name, year) => {
+const deleteExpense = async (user_id, month_id, year) => {
   console.log(
-    `Attempting to delete expense with month_name: ${month_name}, year: ${year}, user_id: ${user_id}`
+    `Attempting to delete expense with month_id: ${month_id}, year: ${year}, user_id: ${user_id}`
   );
   try {
     const yearNumber = Number(year);
     const result = await Expense.destroy({
       where: {
-        month_name: month_name,
+        month_id: month_id,
         year: yearNumber,
         user_id: user_id,
       },
@@ -59,9 +60,34 @@ const updateExpense = async (expense_id, expenseUpdates) => {
   }
 };
 
+const getExpensesByStatistic = async (
+  user_id,
+  startMonthName,
+  endMonthName,
+  year
+) => {
+  try {
+    const startMonthNameEnconde = encodeURIComponent(startMonthName);
+    const endMonthNameEnconde = encodeURIComponent(endMonthName);
+    return await Expense.findAll({
+      where: {
+        user_id: user_id,
+        month: {
+          [Op.between]: [startMonthNameEnconde, endMonthNameEnconde],
+        },
+        year: year,
+      },
+      include: [{ model: User }],
+    });
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
 module.exports = {
   addExpenses,
   getExpensesByUserId,
   deleteExpense,
   updateExpense,
+  getExpensesByStatistic,
 };

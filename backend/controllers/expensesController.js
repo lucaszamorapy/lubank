@@ -22,8 +22,8 @@ const getExpensesByUserId = async (req, res) => {
 
 const deleteExpenses = async (req, res) => {
   try {
-    const { user_id, month_name, year } = req.params;
-    await expensesService.deleteExpense(user_id, month_name, year);
+    const { user_id, month_id, year } = req.params;
+    await expensesService.deleteExpense(user_id, month_id, year);
     return res.status(200).json({ sucess: "Despesa deletada" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
@@ -41,9 +41,25 @@ const updateExpenses = async (req, res) => {
   }
 };
 
+const getExpensesByStatistic = async (req, res) => {
+  try {
+    const { user_id, startMonthName, endMonthName, year } = req.params;
+    const expenses = await expensesService.getExpensesByStatistic(
+      user_id,
+      startMonthName,
+      endMonthName,
+      year
+    );
+    return res.status(200).json(expenses);
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
 module.exports = {
   addExpense,
   getExpensesByUserId,
   deleteExpenses,
   updateExpenses,
+  getExpensesByStatistic,
 };

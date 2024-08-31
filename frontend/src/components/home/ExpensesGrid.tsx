@@ -2,26 +2,32 @@ import { FaRegEdit } from "react-icons/fa";
 import { AiOutlineDelete } from "react-icons/ai";
 import { IExpense } from "../../contexts/ExpensesContext";
 import Button from "../../utils/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ExpenseDelete from "../modals/ExpenseDelete";
 import ExpenseModal from "../modals/ExpenseModal";
+import { getMonths } from "../../functions";
+import { toast } from "react-toastify";
 
 interface ExpensesGridProps {
   expenses: IExpense[];
 }
 
-const groupExpensesByMonthAndYear = (expenses: IExpense[]) => {
+const groupExpensesByMonthAndYear = (
+  expenses: IExpense[],
+  monthMap: Record<number, string>
+) => {
   return expenses.reduce((acc, expense) => {
-    const { expense_id, month_name, amount, description, user_id, year } =
+    const { expense_id, month_id, amount, description, user_id, year } =
       expense;
-    const key = `${month_name}-${year}`; // Inclua o ano no key
+    const monthName = monthMap[expense.month_id] || "Desconhecido"; // Obter nome do mês a partir do mapeamento
+    const key = `${monthName}-${year}`; // Inclua o nome do mês e ano no key
 
     if (!acc[key]) {
       acc[key] = [];
     }
 
     acc[key].push({
-      month_name,
+      month_id,
       expense_id,
       amount,
       description,
@@ -30,26 +36,41 @@ const groupExpensesByMonthAndYear = (expenses: IExpense[]) => {
     });
 
     return acc;
-  }, {} as Record<string, { month_name: string; expense_id: number; amount: string; description: string; user_id: number; year: number }[]>);
-};
-
-const removeDuplicateMonths = (expenses: IExpense[]) => {
-  const seen = new Set<string>();
-  return expenses.filter((expense) => {
-    if (seen.has(expense.month_name)) {
-      return false;
-    }
-    seen.add(expense.month_name);
-    return true;
-  });
+  }, {} as Record<string, { month_id: number; expense_id: number; amount: string; description: string; user_id: number; year: number }[]>);
 };
 
 const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
   const [modalDeleteOpen, setModalDeleteOpen] = useState(false);
   const [modalUpdate, setModalUpdate] = useState(false);
+  const [month, setMonth] = useState<
+    { month_id: number; month_name: string }[]
+  >([]);
   const [expenseUpdate, setExpenseUpdate] = useState<IExpense[]>([]);
-  const [expenseDelete, setExpenseDelete] = useState<IExpense[]>([]);
-  const groupedExpenses = groupExpensesByMonthAndYear(expenses); // Use a nova função de agrupamento
+  const [monthDelete, setMonthDelete] = useState<number>(0);
+  const [yearDelete, setYearDelete] = useState<number>(0);
+  const [monthMap, setMonthMap] = useState<Record<number, string>>({});
+  const groupedExpenses = groupExpensesByMonthAndYear(expenses, monthMap);
+
+  useEffect(() => {
+    const fetchMonths = async () => {
+      try {
+        const monthData = await getMonths();
+        setMonth(monthData);
+        const monthMapping = monthData.reduce(
+          (map: Record<number, string>, month: unknown) => {
+            const m = month as { month_id: number; month_name: string };
+            map[m.month_id] = m.month_name;
+            return map;
+          },
+          {} as Record<number, string>
+        );
+        setMonthMap(monthMapping);
+      } catch (err) {
+        toast.error("Meses não encontrados");
+      }
+    };
+    fetchMonths();
+  }, []);
 
   const formatCurrency = (value: number) => {
     return !isNaN(value)
@@ -60,11 +81,10 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
       : "R$ 0,00";
   };
 
-  const toggleModalDelete = (expenses: IExpense[]) => {
-    const uniqueExpenses = removeDuplicateMonths(expenses);
+  const toggleModalDelete = (monthId: number, year: number) => {
     setModalDeleteOpen(!modalDeleteOpen);
-    setExpenseDelete(uniqueExpenses);
-    console.log(uniqueExpenses);
+    setYearDelete(year);
+    setMonthDelete(monthId);
   };
 
   const toggleModalUpdate = (expenses: IExpense[]) => {
@@ -87,7 +107,17 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
   return (
     <div>
       {Object.entries(groupedExpenses).map(([key, expenses]) => {
-        const [month, year] = key.split("-"); // Separe mês e ano
+        const [monthName, yearStr] = key.split("-");
+        const monthId = Object.keys(monthMap).find(
+          (id) => monthMap[parseInt(id)] === monthName
+        );
+        const yearInt = parseInt(yearStr);
+
+        if (!monthId) {
+          console.error(`ID do mês não encontrado para ${monthName}`);
+          return null;
+        }
+
         return (
           <div
             key={key}
@@ -96,13 +126,13 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
             <div className="flex justify-between items-center border-b-2 pb-5">
               <div className="flex justify-center gap-2 items-center">
                 <h3 className="text-xl font-semibold text-purpleContabilize">
-                  {month}
+                  {monthName}
                 </h3>
                 <span className="text-xl font-semibold text-purpleContabilize">
                   |
                 </span>
                 <h3 className="text-xl font-semibold text-purpleContabilize">
-                  {year}
+                  {yearInt}
                 </h3>
               </div>
               <div className="flex gap-5">
@@ -112,7 +142,7 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
                   onClick={() => toggleModalUpdate(expenses)}
                 />
                 <Button
-                  onClick={() => toggleModalDelete(expenses)}
+                  onClick={() => toggleModalDelete(parseInt(monthId), yearInt)}
                   buttonText={<AiOutlineDelete size={20} />}
                   style={"text-white"}
                 />
@@ -138,6 +168,7 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
           </div>
         );
       })}
+
       {modalUpdate && (
         <ExpenseModal
           onClick={() => toggleModalUpdate([])}
@@ -147,9 +178,10 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
       )}
       {modalDeleteOpen && (
         <ExpenseDelete
-          onClick={() => toggleModalDelete([])}
+          onClick={() => toggleModalDelete(monthDelete || 0, yearDelete || 0)}
+          year={yearDelete}
           isOpen={modalDeleteOpen}
-          month={expenseDelete}
+          month={monthDelete}
         />
       )}
     </div>

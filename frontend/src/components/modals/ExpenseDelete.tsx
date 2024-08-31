@@ -4,20 +4,19 @@ import { useAuth } from "../../contexts/AuthContext";
 import { deleteExpense } from "../../functions";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { IExpense, useExpense } from "../../contexts/ExpensesContext";
+import { useExpense } from "../../contexts/ExpensesContext";
 
 type ExpensesProps = {
   onClick?: () => void;
   isOpen: boolean;
-  month: IExpense[];
+  month: number;
+  year: number;
 };
 
-const ExpenseDelete = ({ onClick, isOpen, month }: ExpensesProps) => {
+const ExpenseDelete = ({ onClick, isOpen, month, year }: ExpensesProps) => {
   const [isVisible, setIsVisible] = useState(isOpen);
   const [animationClass, setAnimationClass] = useState("");
   const { userId } = useAuth();
-  const [monthDelete, setMonthDelete] = useState([""]);
-  const [yearDelete, setYearDelete] = useState<number[]>([]);
   const { expenses, setExpenses } = useExpense();
 
   useEffect(() => {
@@ -25,10 +24,6 @@ const ExpenseDelete = ({ onClick, isOpen, month }: ExpensesProps) => {
       setIsVisible(true);
       setAnimationClass("modal-content-enter");
     }
-    const monthDeleteName = month.map((item) => item.month_name);
-    setMonthDelete(monthDeleteName);
-    const yearDeleteName = month.map((item) => item.year);
-    setYearDelete(yearDeleteName);
   }, [isOpen, month]);
 
   const handleAnimationEnd = () => {
@@ -40,18 +35,19 @@ const ExpenseDelete = ({ onClick, isOpen, month }: ExpensesProps) => {
 
   const handleDelete = async (
     userId: number | null,
-    monthName: string[],
-    year: number[]
+    monthId: number,
+    year: number
   ) => {
     if (userId === null) {
       toast.error("Erro: Usuário não encontrado.");
       return;
     }
+
     try {
-      await deleteExpense(userId, monthName, year);
+      await deleteExpense(userId, monthId, year);
       toast.success("Despesa deletada com sucesso");
       const updatedExpenses = expenses.filter(
-        (expense) => !year.includes(expense.year)
+        (expense) => expense.year != year
       );
       setExpenses(updatedExpenses);
       if (onClick) {
@@ -85,7 +81,7 @@ const ExpenseDelete = ({ onClick, isOpen, month }: ExpensesProps) => {
             <Button
               buttonText={"Sim, tenho certeza"}
               style={"text-white"}
-              onClick={() => handleDelete(userId, monthDelete, yearDelete)}
+              onClick={() => handleDelete(userId, month, year)}
             />
           </div>
         </div>

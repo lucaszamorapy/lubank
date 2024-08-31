@@ -16,9 +16,13 @@ router.get("/months", monthController.getMonths);
 router.post("/expenses", expensesController.addExpense);
 router.get("/expenses/:user_id", expensesController.getExpensesByUserId);
 router.delete(
-  "/expenses/:user_id/:month_name/:year",
+  "/expenses/:user_id/:month_id/:year",
   expensesController.deleteExpenses
 );
 router.put("/expenses/:expense_id/", expensesController.updateExpenses);
+router.get(
+  "/expenses/:user_id/:startMonthName/:endMonthName/year",
+  expensesController.getExpensesByUserId
+);
 
 module.exports = router;
