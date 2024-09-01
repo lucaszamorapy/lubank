@@ -1,8 +1,18 @@
 import "./loading.css";
 
-const Loading: React.FC = () => {
+interface LoadingProps {
+  screen?: boolean;
+}
+
+const Loading: React.FC<LoadingProps> = ({ screen }) => {
   return (
-    <div className="loader loader--style8" title="7">
+    <div
+      className={`loader loader--style8 ${
+        screen &&
+        "fixed inset-0 px-5 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      }`}
+      title="7"
+    >
       <svg
         version="1.1"
         id="Layer_1"

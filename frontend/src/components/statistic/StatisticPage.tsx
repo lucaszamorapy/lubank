@@ -3,6 +3,7 @@ import { RiLogoutBoxLine } from "react-icons/ri";
 import Button from "../../utils/Button";
 import { useAuth } from "../../contexts/AuthContext";
 import "react-toastify/dist/ReactToastify.css";
+import Graphic from "./Graphic";
 
 const StatisticPage = () => {
   const { user, logout } = useAuth();
@@ -46,6 +47,7 @@ const StatisticPage = () => {
             style={"text-white"}
           />
         </div>
+        <Graphic />
       </div>
     </>
   );

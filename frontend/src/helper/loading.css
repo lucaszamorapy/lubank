@@ -8,7 +8,7 @@
 /*
   Set the color of the icon
 */
-svg path,
-svg rect {
-  fill: #fff;
+.loader svg path,
+.loader svg rect {
+  fill: #fff; /* Apply the color only to SVG elements inside .loader */
 }

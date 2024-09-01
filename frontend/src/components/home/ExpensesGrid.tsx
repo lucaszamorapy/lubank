@@ -7,6 +7,7 @@ import ExpenseDelete from "../modals/ExpenseDelete";
 import ExpenseModal from "../modals/ExpenseModal";
 import { getMonths } from "../../functions";
 import { toast } from "react-toastify";
+import { formatCurrency } from "../../globalFunctions";
 
 interface ExpensesGridProps {
   expenses: IExpense[];
@@ -71,15 +72,6 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
     };
     fetchMonths();
   }, []);
-
-  const formatCurrency = (value: number) => {
-    return !isNaN(value)
-      ? new Intl.NumberFormat("pt-BR", {
-          style: "currency",
-          currency: "BRL",
-        }).format(value)
-      : "R$ 0,00";
-  };
 
   const toggleModalDelete = (monthId: number, year: number) => {
     setModalDeleteOpen(!modalDeleteOpen);

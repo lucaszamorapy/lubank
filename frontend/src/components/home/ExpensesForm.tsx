@@ -15,7 +15,11 @@ import Loading from "../../helper/Loading";
 import { TiDeleteOutline } from "react-icons/ti";
 import "react-toastify/dist/ReactToastify.css";
 import { IExpense } from "../../contexts/ExpensesContext";
-import { formatCurrency } from "../../format";
+import {
+  convertToNumber,
+  formatCurrency,
+  handleChangeDate,
+} from "../../globalFunctions";
 
 type ExpensesFormProps = {
   update?: IExpense[];
@@ -82,15 +86,6 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
       [name]: value,
     };
     setExpenses(values);
-  };
-
-  const convertToNumber = (value: string): number => {
-    const cleanedValue = value.replace(",", ".").replace("R$", "");
-    const parsedValue = parseFloat(cleanedValue);
-    if (isNaN(parsedValue)) {
-      return 0;
-    }
-    return Math.round(parsedValue * 100) / 100;
   };
 
   const removeExpense = (index: number) => {
@@ -161,16 +156,6 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
     }
   };
 
-  const handleChangeDate = (event: React.ChangeEvent<HTMLInputElement>) => {
-    let input = event.target.value;
-    input = input.replace(/\D/g, "");
-
-    if (input.length > 4) {
-      input = input.substring(0, 4);
-    }
-    setYear(input);
-  };
-
   return (
     <form className="flex flex-col gap-10 mt-10" onSubmit={handleSubmit}>
       <Select
@@ -187,7 +172,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
         placeholder="Ano"
         disabled={!!update}
         value={year}
-        onChange={(event) => handleChangeDate(event)}
+        onChange={(e) => setYear(handleChangeDate(e))}
         required
       />
       <div className="flex flex-col gap-5 overflow-y-scroll max-h-[40vh]">

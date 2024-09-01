@@ -30,7 +30,7 @@ export const getUsers = async () => {
     return response.data;
   } catch (error) {
     console.error("Error fetching users:", error);
-    throw error; // Re-lançar o erro para que ele possa ser tratado pelos chamadores
+    throw error;
   }
 };
 
@@ -40,7 +40,7 @@ export const getRoles = async () => {
     return response.data;
   } catch (error) {
     console.error("Error fetching roles:", error);
-    throw error; // Re-lançar o erro para que ele possa ser tratado pelos chamadores
+    throw error;
   }
 };
 
@@ -50,7 +50,7 @@ export const createUser = async (userData: UserCreateProps) => {
     return response.data;
   } catch (error) {
     console.error("Error creating user:", error);
-    throw error; // Re-lançar o erro para que ele possa ser tratado pelos chamadores
+    throw error;
   }
 };
 
@@ -60,7 +60,7 @@ export const loginUser = async (userData: UserLoginProps) => {
     return response.data;
   } catch (error) {
     console.error("Error creating user:", error);
-    throw error; // Re-lançar o erro para que ele possa ser tratado pelos chamadores
+    throw error;
   }
 };
 
@@ -134,6 +134,23 @@ export const updateExpense = async (
     return response.data;
   } catch (error) {
     console.error("Error update expense:", error);
+    throw error;
+  }
+};
+
+export const getExpensesByStatistic = async (
+  user_id: number | unknown,
+  startMonth: number,
+  endMonth: number,
+  year: number
+) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/expenses/${user_id}/${startMonth}/${endMonth}/${year}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching expenses between months:", error);
     throw error;
   }
 };
