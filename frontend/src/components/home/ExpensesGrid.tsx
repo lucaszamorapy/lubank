@@ -1,5 +1,4 @@
-import { FaRegEdit } from "react-icons/fa";
-import { AiOutlineDelete } from "react-icons/ai";
+import { FaTrash } from "react-icons/fa";
 import { IExpense } from "../../contexts/ExpensesContext";
 import Button from "../../utils/Button";
 import { useEffect, useState } from "react";
@@ -8,6 +7,7 @@ import ExpenseModal from "../modals/ExpenseModal";
 import { getMonths } from "../../functions";
 import { toast } from "react-toastify";
 import { formatCurrency } from "../../globalFunctions";
+import { MdModeEdit } from "react-icons/md";
 
 interface ExpensesGridProps {
   expenses: IExpense[];
@@ -20,8 +20,8 @@ const groupExpensesByMonthAndYear = (
   return expenses.reduce((acc, expense) => {
     const { expense_id, month_id, amount, description, user_id, year } =
       expense;
-    const monthName = monthMap[expense.month_id] || "Desconhecido"; // Obter nome do mês a partir do mapeamento
-    const key = `${monthName}-${year}`; // Inclua o nome do mês e ano no key
+    const monthName = monthMap[expense.month_id] || "Desconhecido"; //se o id for 1 vai ser igual a janeiro por conta do reduce do month
+    const key = `${monthName}-${year}`;
 
     if (!acc[key]) {
       acc[key] = [];
@@ -57,10 +57,10 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
       try {
         const monthData = await getMonths();
         setMonth(monthData);
-        const monthMapping = monthData.reduce(
+        const monthMapping = month.reduce(
           (map: Record<number, string>, month: unknown) => {
             const m = month as { month_id: number; month_name: string };
-            map[m.month_id] = m.month_name;
+            map[m.month_id] = m.month_name; //1: Janeiro
             return map;
           },
           {} as Record<number, string>
@@ -101,19 +101,17 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
       {Object.entries(groupedExpenses).map(([key, expenses]) => {
         const [monthName, yearStr] = key.split("-");
         const monthId = Object.keys(monthMap).find(
-          (id) => monthMap[parseInt(id)] === monthName
+          (id) => monthMap[parseInt(id)] === monthName //monthMap[8]: Agosto
         );
         const yearInt = parseInt(yearStr);
-
         if (!monthId) {
-          console.error(`ID do mês não encontrado para ${monthName}`);
           return null;
         }
 
         return (
           <div
             key={key}
-            className="flex flex-col w-full bg-white border-2 border-gray-200 rounded-md px-10 py-5"
+            className="flex flex-col w-full bg-white border-2 shadow-md border-gray-200 rounded-md px-10 py-5"
           >
             <div className="flex justify-between items-center border-b-2 pb-5">
               <div className="flex justify-center gap-2 items-center">
@@ -129,14 +127,18 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
               </div>
               <div className="flex gap-5">
                 <Button
-                  buttonText={<FaRegEdit size={20} />}
-                  style={"text-white"}
                   onClick={() => toggleModalUpdate(expenses)}
+                  buttonText={<MdModeEdit size={25} />}
+                  style={
+                    "text-purpleContabilize bg-white hover:bg-white hover:text-purple-950"
+                  }
                 />
                 <Button
                   onClick={() => toggleModalDelete(parseInt(monthId), yearInt)}
-                  buttonText={<AiOutlineDelete size={20} />}
-                  style={"text-white"}
+                  buttonText={<FaTrash size={20} />}
+                  style={
+                    "text-purpleContabilize bg-white hover:bg-white hover:text-purple-950"
+                  }
                 />
               </div>
             </div>

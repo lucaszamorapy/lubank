@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Button from "../../utils/Button";
 import { useAuth } from "../../contexts/AuthContext";
-import { deleteExpense } from "../../functions";
+import { deleteExpense, getExpenseByUserId } from "../../functions";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useExpense } from "../../contexts/ExpensesContext";
@@ -17,7 +17,7 @@ const ExpenseDelete = ({ onClick, isOpen, month, year }: ExpensesProps) => {
   const [isVisible, setIsVisible] = useState(isOpen);
   const [animationClass, setAnimationClass] = useState("");
   const { userId } = useAuth();
-  const { expenses, setExpenses } = useExpense();
+  const { setExpenses } = useExpense();
 
   useEffect(() => {
     if (isOpen) {
@@ -46,10 +46,8 @@ const ExpenseDelete = ({ onClick, isOpen, month, year }: ExpensesProps) => {
     try {
       await deleteExpense(userId, monthId, year);
       toast.success("Despesa deletada com sucesso");
-      const updatedExpenses = expenses.filter(
-        (expense) => expense.year != year
-      );
-      setExpenses(updatedExpenses);
+      const expenseUserData = await getExpenseByUserId(userId);
+      setExpenses(expenseUserData);
       if (onClick) {
         onClick();
       }

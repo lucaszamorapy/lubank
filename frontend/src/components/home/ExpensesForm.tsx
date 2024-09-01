@@ -12,7 +12,7 @@ import Button from "../../utils/Button";
 import { useAuth } from "../../contexts/AuthContext";
 import { useExpense } from "../../contexts/ExpensesContext";
 import Loading from "../../helper/Loading";
-import { TiDeleteOutline } from "react-icons/ti";
+import { TiDelete } from "react-icons/ti";
 import "react-toastify/dist/ReactToastify.css";
 import { IExpense } from "../../contexts/ExpensesContext";
 import {
@@ -94,8 +94,12 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
-    if (expenses.some((expense) => !expense.amount || !expense.description)) {
+    const yearValue = convertToNumber(year);
+    if (
+      expenses.some((expense) => !expense.amount || !expense.description) ||
+      !select ||
+      yearValue === 0
+    ) {
       return toast.error("Preencha todos os campos!");
     }
 
@@ -168,7 +172,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
       <Input
         type="text"
         name="year"
-        style={"border-b-2 border-purpleContabilize px-5 w-full"}
+        style={"px-5 w-full"}
         placeholder="Ano"
         disabled={!!update}
         value={year}
@@ -179,24 +183,26 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
         {expenses.length > 0 ? (
           expenses.map((expense, index) => (
             <div
-              className="flex flex-col border-2 border-gray-200 rounded-md p-3"
+              className="flex flex-col border-2 border-purple-50 shadow-md rounded-md p-3"
               key={index}
             >
-              <div className="flex justify-end">
-                <Button
-                  onClick={() => removeExpense(index)}
-                  disabled={!!update}
-                  buttonText={<TiDeleteOutline size={20} />}
-                  style={"text-white p-0 "}
-                />
-              </div>
+              {!update && (
+                <div className="flex justify-end">
+                  <Button
+                    onClick={() => removeExpense(index)}
+                    disabled={!!update}
+                    buttonText={<TiDelete size={30} />}
+                    style={
+                      "text-purpleContabilize bg-white hover:bg-white hover:text-purple-950 px-0"
+                    }
+                  />
+                </div>
+              )}
               <div className="flex flex-col gap-5">
                 <Input
                   type="text"
                   name="description"
-                  style={
-                    "border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"
-                  }
+                  style={"px-5 w-full lg:w-[454px]"}
                   placeholder="Descrição do gasto"
                   value={expense.description}
                   onChange={(event) => handleChange(index, event)}
@@ -205,9 +211,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
                 <Input
                   type="text"
                   name="amount"
-                  style={
-                    "border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"
-                  }
+                  style={"px-5 w-full lg:w-[454px]"}
                   placeholder="Valor"
                   value={formatCurrency(expense.amount)}
                   onChange={(event) => handleChange(index, event)}

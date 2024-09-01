@@ -23,7 +23,7 @@ const Select = ({ item, value, onChange, style, disabled }: SelectProps) => {
   return (
     <div>
       <select
-        className={`text-purpleContabilize text-center text-md py-3 rounded-md border-b-2 border-purpleContabilize outline-none ${style}`}
+        className={`text-purpleContabilize text-center text-md py-3 rounded-md border-2 border-gray-200 outline-none ${style}`}
         value={value}
         onChange={onChange} // Mantém a função onChange recebida
         disabled={disabled}

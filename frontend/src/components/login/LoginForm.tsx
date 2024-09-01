@@ -35,14 +35,10 @@ const LoginForm = () => {
       <div className="bg-purpleContabilize flex justify-center rounded-md items-center p-4">
         <img src={LogoPurple} alt="" />
       </div>
-      <Input
-        placeholder="Usuário"
-        style={"border-b-2 border-purpleContabilize px-5 w-full"}
-        {...user}
-      />
+      <Input placeholder="Usuário" style={"px-5 w-full"} {...user} />
       <Input
         placeholder="Senha"
-        style={"border-b-2 border-purpleContabilize px-5 w-full "}
+        style={"px-5 w-full "}
         onChange={(e) => setPassword(e.target.value)}
         value={password}
         type="password"

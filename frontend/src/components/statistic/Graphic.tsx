@@ -38,6 +38,11 @@ const Graphic = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    const yearValue = convertToNumber(year);
+    if (!startMonth || !endMonth || yearValue === 0) {
+      return toast.error("Preencha todos os campos!");
+    }
+    console.log(yearValue);
     setLoading(true);
     try {
       const response = await getExpensesByStatistic(
@@ -106,7 +111,7 @@ const Graphic = () => {
             <Input
               type="text"
               name="year"
-              style={"border-b-2 border-purpleContabilize px-5 w-full"}
+              style={"px-5 w-full"}
               placeholder="Ano"
               value={year}
               onChange={(e) => setYear(handleChangeDate(e))}
@@ -116,7 +121,7 @@ const Graphic = () => {
               type="submit"
               disabled={loading}
               buttonText={loading ? <Loading /> : "Enviar"}
-              style={"text-white rounded-full"}
+              style={"text-white rounded-full py-0"}
             />
           </form>
         </div>

@@ -6,6 +6,7 @@ import navigation from "../../config/navigation.json";
 type NavigationProps = {
   path: string;
   name: string;
+  icon: string;
 };
 
 export type HeaderProps = {

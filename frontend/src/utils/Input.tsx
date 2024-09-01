@@ -19,7 +19,7 @@ const Input = ({
   return (
     <div>
       <input
-        className={`rounded-md py-3 outline-none ${style}`}
+        className={`rounded-md py-3 border-2 border-gray-200 outline-none ${style}`}
         type={type}
         value={type === "file" ? undefined : value} // Não define o valor para input type=file
         placeholder={placeholder}

@@ -67,19 +67,19 @@ const RegisterForm = () => {
       </div>
       <Input
         placeholder="Usuário"
-        style={"border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"}
+        style={"px-5 w-full lg:w-[454px]"}
         {...user}
       />
       <Input
         placeholder="E-mail"
-        style={"border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"}
+        style={"px-5 w-full lg:w-[454px]"}
         {...email}
       />
       <Input
         type="file"
         accept="image/*"
         onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
-        style="border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"
+        style="px-5 w-full lg:w-[454px]"
       />
       <Select
         value={select}
@@ -89,7 +89,7 @@ const RegisterForm = () => {
       />
       <Input
         placeholder="Senha"
-        style={"border-b-2 border-purpleContabilize px-5 w-full lg:w-[454px]"}
+        style={"px-5 w-full lg:w-[454px]"}
         onChange={(e) => setPassword(e.target.value)}
         value={password}
         type="password"

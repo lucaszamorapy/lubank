@@ -1,10 +1,17 @@
 [
   {
+    "path": "/home",
+    "name": "Home",
+    "icon": "FaHome"
+  },
+  {
     "path": "/estatisticas",
-    "name": "Estatísticas"
+    "name": "Estatísticas",
+    "icon": "IoBarChart"
   },
   {
     "path": "/conta",
-    "name": "Conta"
+    "name": "Conta",
+    "icon": "MdManageAccounts"
   }
 ]
