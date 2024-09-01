@@ -21,8 +21,8 @@ router.delete(
 );
 router.put("/expenses/:expense_id/", expensesController.updateExpenses);
 router.get(
-  "/expenses/:user_id/:startMonthName/:endMonthName/year",
-  expensesController.getExpensesByUserId
+  "/expenses/:user_id/:startMonth/:endMonth/:year",
+  expensesController.getExpensesByStatistic
 );
 
 module.exports = router;

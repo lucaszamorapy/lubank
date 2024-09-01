@@ -43,11 +43,11 @@ const updateExpenses = async (req, res) => {
 
 const getExpensesByStatistic = async (req, res) => {
   try {
-    const { user_id, startMonthName, endMonthName, year } = req.params;
+    const { user_id, startMonth, endMonth, year } = req.params;
     const expenses = await expensesService.getExpensesByStatistic(
       user_id,
-      startMonthName,
-      endMonthName,
+      startMonth,
+      endMonth,
       year
     );
     return res.status(200).json(expenses);

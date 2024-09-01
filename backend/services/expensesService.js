@@ -60,24 +60,17 @@ const updateExpense = async (expense_id, expenseUpdates) => {
   }
 };
 
-const getExpensesByStatistic = async (
-  user_id,
-  startMonthName,
-  endMonthName,
-  year
-) => {
+const getExpensesByStatistic = async (user_id, startMonth, endMonth, year) => {
   try {
-    const startMonthNameEnconde = encodeURIComponent(startMonthName);
-    const endMonthNameEnconde = encodeURIComponent(endMonthName);
     return await Expense.findAll({
       where: {
         user_id: user_id,
-        month: {
-          [Op.between]: [startMonthNameEnconde, endMonthNameEnconde],
+        month_id: {
+          [Op.between]: [startMonth, endMonth],
         },
         year: year,
       },
-      include: [{ model: User }],
+      // include: [{ model: User }],
     });
   } catch (err) {
     throw new Error(err.message);
