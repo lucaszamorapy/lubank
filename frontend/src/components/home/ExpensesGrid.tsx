@@ -57,10 +57,12 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
       try {
         const monthData = await getMonths();
         setMonth(monthData);
-        const monthMapping = month.reduce(
-          (map: Record<number, string>, month: unknown) => {
-            const m = month as { month_id: number; month_name: string };
-            map[m.month_id] = m.month_name; //1: Janeiro
+        const monthMapping = monthData.reduce(
+          (
+            map: Record<number, string>,
+            month: { month_id: number; month_name: string }
+          ) => {
+            map[month.month_id] = month.month_name; //1: Janeiro
             return map;
           },
           {} as Record<number, string>
@@ -99,11 +101,13 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
   return (
     <div>
       {Object.entries(groupedExpenses).map(([key, expenses]) => {
+        //Object.entries transforma em uma array de array
         const [monthName, yearStr] = key.split("-");
         const monthId = Object.keys(monthMap).find(
-          (id) => monthMap[parseInt(id)] === monthName //monthMap[8]: Agosto
+          (id) => monthMap[parseInt(id)] === monthName
         );
         const yearInt = parseInt(yearStr);
+
         if (!monthId) {
           return null;
         }
@@ -111,7 +115,7 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
         return (
           <div
             key={key}
-            className="flex flex-col w-full bg-white border-2 shadow-md border-gray-200 rounded-md px-10 py-5"
+            className="flex flex-col w-full bg-white border-2 mb-5 shadow-md border-gray-200 rounded-md px-10 py-5"
           >
             <div className="flex justify-between items-center border-b-2 pb-5">
               <div className="flex justify-center gap-2 items-center">
