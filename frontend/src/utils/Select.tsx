@@ -35,8 +35,8 @@ const Select = ({ item, value, onChange, style, disabled }: SelectProps) => {
         {isRole(item)
           ? item.map((role) => (
               <option
-                key={role.role_id}
-                value={role.role_id} // Aqui envia o ID do role
+                key={role.role_name}
+                value={role.role_name} // Aqui envia o ID do role
                 className="text-black"
               >
                 {role.role_name}

@@ -2,12 +2,6 @@ import axios from "axios";
 
 const API_URL = "http://localhost:8081/api";
 
-type UserCreateProps = {
-  username: string | number;
-  email: string;
-  password: string | number;
-  role_name: string;
-};
 
 export interface ExpensesCreateProps {
   expenses: {
@@ -44,9 +38,13 @@ export const getRoles = async () => {
   }
 };
 
-export const createUser = async (userData: UserCreateProps) => {
+export const createUser = async (formData: FormData) => {
   try {
-    const response = await axios.post(`${API_URL}/user`, userData);
+    const response = await axios.post(`${API_URL}/user`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error creating user:", error);

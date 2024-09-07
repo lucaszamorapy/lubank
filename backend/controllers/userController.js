@@ -1,10 +1,9 @@
 const userService = require("../services/userService");
-const upload = require("../config/multer");
 
 const signup = async (req, res) => {
   try {
     const { username, email, role_name, password } = req.body;
-    const avatar = req.file ? req.file.path : null;
+    const avatar = req.file ? req.file.path.replace(/\\/g, "/") : null; // Converte \ para /
 
     const newUser = await userService.signup(
       username,

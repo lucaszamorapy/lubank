@@ -1,6 +1,7 @@
 import PeopleSmile from "/images/peoples_smile.png";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import RegisterForm from "./RegisterForm";
 
 const RegisterPage = () => {
   return (
@@ -23,7 +24,7 @@ const RegisterPage = () => {
             className="lg:w-[500px]  lg:rounded-l-md"
             alt="Pessoas sorrindo"
           />
-          <RegisterPage />
+          <RegisterForm />
         </div>
       </div>
     </section>

@@ -11,7 +11,7 @@ interface GreetingsProps {
 
 const Greetings = ({ home }: GreetingsProps) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const { user } = useAuth();
+  const { user, userAvatar } = useAuth();
 
   const modalIsOpen = () => {
     setModalOpen(!modalOpen);
@@ -49,11 +49,18 @@ const Greetings = ({ home }: GreetingsProps) => {
       />
       <div className="container">
         <div className="flex py-5 justify-between border-2 px-10 mb-10 bg-white rounded-md mt-36 border-gray-200 xl:mt-10">
-          <div className="flex flex-col">
-            <p className="text-lg">{getGreeting()},</p>
-            <p className="text-xl font-semibold text-purpleContabilize">
-              {user}
-            </p>
+          <div className="flex justify-between gap-10 items-center">
+            <img
+              className="w-20 rounded-full"
+              src={`http://localhost:8081/${userAvatar}`}
+              alt=""
+            />
+            <div className="flex gap-2">
+              <p className="text-lg">{getGreeting()},</p>
+              <p className="text-xl font-semibold text-purpleContabilize">
+                {user}
+              </p>
+            </div>
           </div>
           {home && (
             <>

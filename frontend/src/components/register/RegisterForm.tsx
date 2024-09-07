@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import LogoPurple from "/images/logo.svg";
+import LogoPurple from "/images/VetorizadoBrancoSemFundo.svg";
 import useForm from "../../hooks/useForm";
 import Input from "../../utils/Input";
 import Button from "../../utils/Button";
@@ -35,17 +35,40 @@ const RegisterForm = () => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+    setLoading(true);
+
     try {
-      setLoading(true);
-      const userData = {
-        username: user.value,
-        email: email.value,
-        password,
-        avatar: file,
-        role_name: select,
-      };
-      console.log(userData);
-      await createUser(userData);
+      if (!user.value || !email.value || !password) {
+        toast.error("Preencha os dados obrigatórios!");
+        setLoading(false);
+        return;
+      }
+
+      const allowedExtensions = [".jpg", ".jpeg", ".png"];
+      let fileExtension = "";
+
+      if (file) {
+        fileExtension = file.name.split(".").pop()?.toLowerCase() || "";
+        if (!allowedExtensions.includes(`.${fileExtension}`)) {
+          toast.error(
+            "Tipo de arquivo não permitido. Permita apenas arquivos .jpg, .jpeg, .png"
+          );
+          setLoading(false);
+          return;
+        }
+      }
+
+      const formData = new FormData();
+      formData.append("username", user.value);
+      formData.append("email", email.value);
+      formData.append("password", password);
+      formData.append("role_name", select);
+
+      if (file) {
+        formData.append("avatar", file);
+      }
+
+      await createUser(formData);
       toast.success("Usuário cadastrado com sucesso!");
       setTimeout(() => {
         navigate("/home");
@@ -53,17 +76,23 @@ const RegisterForm = () => {
     } catch (error: unknown) {
       setLoading(false);
       if (error instanceof Error) {
-        toast.error("O e-mail ou o usuário já possui uma conta!");
+        console.error(error);
+        toast.error("Ocorreu um erro ao cadastrar o usuário!");
       }
     } finally {
       setLoading(false);
     }
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files ? event.target.files[0] : null;
+    setFile(selectedFile);
+  };
+
   return (
     <form className="flex flex-col items-center gap-10" onSubmit={handleSubmit}>
-      <div className="bg-purpleContabilize flex justify-center rounded-md items-center w-full p-4">
-        <img src={LogoPurple} alt="" />
+      <div className="bg-purpleContabilize flex justify-center rounded-md items-center w-full ">
+        <img className="w-20" src={LogoPurple} alt="" />
       </div>
       <Input
         placeholder="Usuário"
@@ -78,8 +107,9 @@ const RegisterForm = () => {
       <Input
         type="file"
         accept="image/*"
-        onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)}
-        style="px-5 w-full lg:w-[454px]"
+        style={"px-5 w-full lg:w-[454px]"}
+        onChange={handleFileChange}
+        className="px-5 w-full lg:w-[454px] py-3 border-2 border-gray-200 rounded-md outline-none"
       />
       <Select
         value={select}

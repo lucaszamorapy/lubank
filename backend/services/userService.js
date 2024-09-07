@@ -1,6 +1,7 @@
 const User = require("../models/userModel.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const path = require("path");
 
 const signup = async (username, email, role_name, password, avatar) => {
   const existingUser = await User.findOne({ where: { email } });

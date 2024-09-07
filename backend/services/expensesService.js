@@ -14,7 +14,6 @@ const getExpensesByUserId = async (user_id) => {
   try {
     return await Expense.findAll({
       where: { user_id: user_id },
-      include: [{ model: User }],
     });
   } catch (err) {
     throw new Error(err.message);

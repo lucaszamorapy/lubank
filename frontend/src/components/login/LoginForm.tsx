@@ -1,5 +1,5 @@
 import { useState } from "react";
-import LogoPurple from "/images/logo.svg";
+import LogoPurple from "/images/VetorizadoBrancoSemFundo.svg";
 import { useAuth } from "../../contexts/AuthContext";
 import useForm from "../../hooks/useForm";
 import Input from "../../utils/Input";
@@ -19,6 +19,11 @@ const LoginForm = () => {
     event.preventDefault();
     try {
       setLoading(true);
+      if (!user.value || !password) {
+        toast.error("Preencha os dados obrigatórios!");
+        setLoading(false);
+        return;
+      }
       await login(user.value, password);
     } catch (error: unknown) {
       setLoading(false);
@@ -33,7 +38,7 @@ const LoginForm = () => {
   return (
     <form className="flex flex-col gap-10" onSubmit={handleSubmit}>
       <div className="bg-purpleContabilize flex justify-center rounded-md items-center p-4">
-        <img src={LogoPurple} alt="" />
+        <img className="w-20" src={LogoPurple} alt="" />
       </div>
       <Input placeholder="Usuário" style={"px-5 w-full"} {...user} />
       <Input

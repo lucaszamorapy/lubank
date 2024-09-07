@@ -6,6 +6,7 @@ interface AuthContextProps {
   isAuthenticated: boolean;
   user: string | number | undefined;
   userId: number | null;
+  userAvatar: string | undefined;
   login: (
     username: string | number,
     password: string | number
@@ -22,6 +23,7 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 export const AuthProvider = ({ children }: IChildren) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<string | number | undefined>();
+  const [userAvatar, setUserAvatar] = useState<string | undefined>();
   const [userId, setUserId] = useState<number | null>(null);
   const navigate = useNavigate();
 
@@ -32,6 +34,7 @@ export const AuthProvider = ({ children }: IChildren) => {
       getUserInfo(token)
         .then((userInfo) => {
           setUser(userInfo.username);
+          setUserAvatar(userInfo.avatar);
           setUserId(userInfo.id);
           setIsAuthenticated(true);
         })
@@ -71,7 +74,7 @@ export const AuthProvider = ({ children }: IChildren) => {
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, user, login, logout, userId }}
+      value={{ isAuthenticated, user, login, logout, userId, userAvatar }}
     >
       {children}
     </AuthContext.Provider>

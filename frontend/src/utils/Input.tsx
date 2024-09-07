@@ -21,7 +21,8 @@ const Input = ({
       <input
         className={`rounded-md py-3 border-2 border-gray-200 outline-none ${style}`}
         type={type}
-        value={type === "file" ? undefined : value} // Não define o valor para input type=file
+        // Não define o valor para input type=file
+        value={type === "file" ? undefined : value}
         placeholder={placeholder}
         name={name}
         disabled={disabled}

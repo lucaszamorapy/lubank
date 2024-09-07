@@ -3,7 +3,8 @@ const userController = require("../controllers/userController");
 const monthController = require("../controllers/monthController");
 const roleController = require("../controllers/roleController");
 const expensesController = require("../controllers/expensesController");
-const upload = require("../config/multer");
+const createMulterConfig = require("../middlewares/uploadImge");
+const upload = createMulterConfig();
 
 const router = express.Router();
 
