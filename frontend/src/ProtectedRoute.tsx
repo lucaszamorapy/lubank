@@ -5,10 +5,10 @@ interface ProtectedRouteProps {
   children: JSX.Element;
 }
 
-const ProtectedRouter = ({ children }: ProtectedRouteProps) => {
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const { isAuthenticated } = useAuth();
 
-  return <>{isAuthenticated ? children : <Navigate to="/login" />}</>;
+  return isAuthenticated ? children : <Navigate to="/login" />;
 };
 
-export default ProtectedRouter;
+export default ProtectedRoute;

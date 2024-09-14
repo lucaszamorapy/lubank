@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useEffect, useState } from "react";
 import ExpenseModal from "./modals/ExpenseModal";
 import { TbTextPlus } from "react-icons/tb";
+import { FaCircleUser } from "react-icons/fa6";
 
 interface GreetingsProps {
   home?: boolean;
@@ -11,17 +12,17 @@ interface GreetingsProps {
 
 const Greetings = ({ home }: GreetingsProps) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const { user, userAvatar } = useAuth();
+  const { userInfo } = useAuth();
 
   const modalIsOpen = () => {
     setModalOpen(!modalOpen);
   };
 
   useEffect(() => {
-    if (user && home) {
-      toast.success(`Seja bem-vindo de volta ${user}!`);
+    if (userInfo?.username && home) {
+      toast.success(`Seja bem-vindo de volta ${userInfo.username}!`);
     }
-  }, [user, home]);
+  }, [userInfo?.username, home]);
 
   const getGreeting = (): string => {
     const currentHour = new Date().getHours();
@@ -49,16 +50,21 @@ const Greetings = ({ home }: GreetingsProps) => {
       />
       <div className="container">
         <div className="flex py-5 justify-between border-2 px-10 mb-10 bg-white rounded-md mt-36 border-gray-200 xl:mt-10">
-          <div className="flex justify-between gap-10 items-center">
-            <img
-              className="w-20 rounded-full"
-              src={`http://localhost:8081/${userAvatar}`}
-              alt=""
-            />
-            <div className="flex gap-2">
+          <div className="flex flex-col justify-between gap-10 items-center md:flex-row">
+            {userInfo?.avatar ? (
+              <img
+                className="w-20 h-20 rounded-full"
+                src={`http://localhost:8081/${userInfo?.avatar}`}
+                alt="Imagem do usuário"
+              />
+            ) : (
+              <FaCircleUser size={50} color="6A00AB" />
+            )}
+
+            <div className="flex flex-col gap-2 md:flex-row">
               <p className="text-lg">{getGreeting()},</p>
               <p className="text-xl font-semibold text-purpleContabilize">
-                {user}
+                {userInfo?.username}
               </p>
             </div>
           </div>

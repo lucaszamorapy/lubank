@@ -90,36 +90,45 @@ const RegisterForm = () => {
   };
 
   return (
-    <form className="flex flex-col items-center gap-10" onSubmit={handleSubmit}>
-      <div className="bg-purpleContabilize flex justify-center rounded-md items-center w-full ">
-        <img className="w-20" src={LogoPurple} alt="" />
+    <form className="flex  flex-col mt-20 gap-5" onSubmit={handleSubmit}>
+      <div className="flex flex-col gap-2 ">
+        <h1 className="text-purpleContabilize text-4xl font-semibold">
+          Bem vindo(a)
+        </h1>
+        <p className="text-gray-300">
+          Você não esta conectado, precisa fazer o registro para continuar
+        </p>
       </div>
       <Input
-        placeholder="Usuário"
-        style={"px-5 w-full lg:w-[454px]"}
-        {...user}
-      />
-      <Input
-        placeholder="E-mail"
-        style={"px-5 w-full lg:w-[454px]"}
-        {...email}
-      />
-      <Input
+        label={"Avatar"}
         type="file"
         accept="image/*"
-        style={"px-5 w-full lg:w-[454px]"}
+        style={"px-5 w-full"}
         onChange={handleFileChange}
         className="px-5 w-full lg:w-[454px] py-3 border-2 border-gray-200 rounded-md outline-none"
       />
-      <Select
+      <Input
+        label={"Usuário"}
+        placeholder="Usuário"
+        style={"px-5 w-full "}
+        {...user}
+      />
+      <Input
+        label={"E-mail"}
+        placeholder="E-mail"
+        style={"px-5 w-full "}
+        {...email}
+      />
+      {/* <Select
         value={select}
         item={roles}
         style={"w-[454px]"}
         onChange={(e) => setSelect(e.target.value)}
-      />
+      /> */}
       <Input
+        label={"Usuário"}
         placeholder="Senha"
-        style={"px-5 w-full lg:w-[454px]"}
+        style={"px-5 w-full "}
         onChange={(e) => setPassword(e.target.value)}
         value={password}
         type="password"
@@ -128,7 +137,7 @@ const RegisterForm = () => {
         buttonText={loading ? <Loading /> : "Cadastrar"}
         type="submit"
         disabled={loading}
-        style={"text-white rounded-full w-full"}
+        style={"text-white rounded-full w-full "}
       />
       <p>
         Já possui uma conta no Contabilze?{" "}

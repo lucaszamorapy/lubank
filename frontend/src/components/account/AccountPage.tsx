@@ -1,15 +1,16 @@
-import Graphic from "./Graphic";
+import React from "react";
 import Greetings from "../Greetings";
+import AccountForm from "./AccountForm";
 
-const StatisticPage = () => {
+const AccountPage = () => {
   return (
     <section>
       <div className="container">
         <Greetings />
-        <Graphic />
+        <AccountForm />
       </div>
     </section>
   );
 };
 
-export default StatisticPage;
+export default AccountPage;

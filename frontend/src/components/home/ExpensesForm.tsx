@@ -37,7 +37,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
   const [select, setSelect] = useState<number>(0);
   const [year, setYear] = useState<string>("");
   const [month, setMonth] = useState([]);
-  const { userId } = useAuth();
+  const { userInfo } = useAuth();
   const { setExpenses: setGlobalExpenses } = useExpense();
 
   useEffect(() => {
@@ -121,7 +121,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
     // Prepara as despesas para atualização, garantindo que o ID esteja presente
     const updatedExpenses = modifiedExpenses.map((expense) => ({
       expense_id: expense.expense_id,
-      user_id: userId,
+      user_id: userInfo?.id,
       month_id: select ?? 0,
       amount: convertToNumber(expense.amount.toString()),
       year: convertToNumber(year),
@@ -132,7 +132,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
     const newExpenses = expenses
       .filter((expense) => expense.expense_id === undefined)
       .map((expense) => ({
-        user_id: userId,
+        user_id: userInfo?.id,
         month_id: select ?? 0,
         amount: convertToNumber(expense.amount.toString()),
         year: convertToNumber(year),
@@ -150,7 +150,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
         await createExpense({ expenses: newExpenses });
         toast.success("Despesas enviadas com sucesso");
       }
-      const expenseUserData = await getExpenseByUserId(userId);
+      const expenseUserData = await getExpenseByUserId(userInfo?.id);
       setGlobalExpenses(expenseUserData);
     } catch (error) {
       toast.error("Falha ao salvar despesas");

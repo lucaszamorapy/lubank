@@ -25,5 +25,10 @@ router.get(
   "/expenses/:user_id/:startMonth/:endMonth/:year",
   expensesController.getExpensesByStatistic
 );
+router.put(
+  "/user/:user_id/",
+  upload.single("avatar"),
+  userController.updateUser
+);
 
 module.exports = router;

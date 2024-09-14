@@ -16,7 +16,7 @@ type ExpensesProps = {
 const ExpenseDelete = ({ onClick, isOpen, month, year }: ExpensesProps) => {
   const [isVisible, setIsVisible] = useState(isOpen);
   const [animationClass, setAnimationClass] = useState("");
-  const { userId } = useAuth();
+  const { userInfo } = useAuth();
   const { setExpenses } = useExpense();
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const ExpenseDelete = ({ onClick, isOpen, month, year }: ExpensesProps) => {
   };
 
   const handleDelete = async (
-    userId: number | null,
+    userId: number | null | undefined,
     monthId: number,
     year: number
   ) => {
@@ -44,9 +44,9 @@ const ExpenseDelete = ({ onClick, isOpen, month, year }: ExpensesProps) => {
     }
 
     try {
-      await deleteExpense(userId, monthId, year);
+      await deleteExpense(userInfo?.id, monthId, year);
       toast.success("Despesa deletada com sucesso");
-      const expenseUserData = await getExpenseByUserId(userId);
+      const expenseUserData = await getExpenseByUserId(userInfo?.id);
       setExpenses(expenseUserData);
       if (onClick) {
         onClick();
@@ -79,7 +79,7 @@ const ExpenseDelete = ({ onClick, isOpen, month, year }: ExpensesProps) => {
             <Button
               buttonText={"Sim, tenho certeza"}
               style={"text-white"}
-              onClick={() => handleDelete(userId, month, year)}
+              onClick={() => handleDelete(userInfo?.id, month, year)}
             />
           </div>
         </div>

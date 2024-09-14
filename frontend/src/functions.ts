@@ -5,7 +5,7 @@ const API_URL = "http://localhost:8081/api";
 
 export interface ExpensesCreateProps {
   expenses: {
-    user_id: number | null;
+    user_id: number | null | undefined;
     month_id: number;
     amount: number | string;
     description: string;
@@ -84,7 +84,7 @@ export const createExpense = async (expensesData: ExpensesCreateProps) => {
   }
 };
 
-export const getExpenseByUserId = async (userId: number | null) => {
+export const getExpenseByUserId = async (userId: number | null | undefined) => {
   try {
     const response = await axios.get(`${API_URL}/expenses/${userId}`);
     return response.data;
@@ -105,7 +105,7 @@ export const getMonths = async () => {
 };
 
 export const deleteExpense = async (
-  userId: number,
+  userId: number | null | undefined,
   monthId: number,
   year: number
 ) => {
@@ -149,6 +149,23 @@ export const getExpensesByStatistic = async (
     return response.data;
   } catch (error) {
     console.error("Error fetching expenses between months:", error);
+    throw error;
+  }
+};
+
+export const updateUser = async (
+  userId: unknown,
+  formData: FormData
+) => {
+  try {
+    const response = await axios.put(`${API_URL}/user/${userId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating user:", error);
     throw error;
   }
 };

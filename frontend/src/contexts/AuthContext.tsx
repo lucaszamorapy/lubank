@@ -2,11 +2,16 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { loginUser, getUserInfo } from "../functions";
 import { useNavigate } from "react-router-dom";
 
+interface UserInfoProps {
+  username: any;
+  email: any;
+  id: number | null;
+  avatar: File | null | undefined;
+}
+
 interface AuthContextProps {
   isAuthenticated: boolean;
-  user: string | number | undefined;
-  userId: number | null;
-  userAvatar: string | undefined;
+  userInfo: UserInfoProps | undefined;
   login: (
     username: string | number,
     password: string | number
@@ -22,9 +27,7 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: IChildren) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [user, setUser] = useState<string | number | undefined>();
-  const [userAvatar, setUserAvatar] = useState<string | undefined>();
-  const [userId, setUserId] = useState<number | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfoProps>();
   const navigate = useNavigate();
 
   //verificação se o token ja existe
@@ -33,18 +36,16 @@ export const AuthProvider = ({ children }: IChildren) => {
     if (token) {
       getUserInfo(token)
         .then((userInfo) => {
-          setUser(userInfo.username);
-          setUserAvatar(userInfo.avatar);
-          setUserId(userInfo.id);
+          setUserInfo(userInfo);
           setIsAuthenticated(true);
         })
         .catch(() => {
           setIsAuthenticated(false);
-          setUser(undefined);
+          setUserInfo(undefined);
         });
     } else {
       setIsAuthenticated(false);
-      setUser(undefined);
+      setUserInfo(undefined);
     }
   }, [navigate]);
 
@@ -69,12 +70,18 @@ export const AuthProvider = ({ children }: IChildren) => {
   const logout = () => {
     localStorage.removeItem("authToken");
     setIsAuthenticated(false);
-    setUser(undefined);
+    setUserInfo(undefined);
+    navigate("/login");
   };
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, user, login, logout, userId, userAvatar }}
+      value={{
+        isAuthenticated,
+        login,
+        logout,
+        userInfo,
+      }}
     >
       {children}
     </AuthContext.Provider>

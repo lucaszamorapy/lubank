@@ -53,9 +53,24 @@ const getUserInfo = async (req, res) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  const { user_id } = req.params;
+  const userData = req.body;
+  try {
+    if (req.file) {
+      userData.avatar = `assets/upload/users/${req.file.filename}`;
+    }
+    const user = await userService.updateUser(user_id, userData);
+    return res.status(200).json(user);
+  } catch (err) {
+    return res.status(401).json({ error: err.message });
+  }
+};
+
 module.exports = {
   signup,
   getUsers,
   login,
   getUserInfo,
+  updateUser,
 };

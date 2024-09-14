@@ -1,13 +1,15 @@
 type InputProps = React.ComponentProps<"input"> & {
   error?: string;
   style?: string;
-  value?: string | number; // Permitir apenas string ou number para inputs normais
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void; // Tornar onChange obrigatório
+  value?: string | number;
+  label?: string;
+  id?: string;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 const Input = ({
   type,
-  value,
+  value = "",
   placeholder,
   name,
   style,
@@ -15,10 +17,18 @@ const Input = ({
   onBlur,
   disabled,
   error,
+  label,
+  id,
 }: InputProps) => {
   return (
     <div>
+      {label && (
+        <label htmlFor={id} className="block text-purpleContabilize mb-2">
+          {label}
+        </label>
+      )}
       <input
+        id={id}
         className={`rounded-md py-3 border-2 border-gray-200 outline-none ${style}`}
         type={type}
         // Não define o valor para input type=file

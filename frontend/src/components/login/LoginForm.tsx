@@ -36,12 +36,26 @@ const LoginForm = () => {
   };
 
   return (
-    <form className="flex flex-col gap-10" onSubmit={handleSubmit}>
-      <div className="bg-purpleContabilize flex justify-center rounded-md items-center p-4">
-        <img className="w-20" src={LogoPurple} alt="" />
+    <form
+      className="flex p-5 flex-col mt-20 gap-10 lg:px-0"
+      onSubmit={handleSubmit}
+    >
+      <div className="flex flex-col gap-2 ">
+        <h1 className="text-purpleContabilize text-4xl font-semibold">
+          Bem vindo(a)
+        </h1>
+        <p className="text-gray-300">
+          Você não esta conectado, precisa fazer o login para continuar
+        </p>
       </div>
-      <Input placeholder="Usuário" style={"px-5 w-full"} {...user} />
       <Input
+        label={"Usuário"}
+        placeholder="Usuário"
+        style={"px-5 w-full"}
+        {...user}
+      />
+      <Input
+        label={"Senha"}
         placeholder="Senha"
         style={"px-5 w-full "}
         onChange={(e) => setPassword(e.target.value)}

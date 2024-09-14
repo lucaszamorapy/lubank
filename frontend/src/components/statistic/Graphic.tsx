@@ -26,7 +26,7 @@ const Graphic = () => {
   const [year, setYear] = useState<string>("");
   const [month, setMonth] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { userId } = useAuth();
+  const { userInfo } = useAuth();
 
   useEffect(() => {
     const fetchMonths = async () => {
@@ -34,7 +34,7 @@ const Graphic = () => {
       setMonth(monthData);
     };
     fetchMonths();
-  }, [userId]);
+  }, [userInfo?.id]);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -46,7 +46,7 @@ const Graphic = () => {
     setLoading(true);
     try {
       const response = await getExpensesByStatistic(
-        userId,
+        userInfo?.id,
         startMonth,
         endMonth,
         convertToNumber(year)
@@ -88,7 +88,7 @@ const Graphic = () => {
     <section>
       {loading && <Loading screen={loading} />}
       <div className="container">
-        <div className="flex flex-col items-center gap-7 mb-20 justify-center">
+        <div className=" bg-white  flex flex-col items-center gap-7 mb-20 justify-center shadow-md rounded-md px-10 py-5 ">
           <h1 className="text-purpleContabilize text-2xl font-semibold">
             Selecione os meses para o gráfico
           </h1>

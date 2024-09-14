@@ -67,9 +67,31 @@ const getUserInfo = async (token) => {
   };
 };
 
+const updateUser = async (id, user) => {
+  try {
+    const existUser = await User.findOne({
+      where: { id: id },
+    });
+
+    if (!existUser) {
+      throw new Error("User not found");
+    }
+
+    if (user.password) {
+      const hashedPassword = await bcrypt.hash(user.password, 10);
+      user.password = hashedPassword;
+    }
+
+    return await existUser.update(user);
+  } catch (err) {
+    throw new Error(err.message);
+  }
+};
+
 module.exports = {
   signup,
   getUsers,
   login,
   getUserInfo,
+  updateUser,
 };

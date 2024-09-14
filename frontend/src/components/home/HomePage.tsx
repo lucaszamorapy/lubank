@@ -7,19 +7,19 @@ import ExpensesGrid from "./ExpensesGrid";
 import Greetings from "../Greetings";
 
 const HomePage = () => {
-  const { userId } = useAuth();
+  const { userInfo } = useAuth();
   const { expenses, setExpenses } = useExpense();
 
   useEffect(() => {
-    const fetchExpenses = async (userId: number | null) => {
+    const fetchExpenses = async (userId: number | null | undefined) => {
       if (userId) {
         const expenseUserData = await getExpenseByUserId(userId);
         setExpenses(expenseUserData);
       }
     };
 
-    fetchExpenses(userId);
-  }, [setExpenses, userId]);
+    fetchExpenses(userInfo?.id);
+  }, [setExpenses, userInfo?.id]);
 
   return (
     <>
