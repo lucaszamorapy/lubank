@@ -90,7 +90,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <form className="flex  flex-col mt-20 gap-5" onSubmit={handleSubmit}>
+    <form className="flex  flex-col mt-5 gap-5" onSubmit={handleSubmit}>
       <div className="flex flex-col gap-2 ">
         <h1 className="text-purpleContabilize text-4xl font-semibold">
           Bem vindo(a)
@@ -109,25 +109,25 @@ const RegisterForm = () => {
       />
       <Input
         label={"Usuário"}
-        placeholder="Usuário"
+        placeholder="Digite seu usuário"
         style={"px-5 w-full "}
         {...user}
       />
       <Input
         label={"E-mail"}
-        placeholder="E-mail"
+        placeholder="Digite seu e-mail"
         style={"px-5 w-full "}
         {...email}
       />
-      {/* <Select
+      <Select
         value={select}
         item={roles}
-        style={"w-[454px]"}
+        style={"w-full"}
         onChange={(e) => setSelect(e.target.value)}
-      /> */}
+      />
       <Input
         label={"Usuário"}
-        placeholder="Senha"
+        placeholder="Digite sua senha"
         style={"px-5 w-full "}
         onChange={(e) => setPassword(e.target.value)}
         value={password}

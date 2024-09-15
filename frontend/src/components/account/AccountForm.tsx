@@ -86,7 +86,7 @@ const AccountForm = () => {
             Configurações da sua conta
           </h1>
           <form onSubmit={handleSubmit}>
-            <div className="flex bg-white shadow-md rounded-md px-10 py-5 flex-col gap-5">
+            <div className="flex bg-white shadow-md rounded-md border-2 border-gray-200 px-10 py-5 flex-col gap-5">
               <Input
                 label={"Avatar"}
                 type="file"
@@ -97,19 +97,19 @@ const AccountForm = () => {
               />
               <Input
                 label={"Usuário"}
-                placeholder="Usuário"
+                placeholder="Digite seu usuário"
                 style={"px-5 w-full"}
                 {...name}
               />
               <Input
                 label={"E-mail"}
-                placeholder="E-mail"
+                placeholder="Digite seu e-mail"
                 style={"px-5 w-full lg:w-[454px]"}
                 {...email}
               />
               <Input
                 label={"Senha"}
-                placeholder="Senha"
+                placeholder="Digite sua senha"
                 style={"px-5 w-full "}
                 onChange={(e) => setPassword(e.target.value)}
                 value={password}

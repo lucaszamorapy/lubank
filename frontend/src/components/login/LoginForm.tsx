@@ -50,13 +50,13 @@ const LoginForm = () => {
       </div>
       <Input
         label={"Usuário"}
-        placeholder="Usuário"
+        placeholder="Digite seu usuário"
         style={"px-5 w-full"}
         {...user}
       />
       <Input
         label={"Senha"}
-        placeholder="Senha"
+        placeholder="Digite sua senha"
         style={"px-5 w-full "}
         onChange={(e) => setPassword(e.target.value)}
         value={password}
