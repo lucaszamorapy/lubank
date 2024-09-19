@@ -9,12 +9,14 @@ import Select from "../../utils/Select";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const RegisterForm = () => {
   const [password, setPassword] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [roles, setRoles] = useState([]);
   const [select, setSelect] = useState("");
+  const [viewPassword, setViewPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const user = useForm("name");
   const email = useForm("email");
@@ -125,14 +127,24 @@ const RegisterForm = () => {
         style={"w-full"}
         onChange={(e) => setSelect(e.target.value)}
       />
-      <Input
-        label={"Usuário"}
-        placeholder="Digite sua senha"
-        style={"px-5 w-full "}
-        onChange={(e) => setPassword(e.target.value)}
-        value={password}
-        type="password"
-      />
+      <div className="relative w-full">
+        <Input
+          label={"Senha"}
+          placeholder="Digite sua senha"
+          style={"px-5 w-full "}
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+          type={`${viewPassword ? "text" : "password"}`}
+        />
+        <Button
+          buttonText={
+            viewPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />
+          }
+          onClick={() => setViewPassword(!viewPassword)}
+          type="button"
+          style="absolute right-2 top-[58px] transform -translate-y-1/2 bg-transparent text-gray-500 hover:bg-transparent focus:outline-none"
+        />
+      </div>
       <Button
         buttonText={loading ? <Loading /> : "Cadastrar"}
         type="submit"

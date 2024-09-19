@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // Importando ícones de olho
 import LogoPurple from "/images/VetorizadoBrancoSemFundo.svg";
 import { useAuth } from "../../contexts/AuthContext";
 import useForm from "../../hooks/useForm";
@@ -13,6 +14,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const { login } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [viewPassword, setViewPassword] = useState(false);
   const user = useForm("name");
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -45,7 +47,7 @@ const LoginForm = () => {
           Bem vindo(a)
         </h1>
         <p className="text-gray-300">
-          Você não esta conectado, precisa fazer o login para continuar
+          Você não está conectado, precisa fazer o login para continuar
         </p>
       </div>
       <Input
@@ -54,14 +56,24 @@ const LoginForm = () => {
         style={"px-5 w-full"}
         {...user}
       />
-      <Input
-        label={"Senha"}
-        placeholder="Digite sua senha"
-        style={"px-5 w-full "}
-        onChange={(e) => setPassword(e.target.value)}
-        value={password}
-        type="password"
-      />
+      <div className="relative w-full">
+        <Input
+          label={"Senha"}
+          placeholder="Digite sua senha"
+          style={"px-5 w-full"} // Ajuste o padding-right para deixar espaço para o ícone
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
+          type={`${viewPassword ? "text" : "password"}`}
+        />
+        <Button
+          buttonText={
+            viewPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />
+          }
+          onClick={() => setViewPassword(!viewPassword)}
+          type="button"
+          style="absolute right-2 top-[58px] transform -translate-y-1/2 bg-transparent text-gray-500 hover:bg-transparent focus:outline-none"
+        />
+      </div>
       <Button
         buttonText={loading ? <Loading /> : "Entrar"}
         type="submit"
