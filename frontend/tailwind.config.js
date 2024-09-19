@@ -14,7 +14,7 @@ export default {
         "2xl": "1220px",
       },
       colors: {
-        purpleContabilize: "#6A00AB",
+        purpleLubank: "#6A00AB",
         blackContabilize: "#242424",
       },
     },

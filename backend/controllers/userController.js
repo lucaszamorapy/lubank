@@ -2,16 +2,10 @@ const userService = require("../services/userService");
 
 const signup = async (req, res) => {
   try {
-    const { username, email, role_name, password } = req.body;
+    const { username, email, password } = req.body;
     const avatar = req.file ? req.file.path.replace(/\\/g, "/") : null; // Converte \ para /
 
-    const newUser = await userService.signup(
-      username,
-      email,
-      role_name,
-      password,
-      avatar
-    );
+    const newUser = await userService.signup(username, email, password, avatar);
     return res.status(201).json(newUser);
   } catch (err) {
     return res.status(400).json({ error: err.message });

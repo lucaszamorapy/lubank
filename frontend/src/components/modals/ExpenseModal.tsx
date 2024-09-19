@@ -37,7 +37,7 @@ const ExpenseModal = ({ onClick, isOpen, update }: ExpensesProps) => {
           onAnimationEnd={handleAnimationEnd}
           onClick={(e) => e.stopPropagation()}
         >
-          <h1 className="text-xl font-semibold text-purpleContabilize">
+          <h1 className="text-xl font-semibold text-purpleLubank">
             Informe abaixo os gastos do mês
           </h1>
           <ExpensesForm update={update} toggleModal={onClick} />

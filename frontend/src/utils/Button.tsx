@@ -5,7 +5,7 @@ type ButtonProps = React.ComponentProps<"button"> & {
   onClick?: () => void; // Torna onClick opcional
   style: string;
   disabled?: boolean;
-  type: string;
+  type?: string;
 };
 
 const Button = ({
@@ -20,7 +20,7 @@ const Button = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`bg-purpleContabilize rounded-md px-5 py-3 text-md font-semibold hover:bg-purple-950 duration-300 ${style}`}
+      className={`bg-purpleLubank rounded-md py-3 text-md font-semibold hover:bg-purple-950 duration-300 ${style}`}
     >
       {buttonText}
     </button>

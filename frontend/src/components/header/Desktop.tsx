@@ -2,32 +2,35 @@ import { Link } from "react-router-dom";
 import { HeaderProps } from "./Header";
 import LogoPurple from "/images/VetorizadoBrancoSemFundo.svg";
 import "./header.css";
-import { IconType } from "react-icons";
-import { FaHome } from "react-icons/fa";
-import { MdManageAccounts } from "react-icons/md";
-import { IoBarChart } from "react-icons/io5";
 import { useAuth } from "../../contexts/AuthContext";
-import { IoIosExit } from "react-icons/io";
+
+import { mdiAccountCog, mdiHome, mdiLogout, mdiPoll } from "@mdi/js";
+import Icon from "@mdi/react";
+import { useTheme } from "../../contexts/ThemeContext";
 
 interface iconProps {
-  [key: string]: IconType;
+  [key: string]: string;
 }
 
 const Desktop = ({ isOpen, navigation, toggleMenu }: HeaderProps) => {
   const { logout } = useAuth();
+  const { darkMode, toggleTheme } = useTheme();
   const iconMap: iconProps = {
-    IoBarChart: IoBarChart,
-    MdManageAccounts: MdManageAccounts,
-    FaHome: FaHome,
+    mdiPoll: mdiPoll,
+    mdiAccountCog: mdiAccountCog,
+    mdiHome: mdiHome,
   };
+
   return (
-    <section className="bg-purpleContabilize z-10 top-0 fixed w-full xl:h-full xl:w-auto shadow-md py-5 px-5">
+    <section className="bg-purpleLubank z-10 top-0 fixed w-full xl:h-full xl:w-auto shadow-md py-5 px-5">
       <div className="container">
         <nav className="flex justify-between gap-10 xl:flex-col items-center">
-          <img src={LogoPurple} className="xl:mb-0  w-20 lg:w-40" />
+          <Link to={"/home"}>
+            <img src={LogoPurple} className="xl:mb-0  w-20 lg:w-40" />
+          </Link>
           <ul className="xl:flex xl:flex-col gap-5 hidden">
             {navigation.map((item, index) => {
-              const Icon = iconMap[item.icon];
+              const iconPath = iconMap[item.icon];
               return (
                 <Link
                   to={item.path}
@@ -37,7 +40,14 @@ const Desktop = ({ isOpen, navigation, toggleMenu }: HeaderProps) => {
                   <li className="text-white list-none flex items-center gap-2 flex-grow">
                     {item.name}
                   </li>
-                  {Icon && <Icon className="text-xl" color="#fff" />}
+                  {iconPath && (
+                    <Icon
+                      path={iconPath}
+                      className="text-xl"
+                      color="#fff"
+                      size={1}
+                    />
+                  )}
                 </Link>
               );
             })}
@@ -48,8 +58,17 @@ const Desktop = ({ isOpen, navigation, toggleMenu }: HeaderProps) => {
               >
                 Logout
               </li>
-              <IoIosExit className="text-xl" color="#fff" />
+              <Icon path={mdiLogout} size={1} color="#fff" />
             </span>
+            {/* <span className="flex cursor-pointer justify-between gap-10 px-3 py-1 items-center hover:bg-purple-950 duration-300 text-xl rounded-md">
+              <li
+                onClick={toggleTheme}
+                className="text-white list-none flex items-center gap-2 flex-grow"
+              >
+                Trocar tema
+              </li>
+              <Icon path={mdiLogout} size={1} color="#fff" />
+            </span> */}
           </ul>
           <span
             className={`mobile-menu-5 block xl:hidden ${isOpen && "toggle"}`}

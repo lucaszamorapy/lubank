@@ -2,8 +2,10 @@ import PeopleSmile from "/images/peoples_smile.png";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import LoginForm from "./LoginForm";
+import { useTheme } from "../../contexts/ThemeContext";
 
 const LoginPage = () => {
+  const { darkMode } = useTheme();
   return (
     <section className="px-5 lg:px-0">
       <ToastContainer
@@ -18,7 +20,11 @@ const LoginPage = () => {
         pauseOnHover
       />
       <div className="container mt-20">
-        <div className="flex flex-col gap-10 bg-white rounded-md border-2 border-gray-200 items-center lg:flex-row xl:gap-32">
+        <div
+          className={`flex flex-col gap-10 bg-white rounded-md border-2 border-gray-200 items-center lg:flex-row xl:gap-32 ${
+            darkMode && "bg-blackContabilize"
+          }`}
+        >
           <img
             src={PeopleSmile}
             className="hidden lg:block lg:w-[500px] lg:rounded-l-md"

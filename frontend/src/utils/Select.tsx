@@ -1,29 +1,20 @@
-type IRole = {
-  role_id: number;
-  role_name: string;
-};
-
 type IMonth = {
   month_id: number;
   month_name: string;
 };
 
 type SelectProps = React.ComponentProps<"select"> & {
-  item: IRole[] | IMonth[];
+  item: IMonth[];
   value: number;
   onChange: React.ChangeEventHandler<HTMLSelectElement>;
   style: string;
 };
 
 const Select = ({ item, value, onChange, style, disabled }: SelectProps) => {
-  const isRole = (item: IRole[] | IMonth[]): item is IRole[] => {
-    return (item as IRole[])[0]?.role_name !== undefined;
-  };
-
   return (
     <div>
       <select
-        className={`text-purpleContabilize text-center text-md py-3 rounded-md border-2 border-gray-200 outline-none ${style}`}
+        className={`text-purpleLubank text-center text-md py-3 rounded-md border-2 border-gray-200 outline-none ${style}`}
         value={value}
         onChange={onChange} // Mantém a função onChange recebida
         disabled={disabled}
@@ -32,25 +23,15 @@ const Select = ({ item, value, onChange, style, disabled }: SelectProps) => {
           Selecione uma opção
         </option>
 
-        {isRole(item)
-          ? item.map((role) => (
-              <option
-                key={role.role_name}
-                value={role.role_name} // Aqui envia o ID do role
-                className="text-black"
-              >
-                {role.role_name}
-              </option>
-            ))
-          : item.map((month) => (
-              <option
-                key={month.month_id}
-                value={month.month_id}
-                className="text-black"
-              >
-                {month.month_name}
-              </option>
-            ))}
+        {item.map((month) => (
+          <option
+            key={month.month_id}
+            value={month.month_id}
+            className="text-black"
+          >
+            {month.month_name}
+          </option>
+        ))}
       </select>
     </div>
   );

@@ -3,24 +3,32 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const path = require("path");
 
-const signup = async (username, email, role_name, password, avatar) => {
+const signup = async (username, email, password, avatar) => {
+  // Verifica se o email já está em uso
   const existingUser = await User.findOne({ where: { email } });
   if (existingUser) {
     throw new Error("Email already in use");
   }
 
+  // Verifica se o username já está em uso
   const existingUsername = await User.findOne({ where: { username } });
   if (existingUsername) {
     throw new Error("Username already in use");
   }
 
+  // Verifica se a senha foi fornecida
+  if (!password) {
+    throw new Error("Password is required");
+  }
+
   const saltRounds = 10;
+
+  // Garante que estamos passando valores válidos para bcrypt.hash
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
   return await User.create({
     username,
     email,
-    role_name,
     password: hashedPassword,
     avatar,
   });
@@ -62,7 +70,6 @@ const getUserInfo = async (token) => {
     id: user.id,
     username: user.username,
     email: user.email,
-    role_name: user.role_name,
     avatar: user.avatar,
   };
 };

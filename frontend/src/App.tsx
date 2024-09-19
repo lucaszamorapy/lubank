@@ -8,6 +8,7 @@ import { ExpenseProvider } from "./contexts/ExpensesContext";
 import { ModalOpenProvider } from "./contexts/ModalOpenContext";
 import Statistic from "./pages/Statistic";
 import Account from "./pages/Account";
+import { ThemeProvider } from "./contexts/ThemeContext";
 
 const App = () => {
   return (
@@ -15,35 +16,37 @@ const App = () => {
       <AuthProvider>
         <ExpenseProvider>
           <ModalOpenProvider>
-            <Routes>
-              <Route path="/" element={<Navigate to="/login" />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route
-                path="/estatisticas"
-                element={
-                  <ProtectedRoute>
-                    <Statistic />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/conta"
-                element={
-                  <ProtectedRoute>
-                    <Account />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/home"
-                element={
-                  <ProtectedRoute>
-                    <Home />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
+            <ThemeProvider>
+              <Routes>
+                <Route path="/" element={<Navigate to="/login" />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route
+                  path="/estatisticas"
+                  element={
+                    <ProtectedRoute>
+                      <Statistic />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/conta"
+                  element={
+                    <ProtectedRoute>
+                      <Account />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/home"
+                  element={
+                    <ProtectedRoute>
+                      <Home />
+                    </ProtectedRoute>
+                  }
+                />
+              </Routes>
+            </ThemeProvider>
           </ModalOpenProvider>
         </ExpenseProvider>
       </AuthProvider>

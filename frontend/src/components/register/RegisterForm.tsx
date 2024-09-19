@@ -1,39 +1,23 @@
-import { useEffect, useState } from "react";
-import LogoPurple from "/images/VetorizadoBrancoSemFundo.svg";
+import { useState } from "react";
 import useForm from "../../hooks/useForm";
 import Input from "../../utils/Input";
 import Button from "../../utils/Button";
 import Loading from "../../helper/Loading";
-import { createUser, getRoles } from "../../functions";
-import Select from "../../utils/Select";
+import { createUser } from "../../functions";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import Icon from "@mdi/react";
+import { mdiEyeOffOutline, mdiEyeOutline } from "@mdi/js";
 
 const RegisterForm = () => {
   const [password, setPassword] = useState("");
   const [file, setFile] = useState<File | null>(null);
-  const [roles, setRoles] = useState([]);
-  const [select, setSelect] = useState("");
   const [viewPassword, setViewPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const user = useForm("name");
   const email = useForm("email");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchRoles = async () => {
-      try {
-        const rolesData = await getRoles();
-        setRoles(rolesData);
-      } catch (err) {
-        toast.error("Cargos não encontrados");
-      }
-    };
-
-    fetchRoles();
-  }, []);
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -64,8 +48,7 @@ const RegisterForm = () => {
       formData.append("username", user.value);
       formData.append("email", email.value);
       formData.append("password", password);
-      formData.append("role_name", select);
-
+      console.log(password);
       if (file) {
         formData.append("avatar", file);
       }
@@ -94,7 +77,7 @@ const RegisterForm = () => {
   return (
     <form className="flex  flex-col mt-5 gap-5" onSubmit={handleSubmit}>
       <div className="flex flex-col gap-2 ">
-        <h1 className="text-purpleContabilize text-4xl font-semibold">
+        <h1 className="text-purpleLubank text-4xl font-semibold">
           Bem vindo(a)
         </h1>
         <p className="text-gray-300">
@@ -121,12 +104,6 @@ const RegisterForm = () => {
         style={"px-5 w-full "}
         {...email}
       />
-      <Select
-        value={select}
-        item={roles}
-        style={"w-full"}
-        onChange={(e) => setSelect(e.target.value)}
-      />
       <div className="relative w-full">
         <Input
           label={"Senha"}
@@ -138,11 +115,15 @@ const RegisterForm = () => {
         />
         <Button
           buttonText={
-            viewPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />
+            viewPassword ? (
+              <Icon path={mdiEyeOffOutline} size={1} />
+            ) : (
+              <Icon path={mdiEyeOutline} size={1} />
+            )
           }
           onClick={() => setViewPassword(!viewPassword)}
           type="button"
-          style="absolute right-2 top-[58px] transform -translate-y-1/2 bg-transparent text-gray-500 hover:bg-transparent focus:outline-none"
+          style="absolute right-2 top-[58px] px-5 transform -translate-y-1/2 bg-transparent text-gray-500 hover:bg-transparent focus:outline-none"
         />
       </div>
       <Button
@@ -153,7 +134,7 @@ const RegisterForm = () => {
       />
       <p>
         Já possui uma conta no Contabilze?{" "}
-        <Link className="font-bold text-purpleContabilize" to={"/login"}>
+        <Link className="font-bold text-purpleLubank" to={"/login"}>
           Entre agora!
         </Link>
       </p>

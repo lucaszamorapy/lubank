@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import ExpenseModal from "./modals/ExpenseModal";
 import { TbTextPlus } from "react-icons/tb";
 import { FaCircleUser } from "react-icons/fa6";
+import Icon from "@mdi/react";
+import { mdiPlaylistPlus } from "@mdi/js";
 
 interface GreetingsProps {
   home?: boolean;
@@ -63,7 +65,7 @@ const Greetings = ({ home }: GreetingsProps) => {
 
             <div className="flex flex-col gap-2 md:flex-row">
               <p className="text-lg">{getGreeting()},</p>
-              <p className="text-xl font-semibold text-purpleContabilize">
+              <p className="text-xl font-semibold text-purpleLubank">
                 {userInfo?.username}
               </p>
             </div>
@@ -73,9 +75,9 @@ const Greetings = ({ home }: GreetingsProps) => {
               <div className="flex gap-10">
                 <Button
                   onClick={modalIsOpen}
-                  buttonText={<TbTextPlus size={40} />}
+                  buttonText={<Icon path={mdiPlaylistPlus} size={1.5} />}
                   style={
-                    "text-purpleContabilize bg-white hover:bg-white hover:text-purple-950"
+                    "text-purpleLubank bg-white hover:bg-white hover:text-purple-950"
                   }
                 />
               </div>

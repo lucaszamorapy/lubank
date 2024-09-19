@@ -1,6 +1,4 @@
 import { useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa"; // Importando ícones de olho
-import LogoPurple from "/images/VetorizadoBrancoSemFundo.svg";
 import { useAuth } from "../../contexts/AuthContext";
 import useForm from "../../hooks/useForm";
 import Input from "../../utils/Input";
@@ -9,6 +7,8 @@ import Loading from "../../helper/Loading";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Icon from "@mdi/react";
+import { mdiEyeOffOutline, mdiEyeOutline } from "@mdi/js";
 
 const LoginForm = () => {
   const [password, setPassword] = useState("");
@@ -43,7 +43,7 @@ const LoginForm = () => {
       onSubmit={handleSubmit}
     >
       <div className="flex flex-col gap-2 ">
-        <h1 className="text-purpleContabilize text-4xl font-semibold">
+        <h1 className="text-purpleLubank text-4xl font-semibold">
           Bem vindo(a)
         </h1>
         <p className="text-gray-300">
@@ -67,11 +67,15 @@ const LoginForm = () => {
         />
         <Button
           buttonText={
-            viewPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />
+            viewPassword ? (
+              <Icon path={mdiEyeOffOutline} size={1} />
+            ) : (
+              <Icon path={mdiEyeOutline} size={1} />
+            )
           }
           onClick={() => setViewPassword(!viewPassword)}
           type="button"
-          style="absolute right-2 top-[58px] transform -translate-y-1/2 bg-transparent text-gray-500 hover:bg-transparent focus:outline-none"
+          style="absolute right-2 top-[58px] px-5 transform -translate-y-1/2 bg-transparent text-gray-500 hover:bg-transparent focus:outline-none"
         />
       </div>
       <Button
@@ -82,7 +86,7 @@ const LoginForm = () => {
       />
       <p>
         Ainda não tem uma conta na LuBank?{" "}
-        <Link className="font-bold text-purpleContabilize" to={"/register"}>
+        <Link className="font-bold text-purpleLubank" to={"/register"}>
           Cadastre-se agora!
         </Link>
       </p>

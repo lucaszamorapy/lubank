@@ -23,7 +23,7 @@ const Input = ({
   return (
     <div>
       {label && (
-        <label htmlFor={id} className="block text-purpleContabilize mb-2">
+        <label htmlFor={id} className="block text-purpleLubank mb-2">
           {label}
         </label>
       )}

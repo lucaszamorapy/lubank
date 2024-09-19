@@ -82,7 +82,7 @@ const AccountForm = () => {
     <section>
       <div className="container">
         <div className="flex flex-col items-center gap-7 justify-center">
-          <h1 className="text-purpleContabilize text-2xl font-semibold">
+          <h1 className="text-purpleLubank text-2xl font-semibold">
             Configurações da sua conta
           </h1>
           <form onSubmit={handleSubmit}>

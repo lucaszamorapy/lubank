@@ -1,6 +1,5 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../config/db");
-const Role = require("./roleModel");
 
 const User = sequelize.define(
   "User",
@@ -14,10 +13,6 @@ const User = sequelize.define(
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-    },
-    role_name: {
-      type: DataTypes.STRING,
-      allowNull: false,
     },
     password: {
       type: DataTypes.STRING,

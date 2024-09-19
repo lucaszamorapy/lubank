@@ -2,16 +2,16 @@
   {
     "path": "/home",
     "name": "Home",
-    "icon": "FaHome"
+    "icon": "mdiHome"
   },
   {
     "path": "/estatisticas",
     "name": "Estatísticas",
-    "icon": "IoBarChart"
+    "icon": "mdiPoll"
   },
   {
     "path": "/conta",
     "name": "Conta",
-    "icon": "MdManageAccounts"
+    "icon": "mdiAccountCog"
   }
 ]

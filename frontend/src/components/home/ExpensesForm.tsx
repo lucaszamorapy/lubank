@@ -20,6 +20,8 @@ import {
   formatCurrency,
   handleChangeDate,
 } from "../../globalFunctions";
+import Icon from "@mdi/react";
+import { mdiClose } from "@mdi/js";
 
 type ExpensesFormProps = {
   update?: IExpense[];
@@ -191,9 +193,9 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
                   <Button
                     onClick={() => removeExpense(index)}
                     disabled={!!update}
-                    buttonText={<TiDelete size={30} />}
+                    buttonText={<Icon path={mdiClose} size={1} />}
                     style={
-                      "text-purpleContabilize bg-white hover:bg-white hover:text-purple-950 px-0"
+                      "text-purpleLubank bg-white hover:bg-white hover:text-purple-950"
                     }
                   />
                 </div>
@@ -233,6 +235,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
             <Button
               onClick={addExpense}
               buttonText={"Adicionar mais gastos"}
+              type={"button"}
               style={`text-white rounded-full w-full`}
             />
             <Button

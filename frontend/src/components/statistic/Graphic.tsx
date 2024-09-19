@@ -89,7 +89,7 @@ const Graphic = () => {
       {loading && <Loading screen={loading} />}
       <div className="container">
         <div className=" bg-white border-2 border-gray-200 flex flex-col items-center gap-7 mb-20 justify-center shadow-md rounded-md px-10 py-5 ">
-          <h1 className="text-purpleContabilize text-2xl font-semibold">
+          <h1 className="text-purpleLubank text-2xl font-semibold">
             Selecione os meses para o gráfico
           </h1>
           <form

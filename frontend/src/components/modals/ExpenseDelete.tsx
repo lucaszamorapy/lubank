@@ -67,7 +67,7 @@ const ExpenseDelete = ({ onClick, isOpen, month, year }: ExpensesProps) => {
           onAnimationEnd={handleAnimationEnd}
           onClick={(e) => e.stopPropagation()}
         >
-          <h1 className="text-xl font-semibold text-purpleContabilize">
+          <h1 className="text-xl font-semibold text-purpleLubank">
             {`Tem certeza que deseja deletar esta despesa?`}
           </h1>
           <div className="flex flex-col mt-10 justify-between lg:flex-row">

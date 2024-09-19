@@ -28,16 +28,6 @@ export const getUsers = async () => {
   }
 };
 
-export const getRoles = async () => {
-  try {
-    const response = await axios.get(`${API_URL}/roles`);
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching roles:", error);
-    throw error;
-  }
-};
-
 export const createUser = async (formData: FormData) => {
   try {
     const response = await axios.post(`${API_URL}/user`, formData, {
