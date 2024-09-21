@@ -10,7 +10,7 @@ const Account = () => {
         title="Conta"
         description="Página para alterar os dados da sua conta Lubank"
       />
-      <section className="px-5 lg:px-0 animeLeft">
+      <section className="px-5 lg:px-0">
         <AccountPage />
       </section>
     </>
