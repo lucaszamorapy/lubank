@@ -73,12 +73,12 @@ const ExpenseDelete = ({ onClick, isOpen, month, year }: ExpensesProps) => {
           <div className="flex flex-col mt-10 justify-between lg:flex-row">
             <Button
               buttonText={"Não, não desejo"}
-              style={"text-white"}
+              style={"text-white px-5"}
               onClick={onClick}
             />
             <Button
               buttonText={"Sim, tenho certeza"}
-              style={"text-white"}
+              style={"text-white px-5"}
               onClick={() => handleDelete(userInfo?.id, month, year)}
             />
           </div>

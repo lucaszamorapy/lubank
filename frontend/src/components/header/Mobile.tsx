@@ -2,12 +2,10 @@ import { useEffect, useState } from "react";
 import { HeaderProps } from "./Header";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
-import { useTheme } from "../../contexts/ThemeContext";
 
 const Mobile = ({ isOpen, navigation, toggleMenu }: HeaderProps) => {
   const [isVisible, setIsVisible] = useState(isOpen);
   const { logout } = useAuth();
-  const { darkMode, toggleTheme } = useTheme();
 
   useEffect(() => {
     if (isOpen) {
@@ -47,14 +45,6 @@ const Mobile = ({ isOpen, navigation, toggleMenu }: HeaderProps) => {
                 Logout
               </li>
             </span>
-            {/* <span className="flex cursor-pointer justify-between gap-10 py-1 items-center text-lg rounded-md">
-              <li
-                onClick={toggleTheme}
-                className="text-white list-none flex items-center gap-2 flex-grow"
-              >
-                Trocar tema
-              </li>
-            </span> */}
           </ul>
         </nav>
       )}

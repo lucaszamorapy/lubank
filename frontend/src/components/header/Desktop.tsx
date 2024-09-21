@@ -6,7 +6,6 @@ import { useAuth } from "../../contexts/AuthContext";
 
 import { mdiAccountCog, mdiHome, mdiLogout, mdiPoll } from "@mdi/js";
 import Icon from "@mdi/react";
-import { useTheme } from "../../contexts/ThemeContext";
 
 interface iconProps {
   [key: string]: string;
@@ -14,7 +13,7 @@ interface iconProps {
 
 const Desktop = ({ isOpen, navigation, toggleMenu }: HeaderProps) => {
   const { logout } = useAuth();
-  const { darkMode, toggleTheme } = useTheme();
+
   const iconMap: iconProps = {
     mdiPoll: mdiPoll,
     mdiAccountCog: mdiAccountCog,
@@ -60,15 +59,6 @@ const Desktop = ({ isOpen, navigation, toggleMenu }: HeaderProps) => {
               </li>
               <Icon path={mdiLogout} size={1} color="#fff" />
             </span>
-            {/* <span className="flex cursor-pointer justify-between gap-10 px-3 py-1 items-center hover:bg-purple-950 duration-300 text-xl rounded-md">
-              <li
-                onClick={toggleTheme}
-                className="text-white list-none flex items-center gap-2 flex-grow"
-              >
-                Trocar tema
-              </li>
-              <Icon path={mdiLogout} size={1} color="#fff" />
-            </span> */}
           </ul>
           <span
             className={`mobile-menu-5 block xl:hidden ${isOpen && "toggle"}`}

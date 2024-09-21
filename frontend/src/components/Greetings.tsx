@@ -3,7 +3,6 @@ import Button from "../utils/Button";
 import { useAuth } from "../contexts/AuthContext";
 import { useEffect, useState } from "react";
 import ExpenseModal from "./modals/ExpenseModal";
-import { TbTextPlus } from "react-icons/tb";
 import { FaCircleUser } from "react-icons/fa6";
 import Icon from "@mdi/react";
 import { mdiPlaylistPlus } from "@mdi/js";
@@ -21,8 +20,11 @@ const Greetings = ({ home }: GreetingsProps) => {
   };
 
   useEffect(() => {
-    if (userInfo?.username && home) {
+    const hasShownWelcomeMessage = localStorage.getItem("welcomeMessageShown");
+
+    if (userInfo?.username && home && !hasShownWelcomeMessage) {
       toast.success(`Seja bem-vindo de volta ${userInfo.username}!`);
+      localStorage.setItem("welcomeMessageShown", "true");
     }
   }, [userInfo?.username, home]);
 

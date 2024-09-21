@@ -121,7 +121,7 @@ const Graphic = () => {
               type="submit"
               disabled={loading}
               buttonText={loading ? <Loading /> : "Enviar"}
-              style={"text-white rounded-full py-0"}
+              style={"text-white rounded-full px-5 py-0"}
             />
           </form>
         </div>

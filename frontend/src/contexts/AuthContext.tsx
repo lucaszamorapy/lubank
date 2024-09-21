@@ -77,6 +77,7 @@ export const AuthProvider = ({ children }: IChildren) => {
 
   const logout = () => {
     localStorage.removeItem("authToken");
+    localStorage.removeItem("welcomeMessageShown");
     setIsAuthenticated(false);
     setUserInfo(undefined);
     navigate("/login");
