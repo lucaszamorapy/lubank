@@ -5,46 +5,45 @@ import Home from "./pages/Home";
 import ProtectedRoute from "./ProtectedRoute";
 import Register from "./pages/Register";
 import { ExpenseProvider } from "./contexts/ExpensesContext";
-import { ModalOpenProvider } from "./contexts/ModalOpenContext";
 import Statistic from "./pages/Statistic";
 import Account from "./pages/Account";
+import ScrollToTopOnPageChange from "./ScrollTopToOnPage";
 
 const App = () => {
   return (
     <BrowserRouter>
+      <ScrollToTopOnPageChange />
       <AuthProvider>
         <ExpenseProvider>
-          <ModalOpenProvider>
-            <Routes>
-              <Route path="/" element={<Navigate to="/login" />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route
-                path="/estatisticas"
-                element={
-                  <ProtectedRoute>
-                    <Statistic />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/conta"
-                element={
-                  <ProtectedRoute>
-                    <Account />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/home"
-                element={
-                  <ProtectedRoute>
-                    <Home />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-          </ModalOpenProvider>
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route
+              path="/estatisticas"
+              element={
+                <ProtectedRoute>
+                  <Statistic />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/conta"
+              element={
+                <ProtectedRoute>
+                  <Account />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/home"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
         </ExpenseProvider>
       </AuthProvider>
     </BrowserRouter>

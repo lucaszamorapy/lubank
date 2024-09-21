@@ -2,7 +2,7 @@ import { useState } from "react";
 import useForm from "../../hooks/useForm";
 import Input from "../../utils/Input";
 import Button from "../../utils/Button";
-import Loading from "../../helper/Loading";
+import Loading from "../../helper/loading/Loading";
 import { createUser } from "../../functions";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";

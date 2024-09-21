@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Loading from "../../helper/Loading";
+import Loading from "../../helper/loading/Loading";
 import Input from "../../utils/Input";
 import useForm from "../../hooks/useForm";
 import { useAuth } from "../../contexts/AuthContext";

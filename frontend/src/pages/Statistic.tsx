@@ -1,12 +1,19 @@
 import StatisticPage from "../components/statistic/StatisticPage";
 import Header from "../components/header/Header";
+import Head from "../helper/Head";
 
 const Statistic = () => {
   return (
-    <div>
+    <>
+      <Head
+        title="Estatísticas"
+        description="Página das estatística dos seus gasto durante os meses selecionados"
+      />
       <Header />
-      <StatisticPage />
-    </div>
+      <section className="animeLeft">
+        <StatisticPage />
+      </section>
+    </>
   );
 };
 

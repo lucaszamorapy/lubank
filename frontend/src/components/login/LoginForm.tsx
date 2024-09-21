@@ -3,7 +3,7 @@ import { useAuth } from "../../contexts/AuthContext";
 import useForm from "../../hooks/useForm";
 import Input from "../../utils/Input";
 import Button from "../../utils/Button";
-import Loading from "../../helper/Loading";
+import Loading from "../../helper/loading/Loading";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";

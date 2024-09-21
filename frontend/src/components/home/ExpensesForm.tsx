@@ -11,8 +11,7 @@ import {
 import Button from "../../utils/Button";
 import { useAuth } from "../../contexts/AuthContext";
 import { useExpense } from "../../contexts/ExpensesContext";
-import Loading from "../../helper/Loading";
-import { TiDelete } from "react-icons/ti";
+import Loading from "../../helper/loading/Loading";
 import "react-toastify/dist/ReactToastify.css";
 import { IExpense } from "../../contexts/ExpensesContext";
 import {

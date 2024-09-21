@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getExpensesByStatistic, getMonths } from "../../functions";
 import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "react-toastify";
-import Loading from "../../helper/Loading";
+import Loading from "../../helper/loading/Loading";
 import {
   Bar,
   BarChart,
