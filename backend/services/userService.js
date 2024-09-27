@@ -1,7 +1,9 @@
 const User = require("../models/userModel.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const path = require("path");
+const nodemailer = require("nodemailer");
+const crypto = require("crypto");
+require("dotenv").config();
 
 const signup = async (username, email, password, avatar) => {
   // Verifica se o email já está em uso
@@ -95,10 +97,66 @@ const updateUser = async (id, user) => {
   }
 };
 
+const requestPasswordReset = async (email) => {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASS,
+    },
+  });
+  const user = await User.findOne({ where: { email } });
+
+  if (!user) {
+    throw new Error("Usuário não encontrado");
+  }
+
+  const resetToken = crypto.randomBytes(32).toString("hex");
+  const resetTokenExpiry = Date.now() + 3600000; // 1 hora
+
+  user.resetToken = resetToken;
+  user.resetTokenExpiry = resetTokenExpiry;
+  await user.save(); // salva as alterações no banco de dados
+
+  const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+
+  await transporter.sendMail({
+    to: process.env.EMAIL_USER,
+    subject: "Redefinição de Senha",
+    html: `<p>Você solicitou a redefinição de senha. Clique <a href="${resetUrl}">aqui</a> para redefinir sua senha.</p>`,
+  });
+
+  return { message: "Email de redefinição de senha enviado" };
+};
+
+const resetPassword = async (token, newPassword) => {
+  const user = await User.findOne({
+    where: {
+      resetToken: token,
+      resetTokenExpiry: {
+        [Op.gt]: Date.now(),
+      },
+    },
+  });
+
+  if (!user) {
+    throw new Error("Token inválido ou expirado");
+  }
+
+  user.password = await bcrypt.hash(newPassword, 10);
+  user.resetToken = null;
+  user.resetTokenExpiry = null;
+  await user.save();
+
+  return { message: "Senha redefinida com sucesso" };
+};
+
 module.exports = {
   signup,
   getUsers,
   login,
   getUserInfo,
   updateUser,
+  requestPasswordReset,
+  resetPassword,
 };

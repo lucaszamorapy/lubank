@@ -4,7 +4,6 @@ const signup = async (req, res) => {
   try {
     const { username, email, password } = req.body;
     const avatar = req.file ? req.file.path.replace(/\\/g, "/") : null; // Converte \ para /
-
     const newUser = await userService.signup(username, email, password, avatar);
     return res.status(201).json(newUser);
   } catch (err) {
@@ -61,10 +60,34 @@ const updateUser = async (req, res) => {
   }
 };
 
+const requestPasswordReset = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const response = await userService.requestPasswordReset(email);
+    return res.status(200).json(response);
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
+const resetPassword = async (req, res) => {
+  const { token } = req.params;
+  const { newPassword } = req.body;
+
+  try {
+    const response = await userService.resetPassword(token, newPassword);
+    return res.status(200).json(response);
+  } catch (err) {
+    return res.status(400).json({ error: err.message });
+  }
+};
+
 module.exports = {
   signup,
   getUsers,
   login,
   getUserInfo,
   updateUser,
+  requestPasswordReset,
+  resetPassword,
 };

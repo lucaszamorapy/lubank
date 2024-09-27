@@ -22,6 +22,12 @@ const User = sequelize.define(
       type: DataTypes.STRING, // Tipo de dado para armazenar URLs ou caminhos de arquivos
       allowNull: true, // Permite que a coluna seja nula, se desejado
     },
+    resetToken: {
+      type: DataTypes.STRING,
+    },
+    resetTokenExpiry: {
+      type: DataTypes.DATE,
+    },
     created_at: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,

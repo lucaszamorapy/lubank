@@ -28,5 +28,7 @@ router.put(
   upload.single("avatar"),
   userController.updateUser
 );
+router.post("/forgot-password", userController.requestPasswordReset);
+router.post("/forgot-password/:token", userController.resetPassword);
 
 module.exports = router;
