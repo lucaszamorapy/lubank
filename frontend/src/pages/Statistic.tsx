@@ -10,7 +10,7 @@ const Statistic = () => {
         description="Página das estatística dos seus gasto durante os meses selecionados"
       />
       <Header />
-      <section>
+      <section className="px-5 lg:px-0">
         <StatisticPage />
       </section>
     </>

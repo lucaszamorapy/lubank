@@ -134,7 +134,7 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
               }`}
             >
               <div className="flex justify-center gap-2 items-center">
-                <h3 className="text-xl font-semibold text-purpleLubank">
+                <h3 className="text-lg font-semibold text-purpleLubank lg:text-xl">
                   {monthName} {yearInt}
                 </h3>
               </div>
@@ -174,7 +174,9 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
                 {expenses.map((expense, index) => (
                   <div key={index} className="flex flex-col pt-5 items-center">
                     <div className="flex justify-between w-full items-center">
-                      <p className="text-lg">{expense.description}</p>
+                      <p className="text-md lg:text-lg">
+                        {expense.description}
+                      </p>
                       <p className="font-semibold">
                         {formatCurrency(parseFloat(expense.amount))}
                       </p>
@@ -183,8 +185,8 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
                 ))}
 
                 <div className="flex justify-between mt-10">
-                  <p className="font-semibold text-lg">Total</p>
-                  <p className="font-semibold text-lg">
+                  <p className="font-semibold text-md lg:text-lg">Total</p>
+                  <p className="font-semibold text-md lg:text-lg">
                     {formatCurrency(calculateTotal(expenses))}
                   </p>
                 </div>

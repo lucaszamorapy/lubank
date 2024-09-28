@@ -54,7 +54,7 @@ const Greetings = ({ home }: GreetingsProps) => {
       />
       <div className="container">
         <div className="flex py-5 justify-between border-2 px-10 mb-10 bg-white rounded-md mt-36 border-gray-200 xl:mt-10">
-          <div className="flex flex-col justify-between gap-10 items-center md:flex-row">
+          <div className="flex justify-between gap-5 items-center lg:gap-10">
             {userInfo?.avatar ? (
               <img
                 className="w-20 h-20 rounded-full"
@@ -65,9 +65,9 @@ const Greetings = ({ home }: GreetingsProps) => {
               <FaCircleUser size={50} color="6A00AB" />
             )}
 
-            <div className="flex flex-col gap-2 md:flex-row">
-              <p className="text-lg">{getGreeting()},</p>
-              <p className="text-xl font-semibold text-purpleLubank">
+            <div className="flex items-center gap-2">
+              <p className="text-md :lg:text-lg">{getGreeting()},</p>
+              <p className="text-md lg:text-xl font-semibold text-purpleLubank">
                 {userInfo?.username}
               </p>
             </div>

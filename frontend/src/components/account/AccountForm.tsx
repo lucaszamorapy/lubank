@@ -80,12 +80,12 @@ const AccountForm = () => {
   return (
     <section>
       <div className="container">
-        <div className="flex flex-col items-center gap-7 justify-center">
-          <h1 className="text-purpleLubank text-2xl font-semibold">
-            Configurações da sua conta
-          </h1>
+        <div className="flex flex-col items-center gap-7 justify-center mb-7 lg:mb-0">
           <form onSubmit={handleSubmit}>
             <div className="flex bg-white shadow-md rounded-md border-2 border-gray-200 px-10 py-5 flex-col gap-5">
+              <h1 className="text-purpleLubank text-xl font-semibold lg:text-2xl">
+                Configurações da sua conta
+              </h1>
               <Input
                 label={"Avatar"}
                 type="file"
