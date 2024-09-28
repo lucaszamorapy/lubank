@@ -29,9 +29,7 @@ const LoginForm = () => {
       await login(user.value, password);
     } catch (error: unknown) {
       setLoading(false);
-      if (error instanceof Error) {
-        toast.error("Usuário não encontrado");
-      }
+      console.error(error);
     } finally {
       setLoading(false);
     }

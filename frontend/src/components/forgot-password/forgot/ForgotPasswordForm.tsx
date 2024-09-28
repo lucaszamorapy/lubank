@@ -5,7 +5,7 @@ import Loading from "../../../helper/loading/Loading";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { createForgotPassword } from "../../../functions";
+import { createForgotPassword } from "../../../composables/user/useUser";
 import Icon from "@mdi/react";
 import { mdiEyeOffOutline, mdiEyeOutline } from "@mdi/js";
 

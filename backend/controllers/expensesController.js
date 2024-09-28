@@ -23,8 +23,12 @@ const getExpensesByUserId = async (req, res) => {
 const deleteExpenses = async (req, res) => {
   try {
     const { user_id, month_id, year } = req.params;
-    await expensesService.deleteExpense(user_id, month_id, year);
-    return res.status(200).json({ sucess: "Despesa deletada" });
+    const deleteExpense = await expensesService.deleteExpense(
+      user_id,
+      month_id,
+      year
+    );
+    return res.status(200).json(deleteExpense);
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
@@ -34,8 +38,11 @@ const updateExpenses = async (req, res) => {
   try {
     const { expense_id } = req.params;
     const expenses = req.body.expenses;
-    await expensesService.updateExpense(expense_id, expenses);
-    return res.status(200).json({ sucess: "Gasto alterado!" });
+    const updateExpense = await expensesService.updateExpense(
+      expense_id,
+      expenses
+    );
+    return res.status(200).json(updateExpense);
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }

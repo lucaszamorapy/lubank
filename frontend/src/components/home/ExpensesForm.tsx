@@ -5,9 +5,9 @@ import { toast } from "react-toastify";
 import {
   createExpense,
   getExpenseByUserId,
-  getMonths,
   updateExpense,
-} from "../../functions";
+} from "../../composables/expenses/useExpenses";
+import { getMonths } from "../../composables/months/useMonths";
 import Button from "../../utils/Button";
 import { useAuth } from "../../contexts/AuthContext";
 import { useExpense } from "../../contexts/ExpensesContext";
@@ -64,7 +64,7 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
     const fetchMonths = async () => {
       try {
         const monthData = await getMonths();
-        setMonth(monthData);
+        setMonth(monthData.data);
       } catch (err) {
         toast.error("Meses não encontrados");
       }
@@ -96,12 +96,14 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const yearValue = convertToNumber(year);
-    if (
-      expenses.some((expense) => !expense.amount || !expense.description) ||
-      !select ||
-      yearValue === 0
-    ) {
-      return toast.error("Preencha todos os campos!");
+    if (!update) {
+      if (
+        expenses.some((expense) => !expense.amount || !expense.description) ||
+        !select ||
+        yearValue === 0
+      ) {
+        return toast.error("Preencha todos os campos!");
+      }
     }
 
     // Filtra despesas que têm ID definido e foram modificadas
@@ -143,18 +145,15 @@ const ExpensesForm = ({ update, toggleModal }: ExpensesFormProps) => {
     try {
       setLoading(true);
       if (update) {
-        // Atualiza despesas existentes
         await updateExpense(expenseIds, { expenses: updatedExpenses });
-        toast.success("Despesas alteradas com sucesso");
       } else {
-        // Cria novas despesas
         await createExpense({ expenses: newExpenses });
-        toast.success("Despesas enviadas com sucesso");
       }
       const expenseUserData = await getExpenseByUserId(userInfo?.id);
-      setGlobalExpenses(expenseUserData);
-    } catch (error) {
-      toast.error("Falha ao salvar despesas");
+      setGlobalExpenses(expenseUserData.data);
+    } catch (error: unknown) {
+      console.error(error);
+      setLoading(false);
     } finally {
       setLoading(false);
       toggleModal();

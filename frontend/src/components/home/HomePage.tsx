@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
-import { getExpenseByUserId } from "../../functions";
+import { getExpenseByUserId } from "../../composables/expenses/useExpenses";
 import { useExpense } from "../../contexts/ExpensesContext";
 import "react-toastify/dist/ReactToastify.css";
 import ExpensesGrid from "./ExpensesGrid";
@@ -14,7 +14,7 @@ const HomePage = () => {
     const fetchExpenses = async (userId: number | null | undefined) => {
       if (userId) {
         const expenseUserData = await getExpenseByUserId(userId);
-        setExpenses(expenseUserData);
+        setExpenses(expenseUserData.data);
       }
     };
 

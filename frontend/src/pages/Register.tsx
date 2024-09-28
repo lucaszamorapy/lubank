@@ -5,7 +5,7 @@ const Register = () => {
   return (
     <>
       <Head title="Cadastra-se" description="Cadastro da sua conta Lubank" />
-      <section className="animeLeft">
+      <section>
         <RegisterPage />
       </section>
     </>

@@ -21,7 +21,7 @@ const RegisterPage = () => {
         <div className="flex flex-col gap-10  bg-white rounded-md border-2 border-gray-200 items-center lg:flex-row lg:gap-32">
           <img
             src={PeopleSmile}
-            className="lg:w-[500px]  lg:rounded-l-md"
+            className="hidden lg:block lg:w-[500px]  lg:rounded-l-md"
             alt="Pessoas sorrindo"
           />
           <RegisterForm />

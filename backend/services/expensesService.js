@@ -1,29 +1,35 @@
 const Expense = require("../models/expensesModel.js");
+const ResponseModel = require("../models/responseModel.js");
 const User = require("../models/userModel.js");
 const { Op } = require("sequelize");
 
 const addExpenses = async (expenses) => {
   try {
-    return await Expense.bulkCreate(expenses);
-  } catch (err) {
-    throw new Error(err.message);
+    const createExpenses = await Expense.bulkCreate(expenses);
+    return new ResponseModel(createExpenses, "Despesa(s) criadas com sucesso!");
+  } catch (error) {
+    return new ResponseModel(error, "Erro ao criar as despesa(s)");
   }
 };
 
 const getExpensesByUserId = async (user_id) => {
   try {
-    return await Expense.findAll({
+    const expenseUser = await Expense.findAll({
       where: { user_id: user_id },
     });
+    if (!expenseUser) {
+      return new ResponseModel(expenseUser, "Usuário não encontrado");
+    }
+    return new ResponseModel(
+      expenseUser,
+      "Busca da Despesa(s) do usuário realizada com sucesso"
+    );
   } catch (err) {
     throw new Error(err.message);
   }
 };
 
 const deleteExpense = async (user_id, month_id, year) => {
-  console.log(
-    `Attempting to delete expense with month_id: ${month_id}, year: ${year}, user_id: ${user_id}`
-  );
   try {
     const yearNumber = Number(year);
     const result = await Expense.destroy({
@@ -33,8 +39,7 @@ const deleteExpense = async (user_id, month_id, year) => {
         user_id: user_id,
       },
     });
-    console.log(`Number of records deleted: ${result}`);
-    return result;
+    return new ResponseModel(result, "Despesa deletada com sucesso!");
   } catch (err) {
     throw new Error(err.message);
   }
@@ -52,8 +57,8 @@ const updateExpense = async (expense_id, expenseUpdates) => {
       }
 
       await expense.update(expenseUpdate);
+      return new ResponseModel(null, "Despesa alterada com sucesso!");
     }
-    return { success: true };
   } catch (err) {
     throw new Error(err.message);
   }
@@ -61,7 +66,7 @@ const updateExpense = async (expense_id, expenseUpdates) => {
 
 const getExpensesByStatistic = async (user_id, startMonth, endMonth, year) => {
   try {
-    return await Expense.findAll({
+    const expenseStatistic = await Expense.findAll({
       where: {
         user_id: user_id,
         month_id: {
@@ -69,8 +74,11 @@ const getExpensesByStatistic = async (user_id, startMonth, endMonth, year) => {
         },
         year: year,
       },
-      // include: [{ model: User }],
     });
+    return new ResponseModel(
+      expenseStatistic,
+      "Gráfico atualizado com sucesso!"
+    );
   } catch (err) {
     throw new Error(err.message);
   }

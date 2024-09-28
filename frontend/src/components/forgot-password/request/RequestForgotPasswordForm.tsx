@@ -6,7 +6,7 @@ import Loading from "../../../helper/loading/Loading";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { createRequestForgotPassword } from "../../../functions";
+import { createRequestForgotPassword } from "../../../composables/user/useUser";
 
 const RequestForgotPasswordForm = () => {
   const [loading, setLoading] = useState(false);

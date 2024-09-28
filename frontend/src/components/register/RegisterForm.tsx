@@ -3,7 +3,7 @@ import useForm from "../../hooks/useForm";
 import Input from "../../utils/Input";
 import Button from "../../utils/Button";
 import Loading from "../../helper/loading/Loading";
-import { createUser } from "../../functions";
+import { createUser } from "../../composables/user/useUser";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -52,18 +52,12 @@ const RegisterForm = () => {
       if (file) {
         formData.append("avatar", file);
       }
-
       await createUser(formData);
-      toast.success("Usuário cadastrado com sucesso!");
       setTimeout(() => {
         navigate("/home");
       }, 3000);
     } catch (error: unknown) {
       setLoading(false);
-      if (error instanceof Error) {
-        console.error(error);
-        toast.error("Ocorreu um erro ao cadastrar o usuário!");
-      }
     } finally {
       setLoading(false);
     }
@@ -75,7 +69,10 @@ const RegisterForm = () => {
   };
 
   return (
-    <form className="flex  flex-col mt-5 gap-5" onSubmit={handleSubmit}>
+    <form
+      className="flex p-5 flex-col mt-5 gap-5 lg:p-0 lg:w-[423px]"
+      onSubmit={handleSubmit}
+    >
       <div className="flex flex-col gap-2 ">
         <h1 className="text-purpleLubank text-4xl font-semibold">
           Bem vindo(a)

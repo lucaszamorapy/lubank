@@ -3,7 +3,7 @@ import Button from "../../utils/Button";
 import { useEffect, useState } from "react";
 import ExpenseDelete from "../modals/ExpenseDelete";
 import ExpenseModal from "../modals/ExpenseModal";
-import { getMonths } from "../../functions";
+import { getMonths } from "../../composables/months/useMonths";
 import { toast } from "react-toastify";
 import { formatCurrency } from "../../globalFunctions";
 import Icon from "@mdi/react";
@@ -57,8 +57,8 @@ const ExpensesGrid = ({ expenses }: ExpensesGridProps) => {
     const fetchMonths = async () => {
       try {
         const monthData = await getMonths();
-        setMonth(monthData);
-        const monthMapping = monthData.reduce(
+        setMonth(monthData.data);
+        const monthMapping = monthData.data.reduce(
           (
             map: Record<number, string>,
             month: { month_id: number; month_name: string }

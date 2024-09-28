@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { loginUser, getUserInfo } from "../functions";
+import { loginUser, getUserInfo } from "../composables/user/useUser";
 import { useNavigate } from "react-router-dom";
 
 interface UserInfoProps {
@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }: IChildren) => {
       if (token) {
         try {
           const userInfo = await getUserInfo(token);
-          setUserInfo(userInfo);
+          setUserInfo(userInfo.data);
           setIsAuthenticated(true);
         } catch (error) {
           setIsAuthenticated(false);
@@ -62,11 +62,11 @@ export const AuthProvider = ({ children }: IChildren) => {
     password: string | number
   ) => {
     try {
-      const data = await loginUser({
+      const login = await loginUser({
         username,
         password,
       });
-      localStorage.setItem("authToken", data.token);
+      localStorage.setItem("authToken", login.token.data);
       setIsAuthenticated(true);
       navigate("/home");
     } catch (error) {

@@ -4,15 +4,18 @@ import Input from "../../utils/Input";
 import useForm from "../../hooks/useForm";
 import { useAuth } from "../../contexts/AuthContext";
 import Button from "../../utils/Button";
-import { updateUser } from "../../functions";
+import { updateUser } from "../../composables/user/useUser";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import Icon from "@mdi/react";
+import { mdiEyeOffOutline, mdiEyeOutline } from "@mdi/js";
 
 const AccountForm = () => {
   const [loading, setLoading] = useState<boolean>();
   const [password, setPassword] = useState<string>("");
   const [file, setFile] = useState<File | null | undefined>(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [viewPassword, setViewPassword] = useState(false);
   const { userInfo } = useAuth();
   const navigate = useNavigate();
   const name = useForm("name");
@@ -63,16 +66,12 @@ const AccountForm = () => {
         formData.append("avatar", file);
       }
       await updateUser(userInfo?.id, formData);
-      toast.success("Usuário alterado com sucesso!");
       setTimeout(() => {
         navigate("/login");
       }, 3000);
     } catch (error: unknown) {
       setLoading(false);
-      if (error instanceof Error) {
-        console.error(error);
-        toast.error("Usuário ou e-mail já existe");
-      }
+      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -107,14 +106,28 @@ const AccountForm = () => {
                 style={"px-5 w-full lg:w-[454px]"}
                 {...email}
               />
-              <Input
-                label={"Senha"}
-                placeholder="Digite sua senha"
-                style={"px-5 w-full "}
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
-                type="password"
-              />
+              <div className="relative w-full">
+                <Input
+                  label={"Senha"}
+                  placeholder="Digite sua senha"
+                  style={"px-5 w-full"}
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                  type={`${viewPassword ? "text" : "password"}`}
+                />
+                <Button
+                  buttonText={
+                    viewPassword ? (
+                      <Icon path={mdiEyeOffOutline} size={1} />
+                    ) : (
+                      <Icon path={mdiEyeOutline} size={1} />
+                    )
+                  }
+                  onClick={() => setViewPassword(!viewPassword)}
+                  type="button"
+                  style="absolute right-2 top-[58px] px-5 transform -translate-y-1/2 bg-transparent text-gray-500 hover:bg-transparent focus:outline-none"
+                />
+              </div>
               <Button
                 type="submit"
                 buttonText={loading ? <Loading /> : "Salvar alterações"}

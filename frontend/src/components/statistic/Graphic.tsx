@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { getExpensesByStatistic, getMonths } from "../../functions";
+import { getExpensesByStatistic } from "../../composables/expenses/useExpenses";
+import { getMonths } from "../../composables/months/useMonths";
 import { useAuth } from "../../contexts/AuthContext";
 import { toast } from "react-toastify";
 import Loading from "../../helper/loading/Loading";
@@ -31,7 +32,7 @@ const Graphic = () => {
   useEffect(() => {
     const fetchMonths = async () => {
       const monthData = await getMonths();
-      setMonth(monthData);
+      setMonth(monthData.data);
     };
     fetchMonths();
   }, [userInfo?.id]);
@@ -42,7 +43,6 @@ const Graphic = () => {
     if (!startMonth || !endMonth || yearValue === 0) {
       return toast.error("Preencha todos os campos!");
     }
-    console.log(yearValue);
     setLoading(true);
     try {
       const response = await getExpensesByStatistic(
@@ -62,7 +62,7 @@ const Graphic = () => {
       );
 
       //agregar despesas por mês e somar os valores
-      const aggregatedData = response.reduce((acc, expense) => {
+      const aggregatedData = response.data.reduce((acc, expense) => {
         const { month_id, amount } = expense;
         if (!acc[month_id]) {
           acc[month_id] = {
@@ -76,7 +76,6 @@ const Graphic = () => {
 
       //converter objeto de volta para array
       setExpensesMonth(Object.values(aggregatedData));
-      toast.success(`Gráfico atualizado com sucesso!`);
     } catch (error) {
       toast.error("Ocorreu um erro ao processar os dados!");
     } finally {

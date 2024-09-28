@@ -1,5 +1,7 @@
 import moment from "moment";
 
+export const API_URL = "http://localhost:8081/api";
+
 export const formatCurrency = (value: number): string => {
   return value.toLocaleString("pt-BR", {
     style: "currency",

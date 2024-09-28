@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import Button from "../../utils/Button";
 import { useAuth } from "../../contexts/AuthContext";
-import { deleteExpense, getExpenseByUserId } from "../../functions";
+import {
+  deleteExpense,
+  getExpenseByUserId,
+} from "../../composables/expenses/useExpenses";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useExpense } from "../../contexts/ExpensesContext";
+import Loading from "../../helper/loading/Loading";
 
 type ExpensesProps = {
   onClick?: () => void;
@@ -15,6 +19,7 @@ type ExpensesProps = {
 
 const ExpenseDelete = ({ onClick, isOpen, month, year }: ExpensesProps) => {
   const [isVisible, setIsVisible] = useState(isOpen);
+  const [loading, setLoading] = useState(false);
   const [animationClass, setAnimationClass] = useState("");
   const { userInfo } = useAuth();
   const { setExpenses } = useExpense();
@@ -44,15 +49,18 @@ const ExpenseDelete = ({ onClick, isOpen, month, year }: ExpensesProps) => {
     }
 
     try {
+      setLoading(true);
       await deleteExpense(userInfo?.id, monthId, year);
-      toast.success("Despesa deletada com sucesso");
       const expenseUserData = await getExpenseByUserId(userInfo?.id);
-      setExpenses(expenseUserData);
+      setExpenses(expenseUserData.data);
       if (onClick) {
         onClick();
       }
-    } catch (error) {
-      toast.error("Ocorreu um erro ao deletar a despesa");
+    } catch (error: unknown) {
+      console.error(error);
+      setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,7 +85,7 @@ const ExpenseDelete = ({ onClick, isOpen, month, year }: ExpensesProps) => {
               onClick={onClick}
             />
             <Button
-              buttonText={"Sim, tenho certeza"}
+              buttonText={loading ? <Loading /> : "Sim, tenho certeza"}
               style={"text-white px-5"}
               onClick={() => handleDelete(userInfo?.id, month, year)}
             />
