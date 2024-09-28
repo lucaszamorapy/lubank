@@ -72,10 +72,10 @@ const requestPasswordReset = async (req, res) => {
 
 const resetPassword = async (req, res) => {
   const { token } = req.params;
-  const { newPassword } = req.body;
+  const { password } = req.body;
 
   try {
-    const response = await userService.resetPassword(token, newPassword);
+    const response = await userService.resetPassword(token, password);
     return res.status(200).json(response);
   } catch (err) {
     return res.status(400).json({ error: err.message });

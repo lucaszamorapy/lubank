@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
+const { Op } = require("sequelize");
 require("dotenv").config();
 
 const signup = async (username, email, password, avatar) => {
@@ -118,7 +119,7 @@ const requestPasswordReset = async (email) => {
   user.resetTokenExpiry = resetTokenExpiry;
   await user.save(); // salva as alterações no banco de dados
 
-  const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+  const resetUrl = `http://localhost:5173/forgot-password/${resetToken}`;
 
   await transporter.sendMail({
     to: process.env.EMAIL_USER,
@@ -126,15 +127,19 @@ const requestPasswordReset = async (email) => {
     html: `<p>Você solicitou a redefinição de senha. Clique <a href="${resetUrl}">aqui</a> para redefinir sua senha.</p>`,
   });
 
-  return { message: "Email de redefinição de senha enviado" };
+  return { message: "Email de redefinição de senha enviado!" };
 };
 
-const resetPassword = async (token, newPassword) => {
+const resetPassword = async (token, password) => {
+  if (!password) {
+    throw new Error("Digite a sua nova senha");
+  }
+
   const user = await User.findOne({
     where: {
       resetToken: token,
       resetTokenExpiry: {
-        [Op.gt]: Date.now(),
+        [Op.gt]: new Date(),
       },
     },
   });
@@ -143,12 +148,20 @@ const resetPassword = async (token, newPassword) => {
     throw new Error("Token inválido ou expirado");
   }
 
-  user.password = await bcrypt.hash(newPassword, 10);
-  user.resetToken = null;
-  user.resetTokenExpiry = null;
-  await user.save();
+  try {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    await user.update({
+      password: hashedPassword,
+      resetToken: null,
+      resetTokenExpiry: null,
+    });
+  } catch (error) {
+    console.error("Erro ao gerar hash da senha:", error);
+    throw new Error("Erro ao redefinir a senha");
+  }
 
-  return { message: "Senha redefinida com sucesso" };
+  return { message: "Senha redefinida com sucesso!" };
 };
 
 module.exports = {

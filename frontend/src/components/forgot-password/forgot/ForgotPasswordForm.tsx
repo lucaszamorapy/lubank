@@ -1,39 +1,43 @@
-import { useState } from "react";
-import { useAuth } from "../../contexts/AuthContext";
-import useForm from "../../hooks/useForm";
-import Input from "../../utils/Input";
-import Button from "../../utils/Button";
-import Loading from "../../helper/loading/Loading";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Input from "../../../utils/Input";
+import Button from "../../../utils/Button";
+import Loading from "../../../helper/loading/Loading";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { createForgotPassword } from "../../../functions";
 import Icon from "@mdi/react";
 import { mdiEyeOffOutline, mdiEyeOutline } from "@mdi/js";
 
-const LoginForm = () => {
-  const [password, setPassword] = useState("");
-  const { login } = useAuth();
+export interface ForgotPasswordFormProps {
+  token: string | undefined;
+}
+
+const ForgotPasswordForm = ({ token }: ForgotPasswordFormProps) => {
   const [loading, setLoading] = useState(false);
   const [viewPassword, setViewPassword] = useState(false);
-  const user = useForm("name");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(token);
+  });
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
       setLoading(true);
-      if (!user.value || !password) {
+      if (!password) {
         toast.error("Preencha os dados obrigatórios!");
         setLoading(false);
         return;
       }
-      await login(user.value, password);
-    } catch (error: unknown) {
-      setLoading(false);
-      if (error instanceof Error) {
-        toast.error("Usuário não encontrado");
-      }
+      await createForgotPassword(token, { password });
     } finally {
       setLoading(false);
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
     }
   };
 
@@ -44,21 +48,15 @@ const LoginForm = () => {
     >
       <div className="flex flex-col gap-2 ">
         <h1 className="text-purpleLubank text-2xl font-semibold lg:text-4xl">
-          Bem vindo(a)
+          Redefinição senha
         </h1>
         <p className="text-sm text-gray-300 lg:text-lg">
-          Você não está conectado, precisa fazer o login para continuar
+          Preencha o campo abaixo com a sua nova senha
         </p>
       </div>
-      <Input
-        label={"Usuário"}
-        placeholder="Digite seu usuário"
-        style={"px-5 w-full"}
-        {...user}
-      />
       <div className="relative w-full">
         <Input
-          label={"Senha"}
+          label={"Nova senha"}
           placeholder="Digite sua senha"
           style={"px-5 w-full"}
           onChange={(e) => setPassword(e.target.value)}
@@ -79,30 +77,19 @@ const LoginForm = () => {
         />
       </div>
       <Button
-        buttonText={loading ? <Loading /> : "Entrar"}
+        buttonText={loading ? <Loading /> : "Enviar"}
         type="submit"
         disabled={loading}
         style={"text-white rounded-full w-full "}
       />
-      <div className="flex flex-col gap-2">
-        <p className="text-sm">
-          Ainda não tem uma conta?{" "}
-          <Link className="font-bold text-purpleLubank" to={"/register"}>
-            Cadastre-se agora!
-          </Link>
-        </p>
-        <p className="text-sm">
-          Esqueceu sua senha?{" "}
-          <Link
-            className="font-bold text-purpleLubank"
-            to={"/request-forgot-password"}
-          >
-            Esqueci minha senha
-          </Link>
-        </p>
-      </div>
+      <p className="text-sm">
+        Lembrou da sua senha na LuBank?{" "}
+        <Link className="font-bold text-purpleLubank" to={"/login"}>
+          Entrar agora!
+        </Link>
+      </p>
     </form>
   );
 };
 
-export default LoginForm;
+export default ForgotPasswordForm;

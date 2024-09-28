@@ -8,6 +8,8 @@ import { ExpenseProvider } from "./contexts/ExpensesContext";
 import Statistic from "./pages/Statistic";
 import Account from "./pages/Account";
 import ScrollToTopOnPageChange from "./ScrollTopToOnPage";
+import RequestForgotPassword from "./pages/RequestForgotPassword";
+import { ForgotPassword } from "./pages/ForgotPassword";
 
 const App = () => {
   return (
@@ -19,6 +21,14 @@ const App = () => {
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route
+              path="/request-forgot-password"
+              element={<RequestForgotPassword />}
+            />
+            <Route
+              path="/forgot-password/:token"
+              element={<ForgotPassword />}
+            />
             <Route
               path="/estatisticas"
               element={

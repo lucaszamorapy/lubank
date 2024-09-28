@@ -1,4 +1,6 @@
 import axios from "axios";
+import { toast } from "react-toastify";
+
 
 const API_URL = "http://localhost:8081/api";
 
@@ -17,6 +19,15 @@ type UserLoginProps = {
   username: string | number;
   password: string | number;
 };
+
+interface ResetPasswordProps {
+  password: string | number;
+}
+
+interface RequestForgotPasswordProps {
+  email: string
+}
+
 
 export const getUsers = async () => {
   try {
@@ -156,6 +167,30 @@ export const updateUser = async (
     return response.data;
   } catch (error) {
     console.error("Error updating user:", error);
+    throw error;
+  }
+};
+
+export const createRequestForgotPassword = async (email: RequestForgotPasswordProps) => {
+  try {
+    const response = await axios.post(`${API_URL}/forgot-password`, email);
+    toast.success(response.data.message);
+
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch create request forgot password info:", error);
+    toast.error("Ocorreu um erro ao fazer a requisição");
+    throw error;
+  }
+};
+export const createForgotPassword = async (token: string | undefined, password: ResetPasswordProps) => {
+  try {
+    const response = await axios.post(`${API_URL}/forgot-password/${token}`, password);
+    toast.success(response.data.message);
+    return response.data;
+  } catch (error) {
+    console.error("Failed to fetch create forgot password info:", error);
+    toast.error("Ocorreu um erro ao fazer a requisição");
     throw error;
   }
 };
